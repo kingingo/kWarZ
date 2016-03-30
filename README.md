@@ -29,7 +29,7 @@ Features sind teilweise implementiert.
  * Airdrops
  * Fallschirm
  * Tutorial
- * and some other things
+ * und ein bisschen was anderes
 
 ## Fortschritt
 Informationen über den Fortschritt findet man im Google Docs Dokument. **Bitte die Zeilen mit einem Fragezeichen auf grauem Grund genauer ansehen.**
