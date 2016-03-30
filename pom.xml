@@ -6,7 +6,7 @@
 
     <groupId>de.janmm14.epicpvp</groupId>
     <artifactId>warz</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
 
     <name>WarZ</name>
     <description>Main plugin for WarZ</description>
@@ -151,7 +151,26 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>eu.epicpvp</groupId>
+            <artifactId>core-core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>epicpvp-releases</id>
+            <name>epicpvp-artifactory-releases</name>
+            <url>http://149.202.150.185:8081/artifactory/epicpvp-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>epicpvp-snapshots</id>
+            <name>epicpvp-artifactory-snapshots</name>
+            <url>http://149.202.150.185:8081/artifactory/epicpvp-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <repositories>
         <repository>
@@ -161,6 +180,14 @@
         <repository>
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>
+        </repository>
+        <repository>
+            <id>epicpvp-releases</id>
+            <url>http://149.202.150.185:8081/artifactory/epicpvp-releases/</url>
+        </repository>
+        <repository>
+            <id>epicpvp-snapshots</id>
+            <url>http://149.202.150.185:8081/artifactory/epicpvp-snapshots/</url>
         </repository>
     </repositories>
 </project>
