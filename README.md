@@ -1,6 +1,6 @@
 WarZ
 ====
-Plugin for EpicPvP by Janmm14
+Plugin für EpicPvP von Janmm14
 
 > epic war
 >
