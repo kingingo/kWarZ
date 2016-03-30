@@ -14,6 +14,10 @@ public class UuidNameConverter {
 		return null;//TODO implement
 	}
 
+	public Profile getProfile(String name) {
+		return null;//TODO implement
+	}
+
 	@Data
 	public static class Profile {
 

@@ -119,7 +119,7 @@ public class CommandFriends implements TabExecutor {
 				if ( args[ 1 ].equalsIgnoreCase( plrName ) ) {
 					return msg( prefix + "Ich nehme an, dass du mit dir selbst Frieden hast.", plr );
 				}
-				UuidNameConverter.Profile targetProfile = uuidNameConverter.getBestProfile( args[ 1 ] );
+				UuidNameConverter.Profile targetProfile = uuidNameConverter.getProfileFromInput( args[ 1 ] );
 				if ( targetProfile == null ) {
 					return msg( prefix + "§cDer Spieler §6" + args[ 1 ] + "§c wurde nicht gefunden.", plr );
 				}
@@ -153,7 +153,7 @@ public class CommandFriends implements TabExecutor {
 					return msg( prefix + "Du hast dir selbst keine Friedensanfrage gesendet.", plr );
 				}
 				FriendInfo initiator = manager.get( initiatorUuid );
-				UuidNameConverter.Profile targetProfile = uuidNameConverter.getBestProfile( args[ 1 ] );
+				UuidNameConverter.Profile targetProfile = uuidNameConverter.getProfileFromInput( args[ 1 ] );
 				if ( targetProfile == null ) {
 					return msg( prefix + "§cDer Spieler §6" + args[ 1 ] + "§c wurde nicht gefunden.", plr );
 				}
@@ -211,7 +211,7 @@ public class CommandFriends implements TabExecutor {
 					return msg( prefix + "Du kannst dir selber keine Friedensanfrage schicken.", plr );
 				}
 				FriendInfo initiator = manager.get( initiatorUuid );
-				UuidNameConverter.Profile targetProfile = uuidNameConverter.getBestProfile( args[ 1 ] );
+				UuidNameConverter.Profile targetProfile = uuidNameConverter.getProfileFromInput( args[ 1 ] );
 				if ( targetProfile == null ) {
 					return msg( prefix + "§cDer Spieler §6" + args[ 1 ] + "§c wurde nicht gefunden.", plr );
 				}
@@ -326,7 +326,7 @@ public class CommandFriends implements TabExecutor {
 	}
 
 	private Stream<String> mapStreamUuidsToNames(Stream<UUID> uuidStream) {
-		return uuidStream.map( uuidNameConverter::getDisplayString );
+		return uuidStream.map( uuidNameConverter::getProfile ).map( UuidNameConverter.Profile::getName );
 	}
 
 	private List<String> getNamesFromUuid(List<UUID> uuids) {
@@ -355,7 +355,7 @@ public class CommandFriends implements TabExecutor {
 	}
 
 	private String getPlayerStringColoredByOnlineState(UUID uuid) {
-		String plrName = uuidNameConverter.getDisplayString( uuid );
+		String plrName = uuidNameConverter.getProfile( uuid ).getName();
 		if ( Bukkit.getPlayer( uuid ) == null ) {
 			return "§4" + plrName;
 		}
