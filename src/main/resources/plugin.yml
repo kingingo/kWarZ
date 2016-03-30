@@ -1,0 +1,10 @@
+name: ${project.name}
+version: ${project.version}
+description: ${project.description}
+author: ${bukkit.pluginyml.author}
+main: ${bukkit.pluginyml.main}
+
+commands:
+  resourcepack:
+    description: Get the resource pack
+    aliases: [rp]
