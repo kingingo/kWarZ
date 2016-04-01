@@ -19,7 +19,7 @@ public class CommandWarZ implements TabExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 		if ( args.length == 0 ) {
 			sender.sendMessage( "§aWarZ Plugin by Janmm14" );
-			sender.sendMessage( "§c/warz reload §6reloadet die config" );
+			sender.sendMessage( "§c/warz reload §6Liest die Config neu ein." );
 			return true;
 		}
 		switch ( args[ 0 ].toLowerCase() ) {
