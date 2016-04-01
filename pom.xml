@@ -67,6 +67,58 @@
 
     <dependencies>
         <dependency>
+            <groupId>dev.wolveringer</groupId>
+            <artifactId>DatenClient</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpclient</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.json</groupId>
+                    <artifactId>json</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>eu.epicpvp</groupId>
+            <artifactId>core-core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sk89q</groupId>
+                    <artifactId>worldguard</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sk89q</groupId>
+                    <artifactId>worldedit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>DatenClient</groupId>
+                    <artifactId>DatenClient</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>dev.wolveringer</groupId>
+                    <artifactId>DatenClient</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>dev.wolveringer.datenserver</groupId>
+                    <artifactId>definitions</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>dev.wolveringer.datenserver</groupId>
+                    <artifactId>packets</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
@@ -120,12 +172,20 @@
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
-            <version>6.1</version>
+            <version>6.1.1-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <groupId>com.sk89q</groupId>
                     <artifactId>worldedit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sk89q.spigot</groupId>
+                    <artifactId>bukkit-classloader-check</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sk89q</groupId>
+                    <artifactId>commandbook</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.yaml</groupId>
@@ -145,18 +205,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>DatenClient</groupId>
-            <artifactId>DatenClient</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>eu.epicpvp</groupId>
-            <artifactId>core-core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <distributionManagement>
@@ -174,20 +222,12 @@
 
     <repositories>
         <repository>
-            <id>spigot-hub-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+            <id>epicpvp-all</id>
+            <url>http://149.202.150.185:8081/artifactory/epicpvp-all/</url>
         </repository>
         <repository>
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>
-        </repository>
-        <repository>
-            <id>epicpvp-releases</id>
-            <url>http://149.202.150.185:8081/artifactory/epicpvp-releases/</url>
-        </repository>
-        <repository>
-            <id>epicpvp-snapshots</id>
-            <url>http://149.202.150.185:8081/artifactory/epicpvp-snapshots/</url>
         </repository>
     </repositories>
 </project>
