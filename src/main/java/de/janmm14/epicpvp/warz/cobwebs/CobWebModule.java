@@ -8,4 +8,8 @@ public class CobWebModule extends Module<CobWebModule> {
 	public CobWebModule(WarZ plugin) {
 		super( plugin, CobWebDigListener::new, CobWebShearsListener::new );
 	}
+
+	@Override
+	public void reloadConfig() {
+	}
 }

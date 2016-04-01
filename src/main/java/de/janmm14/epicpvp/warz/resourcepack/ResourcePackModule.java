@@ -11,16 +11,19 @@ public class ResourcePackModule extends Module<ResourcePackModule> {
 	private static final String PATH_PREFIX = "resourcepack.";
 
 	private static final String PATH_PACK_URL = PATH_PREFIX + "url";
-	private static final String PATH_INFO = PATH_PREFIX + "infotext";
+	private static final String PATH_INFOTEXT = PATH_PREFIX + "infotext";
 	private static final String PATH_PACK_DELAY = PATH_PREFIX + "joindelay_ticks";
 
 	public ResourcePackModule(WarZ plugin) {
 		super( plugin, ResourcePackListener::new );
-		getPlugin().getConfig().addDefault( PATH_PACK_URL, "https://resourcepacks.epicpvp.org/warz.zip" );
-		getPlugin().getConfig().addDefault( PATH_INFO, "&aBitte akzeptiere das Resourcepack!" );
-		getPlugin().getConfig().addDefault( PATH_PACK_DELAY, 2 * 20 );
-
 		plugin.getCommand( "resourcepack" ).setExecutor( new CommandResourcePack( this ) );
+	}
+
+	@Override
+	public void reloadConfig() {
+		getPlugin().getConfig().addDefault( PATH_PACK_URL, "https://resourcepacks.epicpvp.org/warz.zip" );
+		getPlugin().getConfig().addDefault( PATH_INFOTEXT, "&aBitte akzeptiere das Resourcepack!" );
+		getPlugin().getConfig().addDefault( PATH_PACK_DELAY, 2 * 20 );
 	}
 
 	public String getPackUrl() {
@@ -28,7 +31,7 @@ public class ResourcePackModule extends Module<ResourcePackModule> {
 	}
 
 	public String getInfoText() {
-		return getPlugin().getConfig().getString( PATH_INFO );
+		return getPlugin().getConfig().getString( PATH_INFOTEXT );
 	}
 
 	public int getResourcePackDelay() {

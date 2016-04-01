@@ -8,3 +8,12 @@ commands:
   resourcepack:
     description: Get the resource pack
     aliases: [rp]
+    permission: warz.command.resourcepack.use
+  warz:
+    description: Get the resource pack
+    aliases: [rp]
+    permission: warz.command.warz.see
+
+permissions:
+  warz.command.resourcepack.use:
+    default: true

@@ -29,4 +29,6 @@ public abstract class Module<M extends Module> {
 				listeners.add( listener );
 			} );
 	}
+
+	public abstract void reloadConfig();
 }

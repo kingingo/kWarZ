@@ -16,4 +16,8 @@ public class FriendModule extends Module<FriendModule> {
 		super( plugin, FriendHurtListener::new );
 		friendInfoManager = new FriendInfoManager( this );
 	}
+
+	@Override
+	public void reloadConfig() {
+	}
 }

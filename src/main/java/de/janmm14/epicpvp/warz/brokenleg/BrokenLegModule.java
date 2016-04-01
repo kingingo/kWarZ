@@ -12,6 +12,10 @@ public class BrokenLegModule extends Module<BrokenLegModule> {
 
 	public BrokenLegModule(WarZ plugin) {
 		super( plugin, FallDamageListener::new, BoneUseListener::new );
+	}
+
+	@Override
+	public void reloadConfig() {
 		getPlugin().getConfig().addDefault( PATH_SLOWNESS_DURATION, 30 * 20 );
 		getPlugin().getConfig().addDefault( PATH_SLOWNESS_AMPLIFIER, 1 );
 		getPlugin().getConfig().addDefault( PATH_REQUIRED_DAMAGE, 4 );

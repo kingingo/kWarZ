@@ -19,4 +19,8 @@ public class ZombieModule extends Module<ZombieModule> {
 	public void setupZombie(Zombie zombie) {
 		//TODO setup zombie
 	}
+
+	@Override
+	public void reloadConfig() {
+	}
 }

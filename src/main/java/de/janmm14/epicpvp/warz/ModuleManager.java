@@ -25,6 +25,7 @@ public class ModuleManager {
 			String moduleName = clazz.getSimpleName();
 			try {
 				Module module = clazz.getConstructor( WarZ.class ).newInstance( plugin );
+				module.reloadConfig();
 				modules.add( module );
 				plugin.getLogger().info( "Loaded WarZ " + moduleName );
 			}
@@ -38,5 +39,9 @@ public class ModuleManager {
 				plugin.getLogger().log( Level.SEVERE, "Could not load WarZ " + moduleName + ", unknown error", ex );
 			}
 		}
+	}
+
+	public void triggerReloadConfig() {
+		modules.forEach( Module::reloadConfig );
 	}
 }
