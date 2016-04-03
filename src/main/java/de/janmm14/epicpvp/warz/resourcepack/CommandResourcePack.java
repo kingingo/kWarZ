@@ -18,7 +18,11 @@ public class CommandResourcePack implements CommandExecutor {
 			sender.sendMessage( "§cDieser Befehl ist nur für Spieler!" );
 			return true;
 		}
-		module.sendResourcePack( ( Player ) sender );
+		if (args.length > 0 && (args[0].equalsIgnoreCase( "reset" ) || args[0].equalsIgnoreCase( "test" ))) {
+			module.sendResourcePack( (Player) sender, false );
+		} else {
+			module.sendResourcePack( ( Player ) sender, true );
+		}
 		return true;
 	}
 }

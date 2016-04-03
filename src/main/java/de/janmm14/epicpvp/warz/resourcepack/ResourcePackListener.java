@@ -15,10 +15,11 @@ public class ResourcePackListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onJoin(PlayerJoinEvent event) {
 		int resourcePackDelay = module.getResourcePackDelay();
+
 		if ( resourcePackDelay == 0 ) {
-			module.sendResourcePack( event.getPlayer() );
-		} else {
-			module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> module.sendResourcePack( event.getPlayer() ), resourcePackDelay );
+			module.sendResourcePack( event.getPlayer(), false );
+		} else if ( resourcePackDelay > 0 ) {
+			module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> module.sendResourcePack( event.getPlayer(), false ), resourcePackDelay );
 		}
 	}
 }
