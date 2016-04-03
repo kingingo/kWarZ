@@ -30,13 +30,15 @@ public class CommandWarZ implements TabExecutor {
 					plugin.getServer().getConsoleSender().sendMessage( "§aWarZ config reloaded by" + sender.getName() );
 				}
 				break;
+			default:
+				sender.sendMessage( "§cUnbekannte Aktion " + args[ 0 ] );
 		}
 		return true;
 	}
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-		if ( args[ 0 ].isEmpty() || "reload".startsWith( args[ 0 ].toLowerCase() ) ) {
+		if ( args.length == 1 && ( args[ 0 ].isEmpty() || "reload".startsWith( args[ 0 ].toLowerCase() ) ) ) {
 			return Arrays.asList( "reload" );
 		}
 		return null;
