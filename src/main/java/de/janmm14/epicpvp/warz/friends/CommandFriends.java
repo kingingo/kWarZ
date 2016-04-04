@@ -145,11 +145,11 @@ public class CommandFriends implements TabExecutor {
 			case "ablehnen":
 			case "zurückrufen": {
 				if ( args.length < 2 ) {
-					//return MTCHelper.sendLocArgs("XU-friendhelp", plr, false, alias);
+					//TODO send help or error
 				}
 				if ( args[ 1 ].equalsIgnoreCase( plrName ) ||
 					args[ 1 ].equalsIgnoreCase( plr.getUniqueId().toString() ) ||
-					args[ 1 ].equalsIgnoreCase( MINUS_PATTERN.matcher( plr.getUniqueId().toString() ).replaceAll( Matcher.quoteReplacement( "" ) ) ) ) {
+					args[ 1 ].equalsIgnoreCase( plr.getUniqueId().toString().replace( "-", "" ) ) ) {
 					return msg( prefix + "Du hast dir selbst keine Friedensanfrage gesendet.", plr );
 				}
 				FriendInfo initiator = manager.get( initiatorUuid );
@@ -166,12 +166,12 @@ public class CommandFriends implements TabExecutor {
 					initiator.getRequestsSent().remove( targetUuid );
 					initiator.setDirty();
 
-					//MTCHelper.sendLocArgs("XU-preqrevoked", plr, true, args[1]);  //TODO use correct msg
+					//TODO send message to plr : eigene friedensanfrage zurückgezogen
 					Player targetPlr = server.getPlayer( targetUuid );
 					if ( targetPlr != null ) {
 						targetPlr.sendMessage( prefix + plrName + "§c hat seine Friedensanfrage zurückgezogen." );
 					} else {
-						//LaterMessageHelper.addMessage(targetProfile.getName(), "friend", 7, plrName + "§c hat seine Friedensanfrage zurückgezogen.", true, true); //TODO later message uuid update + custom message support (this does not work how it is right now)
+						//TODO save message for target player?
 					}
 					return true;
 				}
@@ -183,8 +183,8 @@ public class CommandFriends implements TabExecutor {
 					initiator.getRequestsGot().remove( targetUuid );
 					initiator.setDirty();
 
-					//MTCHelper.sendLocArgs("XU-preqrevoked", plr, true, args[1]);
-					//MTCHelper.sendLocOrSaveArgs("XU-preqrevokedbyother", targetProfile.getName(), "friend", 3, true, plrName); //TODO later message uuid update
+					//preqrevoked, plr, args[1] //TODO send message
+					//preqrevokedbyother, targetProfile.getName(), plrName //TODO send message
 				}
 				if ( PlayerFriendRelation.areFriends( manager, initiator, targetUuid ) ) {
 					FriendInfo targetPi = manager.get( targetUuid );
@@ -194,8 +194,8 @@ public class CommandFriends implements TabExecutor {
 					initiator.getFriendWith().remove( targetUuid );
 					initiator.setDirty();
 
-					//MTCHelper.sendLocArgs("XU-prevoked", plr, true, args[1]);
-					//MTCHelper.sendLocOrSaveArgs("XU-prevokedother", targetProfile.getName(), "friend", 4, true, plrName); //TODO later message uuid update
+					//prevoked, plr, args[1]);
+					//prevokedother, targetProfile.getName(), plrName
 				}
 				plr.sendMessage( prefix + " §cDu bist mit " + targetProfile.getName() + " nicht befreundet und weder er noch du haben eine Freundschaftsanfrage geschickt." );
 				return true;
@@ -372,8 +372,7 @@ public class CommandFriends implements TabExecutor {
 			sender.sendMessage( "§cDiese Seite ist leer" );
 		}
 		if ( max <= uuids.size() ) {
-			sender.sendMessage( "§6Zur nächsten Seite" );
-			//return MTCHelper.sendLocArgs("XU-pmorepages", sender, false, alias, nextPage);
+			sender.sendMessage( "§6Zur nächsten Seite" );//TODO better message
 		}
 		return msg( toSend, sender );
 	}
