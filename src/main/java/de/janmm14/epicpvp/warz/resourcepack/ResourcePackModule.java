@@ -56,7 +56,7 @@ public class ResourcePackModule extends Module<ResourcePackModule> {
 	 * @param plr the player
 	 */
 	public void sendResourcePack(Player plr, boolean isResetTest) {
-		plr.setResourcePack( isResetTest ? getEmptyPackUrl() :getPackUrl() );
+		plr.setResourcePack( isResetTest ? getEmptyPackUrl() : getPackUrl() );
 
 		String infoText = isResetTest ? getResetInfoText() : getInfoText();
 		if ( !infoText.trim().isEmpty() ) {
