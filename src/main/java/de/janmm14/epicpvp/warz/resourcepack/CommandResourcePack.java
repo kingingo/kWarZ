@@ -19,9 +19,9 @@ public class CommandResourcePack implements CommandExecutor {
 			return true;
 		}
 		if ( args.length > 0 && ( args[ 0 ].equalsIgnoreCase( "reset" ) || args[ 0 ].equalsIgnoreCase( "test" ) ) ) {
-			module.sendResourcePack( ( Player ) sender, false );
-		} else {
 			module.sendResourcePack( ( Player ) sender, true );
+		} else {
+			module.sendResourcePack( ( Player ) sender, false );
 		}
 		return true;
 	}
