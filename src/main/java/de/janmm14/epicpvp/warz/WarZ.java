@@ -1,5 +1,6 @@
 package de.janmm14.epicpvp.warz;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
@@ -12,13 +13,15 @@ import lombok.Getter;
 @Getter
 public class WarZ extends JavaPlugin {
 
+	public static boolean DEBUG;
 	private ModuleManager moduleManager;
 	private UuidNameConverter uuidNameConverter;
 
 	@Override
 	public void onEnable() {
-		reloadCfg0();
+		setConfigOptions();
 		registerTabExecutor( "warz", new CommandWarZ( this ) );
+		Bukkit.getWorld( "world" ).setAutoSave( false );
 
 		moduleManager = new ModuleManager( this );
 		moduleManager.discoverAndLoadModules();
@@ -28,16 +31,18 @@ public class WarZ extends JavaPlugin {
 
 	public void reloadCfg() {
 		reloadConfig();
-		reloadCfg0();
+		setConfigOptions();
+		moduleManager.triggerReloadConfig();
+		DEBUG = getConfig().getBoolean( "debug" );
+		saveConfig();
 	}
 
-	private void reloadCfg0() {
-		moduleManager.triggerReloadConfig();
+	private void setConfigOptions() {
 		getConfig().options()
 			.copyDefaults( true )
 			.copyHeader( true )
 			.header( "WarZ v" + getDescription().getVersion() );
-		saveConfig();
+		getConfig().addDefault( "debug", false );
 	}
 
 	public <T extends CommandExecutor & TabCompleter> void registerTabExecutor(String command, T tabExecutor) {
