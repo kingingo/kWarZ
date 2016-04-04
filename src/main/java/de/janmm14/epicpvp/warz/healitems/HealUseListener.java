@@ -30,10 +30,10 @@ public class HealUseListener implements Listener {
 			if ( item.getType() == Material.AIR ) {
 				return;
 			}
-			HealItemConfig itemConfig = module.getItemConfig( item );
-			if ( itemConfig != null ) {
+			HealItemValues healItemValues = module.getItemConfig( item );
+			if ( healItemValues != null ) {
 				Player plr = event.getPlayer();
-				double newHealth = plr.getHealth() + itemConfig.getHealAmount();
+				double newHealth = plr.getHealth() + healItemValues.getHealAmount();
 				if ( newHealth < plr.getMaxHealth() ) {
 					plr.setHealth( newHealth );
 				} else if ( plr.getHealth() < plr.getMaxHealth() ) {
@@ -42,10 +42,12 @@ public class HealUseListener implements Listener {
 					return;
 				}
 				long millis = System.currentTimeMillis();
-				if ( millis < nextHealUse.get( plr.getUniqueId() ) ) {
+				Long nextHealUsePermitted = nextHealUse.get( plr.getUniqueId() );
+				if ( nextHealUsePermitted != null && millis < nextHealUsePermitted ) {
 					//TODO message?
 					return;
 				}
+				nextHealUse.put( plr.getUniqueId(), millis + healItemValues.getMsDelay() );
 				ItemStack handItem = plr.getItemInHand();
 				if ( handItem.getAmount() > 1 ) {
 					handItem.setAmount( handItem.getAmount() - 1 );

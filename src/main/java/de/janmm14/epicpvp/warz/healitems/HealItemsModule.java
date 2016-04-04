@@ -13,7 +13,7 @@ public class HealItemsModule extends Module<HealItemsModule> {
 
 	private static final String PATH_PREFIX = "healitems.";
 	static final String FOOD_CFG_PREFIX = PATH_PREFIX + "cfg"; //no dot at the end (!)
-	private final Table<Material, Byte, HealItemConfig> itemHealTable = HashBasedTable.create( 1, 4 );
+	private final Table<Material, Byte, HealItemValues> itemHealTable = HashBasedTable.create( 1, 4 );
 
 	public HealItemsModule(WarZ plugin) {
 		super( plugin, HealUseListener::new );
@@ -23,27 +23,54 @@ public class HealItemsModule extends Module<HealItemsModule> {
 	public void reloadConfig() {
 		itemHealTable.clear();
 
-		//TODO add cofnig defaults
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE:13.healAmount", "1" );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE:13.msDelay", "500" );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE.healAmount", "1" );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE.msDelay", "500" );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".1.healAmount", "1" );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".1.msDelay", "500" );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".1:0.healAmount", "1" );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".1:0.msDelay", "500" );
 
 		ConfigurationSection section = getPlugin().getConfig().getConfigurationSection( FOOD_CFG_PREFIX );
 		for ( String key : section.getKeys( false ) ) {
 			String matStr;
-			byte data;
+			Byte data;
 			if ( key.contains( ":" ) ) {
 				String[] split = key.split( ":" );
 				matStr = split[ 0 ];
-				data = Byte.parseByte( split[ 1 ] );
+				try {
+					data = Byte.parseByte( split[ 1 ] );
+				}
+				catch ( NumberFormatException ex ) {
+					getPlugin().getLogger().warning( "Item " + key + " is not configured properly, invalid data value found." );
+					continue;
+				}
 			} else {
 				matStr = key;
 				data = 0;
 			}
 			Material mat = Material.matchMaterial( matStr );
-			itemHealTable.put( mat, data, HealItemConfig.byConfigurationSection( section.getConfigurationSection( key ) ) );
+			if ( mat == Material.STONE ) {
+				continue;
+			}
+			if ( mat == null ) {
+				getPlugin().getLogger().warning( "Item " + key + " is not configured properly, could not find material " + matStr + '.' );
+				continue;
+			}
+			HealItemValues healItemValues = itemHealTable.get( mat, data );
+			ConfigurationSection subSection = section.getConfigurationSection( key );
+			if ( healItemValues == null ) {
+				itemHealTable.put( mat, data, HealItemValues.fromConfigurationSection( subSection ) );
+			} else {
+				getPlugin().getLogger().warning( "Duplicate item configuration of item " + mat + ":" + data + " found, overwriting existing" );
+				itemHealTable.put( mat, data, HealItemValues.fromConfigurationSection( subSection, healItemValues ) );
+			}
 		}
 	}
 
 	@SuppressWarnings("deprecation")
-	public HealItemConfig getItemConfig(ItemStack is) {
+	public HealItemValues getItemConfig(ItemStack is) {
 		return itemHealTable.get( is.getType(), is.getData().getData() );
 	}
 }

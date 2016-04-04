@@ -1,6 +1,7 @@
 package de.janmm14.epicpvp.warz;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
@@ -20,8 +21,14 @@ public class WarZ extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		setConfigOptions();
+		DEBUG = getConfig().getBoolean( "debug" );
+
 		registerTabExecutor( "warz", new CommandWarZ( this ) );
-		Bukkit.getWorld( "world" ).setAutoSave( false );
+		World world = Bukkit.getWorld( "world" );
+		if (world != null) {
+			getLogger().info( "Disabled automatic saving of world 'world', please do not use /save-all /save-on or any plugin to save worlds." );
+			world.setAutoSave( false );
+		}
 
 		moduleManager = new ModuleManager( this );
 		moduleManager.discoverAndLoadModules();
@@ -32,8 +39,8 @@ public class WarZ extends JavaPlugin {
 	public void reloadCfg() {
 		reloadConfig();
 		setConfigOptions();
-		moduleManager.triggerReloadConfig();
 		DEBUG = getConfig().getBoolean( "debug" );
+		moduleManager.triggerReloadConfig();
 		saveConfig();
 	}
 
