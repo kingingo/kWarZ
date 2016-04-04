@@ -25,7 +25,7 @@ public class WarZ extends JavaPlugin {
 
 		registerTabExecutor( "warz", new CommandWarZ( this ) );
 		World world = Bukkit.getWorld( "world" );
-		if (world != null) {
+		if ( world != null ) {
 			getLogger().info( "Disabled automatic saving of world 'world', please do not use /save-all /save-on or any plugin to save worlds." );
 			world.setAutoSave( false );
 		}
