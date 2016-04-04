@@ -9,8 +9,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.Field;
-
 import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
 import de.janmm14.epicpvp.warz.WarZ;
 
@@ -18,34 +16,11 @@ import static de.janmm14.epicpvp.warz.crackshot.CrackShotTweakModule.ARMOR_PREFI
 
 public class WeaponDamageArmorAmplificationListener implements Listener {
 
-	private static final double FAKE_WEAPON_DMG = 0.01D;
+	private static final double FAKE_EVENT_DMG = 0.01D;
 	private final CrackShotTweakModule module;
-
-	private static Field headShotField;
-
-	static {
-		try {
-			headShotField = WeaponDamageEntityEvent.class.getDeclaredField( "headShot" );
-			headShotField.setAccessible( true );
-		}
-		catch ( NoSuchFieldException e ) {
-			e.printStackTrace();
-			headShotField = null;
-		}
-	}
 
 	public WeaponDamageArmorAmplificationListener(CrackShotTweakModule module) {
 		this.module = module;
-	}
-
-	private static boolean isHeadShot(WeaponDamageEntityEvent event) {
-		try {
-			return ( boolean ) headShotField.get( event );
-		}
-		catch ( IllegalAccessException e ) {
-			e.printStackTrace();
-			return false;
-		}
 	}
 
 	@SuppressWarnings("SimplifiableConditionalExpression")
@@ -58,7 +33,7 @@ public class WeaponDamageArmorAmplificationListener implements Listener {
 		}
 
 		double damagePercentage = 1;
-		boolean headShot = module.isHeadOnlyHelmetReduction() ? isHeadShot( event ) : false;
+		boolean headShot = module.isHeadOnlyHelmetReduction() ? event.isHeadshot() : false;
 
 		LivingEntity victim = ( LivingEntity ) victimEntity;
 		String weaponTitle = event.getWeaponTitle();
@@ -79,11 +54,15 @@ public class WeaponDamageArmorAmplificationListener implements Listener {
 			Bukkit.broadcastMessage( event.getPlayer().getName() + " schoss auf " + event.getVictim().getName() + " mit " + event.getWeaponTitle() + ". Base-DMG: " + ( event.getDamage() ) + " halbe Herzen, Multiplikator (1-Rüstung): " + damagePercentage + ", Final-DMG:" + ( reducedDmg ) + " halbe Herzen" );
 		}
 
-		if ( reducedDmg > FAKE_WEAPON_DMG ) {
-			reducedDmg = reducedDmg - FAKE_WEAPON_DMG;
+		if ( reducedDmg > FAKE_EVENT_DMG ) {
 			double health = victim.getHealth() - reducedDmg;
-			victim.setHealth( health );
-			event.setDamage( FAKE_WEAPON_DMG );
+			if ( health >= FAKE_EVENT_DMG ) {
+				victim.setHealth( health + FAKE_EVENT_DMG );
+				event.setDamage( FAKE_EVENT_DMG );
+			} else { //player is going to die, but since crackshot applies default armor, set victim health to 1 half heart and the damage ridiculous high to force the death
+				victim.setHealth( 1 );
+				event.setDamage( 1000 );
+			}
 		} else {
 			event.setDamage( 0 );
 			event.setCancelled( true );

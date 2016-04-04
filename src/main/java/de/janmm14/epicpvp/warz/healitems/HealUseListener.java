@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class HealUseListener implements Listener {
 
 	private final HealItemsModule module;
-	private final Map<UUID, Long> nextHealUse = new HashMap<>( 100 );
+	private final Map<UUID, Long> nextHealUses = new HashMap<>( 100 );
 
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
@@ -42,12 +42,12 @@ public class HealUseListener implements Listener {
 					return;
 				}
 				long millis = System.currentTimeMillis();
-				Long nextHealUsePermitted = nextHealUse.get( plr.getUniqueId() );
-				if ( nextHealUsePermitted != null && millis < nextHealUsePermitted ) {
+				Long nextHealUse = nextHealUses.get( plr.getUniqueId() );
+				if ( nextHealUse != null && millis < nextHealUse ) {
 					//TODO message?
 					return;
 				}
-				nextHealUse.put( plr.getUniqueId(), millis + healItemValues.getMsDelay() );
+				nextHealUses.put( plr.getUniqueId(), millis + healItemValues.getMsDelay() );
 				ItemStack handItem = plr.getItemInHand();
 				if ( handItem.getAmount() > 1 ) {
 					handItem.setAmount( handItem.getAmount() - 1 );
@@ -63,11 +63,11 @@ public class HealUseListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onQuit(PlayerQuitEvent event) {
-		nextHealUse.remove( event.getPlayer().getUniqueId() );
+		nextHealUses.remove( event.getPlayer().getUniqueId() );
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onKick(PlayerKickEvent event) {
-		nextHealUse.remove( event.getPlayer().getUniqueId() );
+		nextHealUses.remove( event.getPlayer().getUniqueId() );
 	}
 }
