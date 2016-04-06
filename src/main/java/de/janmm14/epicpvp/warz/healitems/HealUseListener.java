@@ -11,9 +11,10 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
+
+import gnu.trove.map.TObjectLongMap;
+import gnu.trove.map.hash.TObjectLongHashMap;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class HealUseListener implements Listener {
 
 	private final HealItemsModule module;
-	private final Map<UUID, Long> nextHealUses = new HashMap<>( 100 );
+	private final TObjectLongMap<UUID> nextHealUses = new TObjectLongHashMap<>( 100, .7F );
 
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
@@ -41,13 +42,13 @@ public class HealUseListener implements Listener {
 				} else { //player is already at full health
 					return;
 				}
-				long millis = System.currentTimeMillis();
-				Long nextHealUse = nextHealUses.get( plr.getUniqueId() );
-				if ( nextHealUse != null && millis < nextHealUse ) {
+				long currentMillis = System.currentTimeMillis();
+				Long nextHealUse = nextHealUses.get( plr.getUniqueId() ); //default value is 0
+				if ( nextHealUse > currentMillis ) { //cooldown not over
 					//TODO message?
 					return;
 				}
-				nextHealUses.put( plr.getUniqueId(), millis + healItemValues.getMsDelay() );
+				nextHealUses.put( plr.getUniqueId(), currentMillis + healItemValues.getMsDelay() );
 				ItemStack handItem = plr.getItemInHand();
 				if ( handItem.getAmount() > 1 ) {
 					handItem.setAmount( handItem.getAmount() - 1 );
