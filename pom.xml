@@ -58,6 +58,7 @@
     </build>
 
     <properties>
+        <build.number>unknown</build.number>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -116,6 +117,10 @@
                     <groupId>dev.wolveringer.datenserver</groupId>
                     <artifactId>packets</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>eu.epicpvp</groupId>
+                    <artifactId>core-kSkyBlock</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -136,7 +141,7 @@
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-server</artifactId>
+            <artifactId>spigot</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
