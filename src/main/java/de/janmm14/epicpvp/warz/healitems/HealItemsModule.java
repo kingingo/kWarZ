@@ -23,14 +23,14 @@ public class HealItemsModule extends Module<HealItemsModule> {
 	public void reloadConfig() {
 		itemHealTable.clear();
 
-		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE:13.healAmount", "1" );
-		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE:13.msDelay", "500" );
-		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE.healAmount", "1" );
-		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE.msDelay", "500" );
-		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".1.healAmount", "1" );
-		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".1.msDelay", "500" );
-		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".1:0.healAmount", "1" );
-		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".1:0.msDelay", "500" );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE:13.healAmount", 1 );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE:13.msDelay", 500 );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE.healAmount", 1 );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE.msDelay", 500 );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".1.healAmount", 1 );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".1.msDelay", 500 );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".1:0.healAmount", 1 );
+		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".1:0.msDelay", 500 );
 
 		ConfigurationSection section = getPlugin().getConfig().getConfigurationSection( FOOD_CFG_PREFIX );
 		for ( String key : section.getKeys( false ) ) {
