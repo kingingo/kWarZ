@@ -32,33 +32,34 @@ public class HealUseListener implements Listener {
 				return;
 			}
 			HealItemValues healItemValues = module.getItemConfig( item );
-			if ( healItemValues != null ) {
-				Player plr = event.getPlayer();
-				double newHealth = plr.getHealth() + healItemValues.getHealAmount();
-				if ( newHealth < plr.getMaxHealth() ) {
-					plr.setHealth( newHealth );
-				} else if ( plr.getHealth() < plr.getMaxHealth() ) {
-					plr.setHealth( plr.getMaxHealth() );
-				} else { //player is already at full health
-					return;
-				}
-				long currentMillis = System.currentTimeMillis();
-				Long nextHealUse = nextHealUses.get( plr.getUniqueId() ); //default value is 0
-				if ( nextHealUse > currentMillis ) { //cooldown not over
-					//TODO message?
-					return;
-				}
-				nextHealUses.put( plr.getUniqueId(), currentMillis + healItemValues.getMsDelay() );
-				ItemStack handItem = plr.getItemInHand();
-				if ( handItem.getAmount() > 1 ) {
-					handItem.setAmount( handItem.getAmount() - 1 );
-					plr.setItemInHand( handItem );
-				} else {
-					plr.setItemInHand( null );
-				}
-				plr.updateInventory();
-				event.setCancelled( true );
+			if ( healItemValues == null ) {
+				return;
 			}
+			Player plr = event.getPlayer();
+			double newHealth = plr.getHealth() + healItemValues.getHealAmount();
+			if ( newHealth < plr.getMaxHealth() ) {
+                plr.setHealth( newHealth );
+            } else if ( plr.getHealth() < plr.getMaxHealth() ) {
+                plr.setHealth( plr.getMaxHealth() );
+            } else { //player is already at full health
+                return;
+            }
+			long currentMillis = System.currentTimeMillis();
+			Long nextHealUse = nextHealUses.get( plr.getUniqueId() ); //default value is 0
+			if ( nextHealUse > currentMillis ) { //cooldown not over
+                //TODO message?
+                return;
+            }
+			nextHealUses.put( plr.getUniqueId(), currentMillis + healItemValues.getMsDelay() );
+			ItemStack handItem = plr.getItemInHand();
+			if ( handItem.getAmount() > 1 ) {
+                handItem.setAmount( handItem.getAmount() - 1 );
+                plr.setItemInHand( handItem );
+            } else {
+                plr.setItemInHand( null );
+            }
+			plr.updateInventory();
+			event.setCancelled( true );
 		}
 	}
 
