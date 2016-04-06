@@ -8,4 +8,6 @@ import lombok.RequiredArgsConstructor;
 public class ZombieAttackListener implements Listener {
 
 	private final ZombieModule module;
+
+	//TODO implement zombie attacks
 }
