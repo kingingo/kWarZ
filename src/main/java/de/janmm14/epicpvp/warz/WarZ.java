@@ -22,6 +22,9 @@ public class WarZ extends JavaPlugin {
 	public void onEnable() {
 		setConfigOptions();
 		DEBUG = getConfig().getBoolean( "debug" );
+		if ( DEBUG ) {
+			getLogger().info( "Debug mode activated!" );
+		}
 
 		registerTabExecutor( "warz", new CommandWarZ( this ) );
 		World world = Bukkit.getWorld( "world" );
@@ -40,6 +43,11 @@ public class WarZ extends JavaPlugin {
 		reloadConfig();
 		setConfigOptions();
 		DEBUG = getConfig().getBoolean( "debug" );
+		if ( DEBUG ) {
+			getLogger().info( "Debug mode is activated!" );
+		} else {
+			getLogger().info( "Debug mode is deactivated!" );
+		}
 		moduleManager.triggerReloadConfig();
 		saveConfig();
 	}
