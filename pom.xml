@@ -68,22 +68,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>dev.wolveringer</groupId>
-            <artifactId>DatenClient</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.httpcomponents</groupId>
-                    <artifactId>httpclient</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.json</groupId>
-                    <artifactId>json</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>eu.epicpvp</groupId>
             <artifactId>core-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
