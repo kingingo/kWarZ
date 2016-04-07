@@ -18,7 +18,7 @@ public class BoneUseListener implements Listener {
 
 	@EventHandler
 	public void onBoneUse(PlayerInteractEvent event) {
-		if (!event.hasItem()) {
+		if ( !event.hasItem() ) {
 			return;
 		}
 		Action action = event.getAction();

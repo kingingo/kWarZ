@@ -13,8 +13,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
-import de.janmm14.epicpvp.warz.WarZ;
-
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
