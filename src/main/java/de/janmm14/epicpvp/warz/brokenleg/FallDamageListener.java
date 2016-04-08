@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,16 @@ public class FallDamageListener implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onFallDamage(EntityDamageEvent event) {
 		if ( event.getCause() == EntityDamageEvent.DamageCause.FALL && event.getEntityType() == EntityType.PLAYER
-			&& event.getFinalDamage() > module.getRequiredHalfHeartsDamage() ) {
-			( ( Player ) event.getEntity() ).addPotionEffect( PotionEffectType.SLOW.createEffect( module.getDurationTicks(), module.getSlownessAmplifier() - 1 ) );
+			&& event.getDamage() > module.getRequiredHalfHeartsDamage() ) {
+			Player plr = ( Player ) event.getEntity();
+			int durationTicks = module.getDurationTicks();
+			new PotionEffect( PotionEffectType.SLOW, durationTicks * 2, module.getSlownessAmplifier() )
+				.apply( plr );
+
+			String notificationMessage = module.getNotificationMessage();
+			if ( !notificationMessage.trim().isEmpty() ) {
+				plr.sendMessage( notificationMessage );
+			}
 		}
 	}
 }
