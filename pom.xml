@@ -170,10 +170,6 @@
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>com.sk89q</groupId>
-                    <artifactId>worldedit</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>com.sk89q.spigot</groupId>
                     <artifactId>bukkit-classloader-check</artifactId>
                 </exclusion>
@@ -196,6 +192,18 @@
                 <exclusion>
                     <groupId>org.bukkit</groupId>
                     <artifactId>bukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sk89q</groupId>
+                    <artifactId>jchronic</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>rhino</groupId>
+                    <artifactId>js</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>de.schlichtherle</groupId>
+                    <artifactId>truezip</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
