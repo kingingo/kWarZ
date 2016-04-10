@@ -4,20 +4,21 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import de.janmm14.epicpvp.warz.util.RandomItemHolder;
+
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class ZombieAttackInfo {
+public class ZombieAttackInfo implements RandomItemHolder<PotionEffect> {
 
-	private final PotionEffect potionEffect;
+	private final PotionEffect item;
 	private final double probability;
 
 	public static ZombieAttackInfo fromConfigurationSection(ConfigurationSection section) {

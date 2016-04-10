@@ -6,10 +6,10 @@ import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
+import de.janmm14.epicpvp.warz.util.RandomItemHolder;
 
 public class ZombieModule extends Module<ZombieModule> {
 
@@ -19,8 +19,7 @@ public class ZombieModule extends Module<ZombieModule> {
 	private static final String PATH_RANDOM_ATTACK_CONFIGURATION = PATH_PREFIX + "random_attacks"; //no dot at the end (!)
 	private static final String PATH_ATTACK_DAMAGE = PATH_PREFIX + "attack_damage";
 
-	private final List<ZombieAttackInfo> randomEffects = new ArrayList<>();
-	private final Random random = new Random();
+	private final List<ZombieAttackInfo> randomEffectHolderList = new ArrayList<>();
 
 	public ZombieModule(WarZ plugin) {
 		super( plugin, ZombieBehaviourListener::new, ZombieSpawnListener::new, ZombieAttackListener::new );
@@ -45,24 +44,13 @@ public class ZombieModule extends Module<ZombieModule> {
 				continue;
 			}
 			ConfigurationSection subSection = section.getConfigurationSection( key );
-			randomEffects.add( ZombieAttackInfo.fromConfigurationSection( subSection ) );
+			randomEffectHolderList.add( ZombieAttackInfo.fromConfigurationSection( subSection ) );
 		}
 	}
 
 	public PotionEffect getRandomAttackEffect() {
-		double rdm = random.nextDouble(); //between 0 and 1
 
-		//fill up probabilities from 0 to 1
-		double overallProbability = 0;
-		for ( ZombieAttackInfo randomEffect : randomEffects ) {
-			double startingProbability = overallProbability + randomEffect.getProbability();
-			overallProbability += randomEffect.getProbability();
-
-			if ( rdm > startingProbability && rdm <= ( startingProbability + randomEffect.getProbability() ) ) {
-				return randomEffect.getPotionEffect();
-			}
-		}
-		return null;
+		return RandomItemHolder.chooseRandom( randomEffectHolderList );
 	}
 
 	public double getZombieDamage() {
