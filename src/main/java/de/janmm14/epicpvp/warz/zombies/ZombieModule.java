@@ -9,7 +9,7 @@ import java.util.List;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
-import de.janmm14.epicpvp.warz.util.RandomItemHolder;
+import de.janmm14.epicpvp.warz.util.random.RandomThingHolder;
 
 public class ZombieModule extends Module<ZombieModule> {
 
@@ -50,7 +50,7 @@ public class ZombieModule extends Module<ZombieModule> {
 
 	public PotionEffect getRandomAttackEffect() {
 
-		return RandomItemHolder.chooseRandom( randomEffectHolderList );
+		return RandomThingHolder.chooseRandomItem( randomEffectHolderList );
 	}
 
 	public double getZombieDamage() {

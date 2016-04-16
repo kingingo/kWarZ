@@ -9,16 +9,13 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.BlockVector;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
-
 import lombok.Getter;
 
 public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
@@ -26,8 +23,6 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 	private static final String PATH_PREFIX = "zonechest.";
 
 	private static final String PATH_ZONES = PATH_PREFIX + "zones"; //no dot at the end (!)
-	private static final String PATH_ITEM_AMOUNT_MIN = PATH_PREFIX + "chestitemamounts.min";
-	private static final String PATH_ITEM_AMOUNT_MAX = PATH_PREFIX + "chestitemamounts.max";
 	@Getter
 	private final ChestContentManager chestContentManager;
 
@@ -43,10 +38,10 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 		ItemStack is = new ItemStack( Material.WOOD_SWORD, 2, ( short ) 21 );
 		ItemMeta im = is.getItemMeta();
 
-		im.addItemFlags( ItemFlag.HIDE_ENCHANTS );
+		im.addItemFlags( ItemFlag.values() );
 
-		im.addEnchant( Enchantment.DAMAGE_ALL, 0, true );
-		im.addEnchant( Enchantment.KNOCKBACK, 1, true );
+		Arrays.stream( Enchantment.values() )
+			.forEach( ench -> im.addEnchant( ench, 0, true ) );
 
 		im.setDisplayName( "§5Display Name!!!!" );
 		im.setLore( Arrays.asList( "§6Loreline 1", "§cLoreline two §7bla" ) );
@@ -60,19 +55,22 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 	@Override
 	public void reloadConfig() {
 		//TODO set example defaults
-		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredexamplezone.items.someignorednamewhichneedstobeunique.item", new ItemStack( Material.STONE, 1 ) );
-		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredexamplezone.items.someignorednamewhichneedstobeunique.probability", .5 );
-		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredexamplezone.items.someignorednamewhichneedstobeunique2.item", getExampleItemStackWithEverything() );
-		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredexamplezone.items.someignorednamewhichneedstobeunique2.probability", .3 );
-
-		getPlugin().getConfig().addDefault( PATH_ITEM_AMOUNT_MIN, 3 );
-		getPlugin().getConfig().addDefault( PATH_ITEM_AMOUNT_MAX, 4 );
+		getPlugin().getConfig().set( PATH_ZONES + ".info", "Eine Itemgroup wird nur einmal ausgewählt. Sollte man mehrere Gruppen forcieren wollen, so " );
+		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroup_minamount", 2 );
+		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroup_maxamount", 2 );
+		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.minamount", 1 );
+		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.maxamount", 1 );
+		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.probability", .5 );
+		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname.item", new ItemStack( Material.STONE, 1 ) );
+		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname.probability", .5 );
+		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname2.item", getExampleItemStackWithEverything() );
+		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname2.probability", .3 );
 
 		//TODO load zones
 		ConfigurationSection section = getPlugin().getConfig().getConfigurationSection( PATH_ZONES );
 
 		for ( String key : section.getKeys( false ) ) {
-			if ( key.equalsIgnoreCase( "ignoredexamplezone" ) ) {
+			if ( key.equalsIgnoreCase( "ignoredExampleZone" ) || key.equalsIgnoreCase( "info" ) ) {
 				continue;
 			}
 			zones.put( key, Zone.byConfigurationSection( key, section.getConfigurationSection( key ) ) );
@@ -98,13 +96,5 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 
 	public Zone getZone(World world, BlockVector blockVector) {
 		return getZone( new Location( world, blockVector.getX(), blockVector.getY(), blockVector.getZ() ) );
-	}
-
-	public int getMinItemAmount() {
-		return getPlugin().getConfig().getInt( PATH_ITEM_AMOUNT_MIN );
-	}
-
-	public int getMaxItemAmount() {
-		return getPlugin().getConfig().getInt( PATH_ITEM_AMOUNT_MAX );
 	}
 }

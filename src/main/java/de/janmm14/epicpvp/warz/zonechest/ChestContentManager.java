@@ -6,14 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
-
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -64,7 +61,7 @@ public class ChestContentManager implements Runnable {
 		int itemAmount = module.getMinItemAmount() + random.nextInt( module.getMaxItemAmount() - module.getMinItemAmount() + 1 ); //+1 -> inclsive maximum
 		for ( int i = 0; i < itemAmount; i++ ) {
 			int pos = random.nextInt( inv.getSize() );
-			ItemStack item = module.getZone( world, blockVector ).getRandomChestItem();
+			ItemStack item = module.getZone( world, blockVector ).getRandomChoosenChestItems();
 			inv.setItem( pos, item );
 		}
 		return inv;

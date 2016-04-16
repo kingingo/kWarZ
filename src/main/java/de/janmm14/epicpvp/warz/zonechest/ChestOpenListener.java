@@ -9,7 +9,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.util.BlockVector;
-
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
