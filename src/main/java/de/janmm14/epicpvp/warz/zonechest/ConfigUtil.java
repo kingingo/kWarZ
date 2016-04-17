@@ -17,6 +17,7 @@ public class ConfigUtil {
 
 		List<RandomThingHolder<ItemStack>> items = itemSection.getKeys( false ).stream()
 			.map( key -> readItemStack( itemSection.getConfigurationSection( key ) ) )
+			.sorted( (o1, o2) -> -Double.compare( o1.getProbability(), o2.getProbability() ) ) //sort reverse probability - highest first
 			.collect( Collectors.toList() );
 
 		return new SimpleRandomThingGroupHolder<>( items, section.getInt( "minamount" ), section.getInt( "maxamount" ), section.getDouble( "probability" ) );

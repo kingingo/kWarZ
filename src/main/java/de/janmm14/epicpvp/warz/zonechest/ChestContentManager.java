@@ -58,10 +58,9 @@ public class ChestContentManager implements Runnable {
 
 	private Inventory fillInventory(World world, BlockVector blockVector, Inventory inv) {
 		Random random = new Random();
-		int itemAmount = module.getMinItemAmount() + random.nextInt( module.getMaxItemAmount() - module.getMinItemAmount() + 1 ); //+1 -> inclsive maximum
-		for ( int i = 0; i < itemAmount; i++ ) {
+		Zone zone = module.getZone( world, blockVector );
+		for ( ItemStack item : zone.getRandomChoosenChestItems() ) {
 			int pos = random.nextInt( inv.getSize() );
-			ItemStack item = module.getZone( world, blockVector ).getRandomChoosenChestItems();
 			inv.setItem( pos, item );
 		}
 		return inv;

@@ -13,7 +13,11 @@ public interface RandomThingGroupHolder<ORIG> extends RandomThingHolder<List<Ran
 
 	@Nullable
 	static <ORIG> List<ORIG> groupChooseRandom(@NonNull List<RandomThingGroupHolder<ORIG>> groupList) {
-		RandomThingGroupHolder<ORIG> origHolders = RandomThingHolder.chooseRandomHolder( groupList );
+		return groupChooseRandom( RandomThingHolder.chooseRandomHolder( groupList ) );
+	}
+
+	@Nullable
+	static <ORIG> List<ORIG> groupChooseRandom(@Nullable RandomThingGroupHolder<ORIG> origHolders) {
 		if ( origHolders == null ) {
 			return null;
 		}
