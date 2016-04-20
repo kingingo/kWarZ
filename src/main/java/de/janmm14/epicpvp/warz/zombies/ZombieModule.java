@@ -33,7 +33,7 @@ public class ZombieModule extends Module<ZombieModule> {
 
 	@Override
 	public void reloadConfig() {
-		getPlugin().getConfig().addDefault( PATH_ATTACK_DAMAGE, -1.0 );
+		getPlugin().getConfig().addDefault( PATH_ATTACK_DAMAGE, 2.0 );
 		getPlugin().getConfig().addDefault( PATH_RANDOM_ATTACK_CONFIGURATION + ".irgendwashierhinaberimmerunterschiedlich.effect", "CONFUSION" );
 		getPlugin().getConfig().addDefault( PATH_RANDOM_ATTACK_CONFIGURATION + ".irgendwashierhinaberimmerunterschiedlich.duration_in_half_ticks", 40 );
 		getPlugin().getConfig().addDefault( PATH_RANDOM_ATTACK_CONFIGURATION + ".irgendwashierhinaberimmerunterschiedlich.amplifier", 1 );
