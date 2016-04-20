@@ -1,5 +1,6 @@
 package de.janmm14.epicpvp.warz.zonechest;
 
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -34,16 +35,20 @@ public class ChestContentManager implements Runnable {
 					inventory.clear();
 				} );
 			createdInventories.invalidateAll();
+			sendRefillTimer( secsUntilReset );
 			secsUntilReset = REFILL_SECONDS;
 		} else {
 			secsUntilReset--;
+			sendRefillTimer( secsUntilReset );
 		}
-		sendRefillTimer( secsUntilReset );
 	}
 
 	private void sendRefillTimer(int secsUntilReset) {
 		for ( Player plr : module.getPlugin().getServer().getOnlinePlayers() ) {
 			plr.setLevel( secsUntilReset );
+			if (secsUntilReset == 0) {
+				plr.playSound( plr.getLocation(), Sound.LEVEL_UP, 1, 1 );
+			}
 		}
 	}
 
