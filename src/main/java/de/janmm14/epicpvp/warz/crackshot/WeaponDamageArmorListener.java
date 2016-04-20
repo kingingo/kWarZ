@@ -12,14 +12,16 @@ import org.bukkit.inventory.ItemStack;
 import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
 import de.janmm14.epicpvp.warz.WarZ;
 
+import org.jetbrains.annotations.Nullable;
+
 import static de.janmm14.epicpvp.warz.crackshot.CrackShotTweakModule.ARMOR_PREFIX;
 
-public class WeaponDamageArmorAmplificationListener implements Listener {
+public class WeaponDamageArmorListener implements Listener {
 
 	private static final double FAKE_EVENT_DMG = 0.01D;
 	private final CrackShotTweakModule module;
 
-	public WeaponDamageArmorAmplificationListener(CrackShotTweakModule module) {
+	public WeaponDamageArmorListener(CrackShotTweakModule module) {
 		this.module = module;
 	}
 
@@ -40,10 +42,16 @@ public class WeaponDamageArmorAmplificationListener implements Listener {
 		if ( headShot ) {
 			ItemStack helmet = victim.getEquipment().getHelmet();
 			damagePercentage = damagePercentage - getReductionPercentage( weaponTitle, helmet );
+			helmet = reduceDurability( helmet );
+			victim.getEquipment().setHelmet( helmet );
 		} else {
-			for ( ItemStack armorItem : victim.getEquipment().getArmorContents() ) {
+			ItemStack[] armorContents = victim.getEquipment().getArmorContents();
+			for ( int i = 0; i < armorContents.length; i++ ) {
+				ItemStack armorItem = armorContents[i];
 				damagePercentage = damagePercentage - getReductionPercentage( weaponTitle, armorItem );
+				armorContents[i] = reduceDurability( armorItem );
 			}
+			victim.getEquipment().setArmorContents( armorContents );
 		}
 		damagePercentage = damagePercentage <= 0 ? 0 : damagePercentage;
 		double reducedDmg = event.getDamage() * damagePercentage;
@@ -67,6 +75,17 @@ public class WeaponDamageArmorAmplificationListener implements Listener {
 			event.setDamage( 0 );
 			event.setCancelled( true );
 		}
+	}
+
+	@Nullable
+	private ItemStack reduceDurability(ItemStack stack) {
+		short durability = ( short ) ( stack.getDurability() - 1 );
+		if (durability > 0) {
+            stack.setDurability( durability );
+        } else {
+            stack = null;
+        }
+		return stack;
 	}
 
 	private double getReductionPercentage(String weaponTitle, ItemStack armorItem) {

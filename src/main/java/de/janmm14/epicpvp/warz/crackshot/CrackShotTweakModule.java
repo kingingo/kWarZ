@@ -9,7 +9,7 @@ public class CrackShotTweakModule extends Module<CrackShotTweakModule> {
 	public static final String ARMOR_PREFIX = PATH_PREFIX + "armor.";
 
 	public CrackShotTweakModule(WarZ plugin) {
-		super( plugin, WeaponDamageArmorAmplificationListener::new );
+		super( plugin, WeaponDamageArmorListener::new );
 	}
 
 	public boolean isHeadOnlyHelmetReduction() {
