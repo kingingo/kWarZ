@@ -2,12 +2,15 @@ package de.janmm14.epicpvp.warz.zonechest;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import de.janmm14.epicpvp.warz.util.random.RandomThingGroupHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomThingHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomUtil;
+
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,7 +35,7 @@ public class Zone {
 		for ( int i = 0; i < randomInt; i++ ) {
 			RandomThingGroupHolder<ItemStack> itemgroup = RandomThingHolder.chooseRandomHolder( currItemgroups );
 			List<ItemStack> toAdd = RandomThingGroupHolder.groupChooseRandom( itemgroup );
-			if (toAdd != null) {
+			if ( toAdd != null ) {
 				result.addAll( toAdd );
 				currItemgroups.remove( itemgroup );
 			}

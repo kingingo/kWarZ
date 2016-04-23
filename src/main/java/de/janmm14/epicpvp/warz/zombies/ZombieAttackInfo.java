@@ -20,7 +20,7 @@ import lombok.ToString;
 public class ZombieAttackInfo implements RandomThingHolder<PotionEffect> {
 
 	@NonNull
-	@Getter(onMethod = @__({@NonNull}))
+	@Getter(onMethod = @__({ @NonNull }))
 	private final PotionEffect item;
 	private final double probability;
 
@@ -30,6 +30,6 @@ public class ZombieAttackInfo implements RandomThingHolder<PotionEffect> {
 			section.getInt( "duration_in_half_ticks" ),
 			section.getInt( "amplifier" )
 		);
-		return new ZombieAttackInfo(potionEffect, section.getDouble( "probability" ) );
+		return new ZombieAttackInfo( potionEffect, section.getDouble( "probability" ) );
 	}
 }

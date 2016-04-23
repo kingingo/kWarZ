@@ -2,6 +2,7 @@ package de.janmm14.epicpvp.warz.util.random;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;

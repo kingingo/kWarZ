@@ -7,11 +7,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
+
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -46,7 +49,7 @@ public class ChestContentManager implements Runnable {
 	private void sendRefillTimer(int secsUntilReset) {
 		for ( Player plr : module.getPlugin().getServer().getOnlinePlayers() ) {
 			plr.setLevel( secsUntilReset );
-			if (secsUntilReset == 0) {
+			if ( secsUntilReset == 0 ) {
 				plr.playSound( plr.getLocation(), Sound.LEVEL_UP, 1, 1 );
 			}
 		}

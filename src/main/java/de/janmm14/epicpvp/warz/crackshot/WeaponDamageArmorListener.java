@@ -47,9 +47,9 @@ public class WeaponDamageArmorListener implements Listener {
 		} else {
 			ItemStack[] armorContents = victim.getEquipment().getArmorContents();
 			for ( int i = 0; i < armorContents.length; i++ ) {
-				ItemStack armorItem = armorContents[i];
+				ItemStack armorItem = armorContents[ i ];
 				damagePercentage = damagePercentage - getReductionPercentage( weaponTitle, armorItem );
-				armorContents[i] = reduceDurability( armorItem );
+				armorContents[ i ] = reduceDurability( armorItem );
 			}
 			victim.getEquipment().setArmorContents( armorContents );
 		}
@@ -80,11 +80,11 @@ public class WeaponDamageArmorListener implements Listener {
 	@Nullable
 	private ItemStack reduceDurability(ItemStack stack) {
 		short durability = ( short ) ( stack.getDurability() - 1 );
-		if (durability > 0) {
-            stack.setDurability( durability );
-        } else {
-            stack = null;
-        }
+		if ( durability > 0 ) {
+			stack.setDurability( durability );
+		} else {
+			stack = null;
+		}
 		return stack;
 	}
 

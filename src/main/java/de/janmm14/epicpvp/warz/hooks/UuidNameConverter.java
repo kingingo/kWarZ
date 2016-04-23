@@ -7,8 +7,8 @@ import lombok.Data;
 public class UuidNameConverter {
 
 	public Profile getProfileFromInput(String nameOrUuid) {
-		if (nameOrUuid.length() > 16) {
-			if (nameOrUuid.contains( "-" )) {
+		if ( nameOrUuid.length() > 16 ) {
+			if ( nameOrUuid.contains( "-" ) ) {
 				return getProfile( UUID.fromString( nameOrUuid ) );
 			} else {
 				return getProfile( getMojangUuid( nameOrUuid ) );

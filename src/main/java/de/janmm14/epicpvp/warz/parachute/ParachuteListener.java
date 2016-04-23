@@ -96,8 +96,8 @@ public class ParachuteListener implements Listener {
 		Entity plrPassenger = entity.getPassenger();
 		if ( entity.getType() == EntityType.CHICKEN ) {
 			if ( plrPassenger != null && plrPassenger.getType() == EntityType.PLAYER ) {
-                entity.getWorld().spigot().playEffect( entity.getLocation(), Effect.EXPLOSION_LARGE );
-                stopParachuting( ( Player ) plrPassenger );
+				entity.getWorld().spigot().playEffect( entity.getLocation(), Effect.EXPLOSION_LARGE );
+				stopParachuting( ( Player ) plrPassenger );
 			}
 			Entity plrVehicle = entity.getPassenger();
 			if ( plrVehicle != null && plrVehicle.getType() == EntityType.PLAYER ) {
@@ -105,6 +105,5 @@ public class ParachuteListener implements Listener {
 				stopParachuting( ( Player ) plrVehicle );
 			}
 		}
-
 	}
 }
