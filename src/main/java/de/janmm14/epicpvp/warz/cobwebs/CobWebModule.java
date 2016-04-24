@@ -2,23 +2,66 @@ package de.janmm14.epicpvp.warz.cobwebs;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.BlockVector;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
+import de.janmm14.epicpvp.warz.util.Tuple;
 
-public class CobWebModule extends Module<CobWebModule> implements Listener {
+public class CobWebModule extends Module<CobWebModule> implements Listener, Runnable {
+
+	private long WEB_MILLIS = TimeUnit.SECONDS.toMillis( 30 );
 
 	public CobWebModule(WarZ plugin) {
 		super( plugin, (module) -> module );
+		plugin.getServer().getScheduler().runTaskTimer( plugin, this, 25 * 20, 5 );
 	}
 
 	@Override
 	public void reloadConfig() {
+		getPlugin().getConfig().addDefault( "cobweb.resetseconds", 30 );
+		WEB_MILLIS = TimeUnit.SECONDS.toMillis( getPlugin().getConfig().getInt( "cobweb.resetseconds" ) );
+	}
+
+	private final Map<BlockVector, Tuple<BlockState, Long>> blockStates = new HashMap<>( 32 );
+
+	@EventHandler(priority = EventPriority.HIGH)
+	public void onBlockPlace(BlockPlaceEvent event) {
+		if ( event.getBlockPlaced().getType() != Material.WEB ) {
+			event.setCancelled( true );
+		} else {
+			BlockState blockReplacedState = event.getBlockReplacedState();
+			blockStates.put( blockReplacedState.getLocation().toVector().toBlockVector(), new Tuple<>( blockReplacedState, System.currentTimeMillis() ) );
+		}
+	}
+
+	@Override
+	public void run() {
+		if ( blockStates.isEmpty() ) {
+			return;
+		}
+		Iterator<Map.Entry<BlockVector, Tuple<BlockState, Long>>> iterator = blockStates.entrySet().iterator();
+		while ( iterator.hasNext() ) {
+			Tuple<BlockState, Long> value = iterator.next().getValue();
+			if ( value.getB() < System.currentTimeMillis() - WEB_MILLIS ) {
+				value.getA().update( true, false );
+				iterator.remove();
+			}
+		}
 	}
 
 	@EventHandler
@@ -27,14 +70,21 @@ public class CobWebModule extends Module<CobWebModule> implements Listener {
 			ItemStack item = event.getItem();
 			Block clickedBlock = event.getClickedBlock();
 			if ( item.getType() == Material.SHEARS && clickedBlock.getType() == Material.WEB ) {
-				clickedBlock.setType( Material.AIR, false );
-				if ( item.getDurability() > 1 ) {
-					item.setDurability( ( short ) ( item.getDurability() - 1 ) );
-					event.getPlayer().setItemInHand( item );
+				Tuple<BlockState, Long> tuple = blockStates.get( clickedBlock.getLocation().toVector().toBlockVector() );
+				if ( tuple != null ) {
+					tuple.getA().update( true, false );
 				} else {
-					event.getPlayer().setItemInHand( null );
+					clickedBlock.setType( Material.AIR, false );
 				}
-				event.getPlayer().updateInventory();
+				Player plr = event.getPlayer();
+				short durability = item.getDurability();
+				if ( durability > 1 ) {
+					item.setDurability( --durability );
+					plr.setItemInHand( item );
+				} else {
+					plr.setItemInHand( null );
+				}
+				plr.updateInventory();
 			}
 		}
 	}
