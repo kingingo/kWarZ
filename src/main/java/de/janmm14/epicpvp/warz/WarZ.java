@@ -7,6 +7,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
 import de.janmm14.epicpvp.warz.hooks.UuidNameConverter;
 
 import lombok.Getter;
@@ -16,7 +17,8 @@ public class WarZ extends JavaPlugin {
 
 	public static boolean DEBUG;
 	private ModuleManager moduleManager;
-	private UuidNameConverter uuidNameConverter;
+	private UuidNameConverter uuidNameConverter = new UuidNameConverter();
+	private LanguageConverter languageConverter = new LanguageConverter();
 
 	@Override
 	public void onEnable() {
