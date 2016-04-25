@@ -13,7 +13,7 @@ import lombok.ToString;
 public class SimpleRandomThingHolder<K> implements RandomThingHolder<K> {
 
 	@NonNull
-	@Getter(onMethod = @__({ @NonNull }))
+	@Getter
 	private final K item;
 	private final double probability;
 }

@@ -20,7 +20,7 @@ import lombok.ToString;
 public class ZombieAttackInfo implements RandomThingHolder<PotionEffect> {
 
 	@NonNull
-	@Getter(onMethod = @__({ @NonNull }))
+	@Getter
 	private final PotionEffect item;
 	private final double probability;
 
