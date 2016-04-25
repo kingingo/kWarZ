@@ -14,10 +14,17 @@ public class FriendModule extends Module<FriendModule> {
 
 	public FriendModule(WarZ plugin) throws SQLException {
 		super( plugin, FriendHurtListener::new );
+		module = this;
 		friendInfoManager = new FriendInfoManager( this );
 	}
 
 	@Override
 	public void reloadConfig() {
+	}
+
+	private static FriendModule module;
+
+	public static final FriendInfoManager getManager() {
+		return module.getFriendInfoManager();
 	}
 }
