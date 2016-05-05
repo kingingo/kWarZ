@@ -2,7 +2,9 @@ package de.janmm14.epicpvp.warz;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -17,6 +19,7 @@ public class ModuleManager {
 	private final WarZ plugin;
 	@Getter
 	private final List<Module<?>> modules = new ArrayList<>();
+	private static final Map<Class<? extends Module>, Module> MODULE_MAP = new HashMap<>();
 
 	public void discoverAndLoadModules() {
 		Reflections reflections = new Reflections( getClass().getPackage().getName() );
@@ -25,6 +28,7 @@ public class ModuleManager {
 			String moduleName = clazz.getSimpleName();
 			try {
 				Module module = clazz.getConstructor( WarZ.class ).newInstance( plugin );
+				MODULE_MAP.put( clazz, module );
 				module.reloadConfig();
 				modules.add( module );
 				plugin.getLogger().info( "Loaded WarZ " + moduleName );
@@ -43,5 +47,10 @@ public class ModuleManager {
 
 	public void triggerReloadConfig() {
 		modules.forEach( Module::reloadConfig );
+	}
+
+	@SuppressWarnings({ "unchecked", "FinalStaticMethod" })
+	public static final <M extends Module> M getModule(Class<M> clazz) {
+		return ( M ) MODULE_MAP.get( clazz );
 	}
 }

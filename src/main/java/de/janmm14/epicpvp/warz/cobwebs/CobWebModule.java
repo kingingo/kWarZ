@@ -24,6 +24,7 @@ import de.janmm14.epicpvp.warz.util.Tuple;
 
 public class CobWebModule extends Module<CobWebModule> implements Listener, Runnable {
 
+	private final Map<BlockVector, Tuple<BlockState, Long>> blockStates = new HashMap<>( 32 );
 	private long WEB_MILLIS = TimeUnit.SECONDS.toMillis( 30 );
 
 	public CobWebModule(WarZ plugin) {
@@ -36,8 +37,6 @@ public class CobWebModule extends Module<CobWebModule> implements Listener, Runn
 		getPlugin().getConfig().addDefault( "cobweb.resetseconds", 30 );
 		WEB_MILLIS = TimeUnit.SECONDS.toMillis( getPlugin().getConfig().getInt( "cobweb.resetseconds" ) );
 	}
-
-	private final Map<BlockVector, Tuple<BlockState, Long>> blockStates = new HashMap<>( 32 );
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockPlace(BlockPlaceEvent event) {
@@ -54,7 +53,7 @@ public class CobWebModule extends Module<CobWebModule> implements Listener, Runn
 		if ( blockStates.isEmpty() ) {
 			return;
 		}
-		Iterator<Map.Entry<BlockVector, Tuple<BlockState, Long>>> iterator = blockStates.entrySet().iterator();
+		Iterator<Map.Entry<BlockVector, Tuple<BlockState, Long>>> iterator = blockStates.entrySet().iterator(); //using iterator because of Iterator.remove()
 		while ( iterator.hasNext() ) {
 			Tuple<BlockState, Long> value = iterator.next().getValue();
 			if ( value.getB() < System.currentTimeMillis() - WEB_MILLIS ) {

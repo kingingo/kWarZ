@@ -15,14 +15,12 @@ import lombok.Getter;
 @Getter
 public abstract class Module<M extends Module> {
 
-	private static final Map<Class<? extends Module>, Module> MODULE_MAP = new HashMap<>();
 	private final WarZ plugin;
 	private final List<Listener> listeners;
 
 	@SuppressWarnings("unchecked")
 	@SafeVarargs
 	public Module(WarZ plugin, Function<M, Listener>... listenerCreators) {
-		MODULE_MAP.put( getClass(), this );
 		this.plugin = plugin;
 		listeners = Lists.newArrayListWithExpectedSize( listenerCreators.length );
 		Arrays.stream( listenerCreators )
@@ -34,9 +32,4 @@ public abstract class Module<M extends Module> {
 	}
 
 	public abstract void reloadConfig();
-
-	@SuppressWarnings({ "unchecked", "FinalStaticMethod" })
-	public static final <M extends Module> M getModule(Class<M> clazz) {
-		return ( M ) MODULE_MAP.get( clazz );
-	}
 }
