@@ -1,12 +1,16 @@
 package de.janmm14.epicpvp.warz.zonechest;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.janmm14.epicpvp.warz.util.random.RandomThingGroupHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomThingHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomUtil;
@@ -52,5 +56,17 @@ public class Zone {
 			.collect( Collectors.toList() );
 
 		return new Zone( name, itemGroups, section.getInt( "itemgroup_minamount" ), section.getInt( "itemgroup_maxamount" ) );
+	}
+
+	public Vector getMiddle() {
+		ProtectedRegion worldGuardRegion = WorldGuardPlugin.inst()
+			.getRegionManager( Bukkit.getWorld( "world" ) )
+			.getRegion( name );
+		if ( worldGuardRegion == null ) {
+			new IllegalStateException( "Could not find worldedit region " + name + " while searching for middle point" ).printStackTrace();
+			return Bukkit.getWorld( "world" ).getSpawnLocation().toVector();
+		}
+		com.sk89q.worldedit.Vector middle = worldGuardRegion.getMaximumPoint().subtract( worldGuardRegion.getMinimumPoint() );
+		return new Vector( middle.getX(), middle.getY(), middle.getZ() );
 	}
 }

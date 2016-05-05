@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.BlockVector;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -101,5 +102,9 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 
 	public Zone getZone(World world, BlockVector blockVector) {
 		return getZone( new Location( world, blockVector.getX(), blockVector.getY(), blockVector.getZ() ) );
+	}
+
+	public Collection<Zone> getZones() {
+		return zones.values();
 	}
 }

@@ -3,13 +3,18 @@ package de.janmm14.epicpvp.warz.compass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
+import java.util.Collection;
 import javax.annotation.Nullable;
 
+import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.friends.FriendInfo;
 import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
 import de.janmm14.epicpvp.warz.friends.FriendModule;
 import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
+import de.janmm14.epicpvp.warz.zonechest.Zone;
+import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,12 +27,37 @@ public enum CompassTarget {
 	ENEMY {
 		@Override
 		Location getTarget(@NonNull CompassTargetModule module, @NonNull Player plr) {
-			return null;
+			FriendInfoManager manager = FriendModule.getManager();
+			FriendInfo friendInfo = manager.get( plr.getUniqueId() );
+			double distanceSquared = Double.MAX_VALUE;
+			Player nearestEnemy = null;
+			for ( Player possTarget : Bukkit.getOnlinePlayers() ) {
+				if ( !plr.getWorld().equals( possTarget.getWorld() ) ) {
+					continue;
+				}
+				if ( PlayerFriendRelation.areFriends( manager, friendInfo, possTarget.getUniqueId() ) ) {
+					continue;
+				}
+				double currDistanceSquared = plr.getLocation().distanceSquared( possTarget.getLocation() );
+				if ( currDistanceSquared < distanceSquared ) {
+					distanceSquared = currDistanceSquared;
+					nearestEnemy = possTarget;
+				}
+			}
+			return nearestEnemy != null ? nearestEnemy.getLocation() : null;
 		}
 
 		@Override
 		Location getTargetByOtherMove(@NonNull CompassTargetModule module, @NonNull Player moved, @NonNull Player plr) {
-			return null;
+			if ( !moved.getWorld().equals( plr.getWorld() ) ) {
+				return null;
+			}
+			FriendInfoManager manager = FriendModule.getManager();
+			FriendInfo friendInfo = manager.get( plr.getUniqueId() );
+			if ( PlayerFriendRelation.areFriends( manager, friendInfo, moved.getUniqueId() ) ) {
+				return null;
+			}
+			return getTarget( module, plr );
 		}
 	},
 	FRIEND {
@@ -38,7 +68,7 @@ public enum CompassTarget {
 			double distanceSquared = Double.MAX_VALUE;
 			Player nearestFriend = null;
 			for ( Player possTarget : Bukkit.getOnlinePlayers() ) {
-				if (!plr.getWorld().equals( possTarget.getWorld() )) {
+				if ( !plr.getWorld().equals( possTarget.getWorld() ) ) {
 					continue;
 				}
 				if ( !PlayerFriendRelation.areFriends( manager, friendInfo, possTarget.getUniqueId() ) ) {
@@ -69,7 +99,20 @@ public enum CompassTarget {
 	ZONE {
 		@Override
 		Location getTarget(@NonNull CompassTargetModule module, @NonNull Player plr) {
-			return null;
+			//nächste Zone
+			Collection<Zone> zones = Module.getModule( ZoneAndChestsModule.class ).getZones();
+			Vector plrVector = plr.getLocation().toVector();
+			double minDistSquared = Double.MAX_VALUE;
+			Location nearest = null;
+			for ( Zone zone : zones ) {
+				Vector zoneMiddle = zone.getMiddle();
+				double distSquared = zoneMiddle.distanceSquared( plrVector );
+				if ( distSquared < minDistSquared ) {
+					minDistSquared = distSquared;
+					nearest = zoneMiddle.toLocation( plr.getWorld() );
+				}
+			}
+			return nearest;
 		}
 
 		@Override
@@ -81,6 +124,9 @@ public enum CompassTarget {
 	@Nullable
 	abstract Location getTarget(@NotNull CompassTargetModule module, @NotNull Player plr);
 
+	/**
+	 * ignore result null - do not set to no aim
+	 */
 	@Nullable
 	abstract Location getTargetByOtherMove(@NotNull CompassTargetModule module, @NotNull Player moved, @NotNull Player plr);
 }
