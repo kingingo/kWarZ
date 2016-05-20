@@ -8,3 +8,4 @@ bin/
 *dependency-reduced-pom.xml
 desktop.ini
 *.orig
+src/main/java/de/janmm14/epicpvp/warz/other/
