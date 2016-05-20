@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class CommandWarZ implements TabExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 		if ( args.length == 0 ) {
 			sender.sendMessage( "§aWarZ Plugin by Janmm14" );
-			sender.sendMessage( "§c/warz reload §6Liest die Config neu ein." );
+			sender.sendMessage( "§c/warz reload §7- §6Liest die Config neu ein." );
 			return true;
 		}
 		switch ( args[ 0 ].toLowerCase() ) {
@@ -31,7 +31,7 @@ public class CommandWarZ implements TabExecutor {
 				}
 				break;
 			default:
-				sender.sendMessage( "§cUnbekannte Aktion " + args[ 0 ] );
+				sender.sendMessage( "§cUnbekannte Aktion §6" + args[ 0 ] );
 		}
 		return true;
 	}
@@ -39,7 +39,7 @@ public class CommandWarZ implements TabExecutor {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
 		if ( args.length == 1 && ( args[ 0 ].isEmpty() || "reload".startsWith( args[ 0 ].toLowerCase() ) ) ) {
-			return Arrays.asList( "reload" );
+			return Collections.singletonList( "reload" );
 		}
 		return null;
 	}

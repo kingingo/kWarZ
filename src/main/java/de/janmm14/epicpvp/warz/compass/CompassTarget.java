@@ -8,7 +8,6 @@ import org.bukkit.util.Vector;
 import java.util.Collection;
 import javax.annotation.Nullable;
 
-import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.friends.FriendInfo;
 import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
 import de.janmm14.epicpvp.warz.friends.FriendModule;
@@ -100,7 +99,7 @@ public enum CompassTarget {
 		@Override
 		Location getTarget(@NonNull CompassTargetModule module, @NonNull Player plr) {
 			//nächste Zone
-			Collection<Zone> zones = Module.getModule( ZoneAndChestsModule.class ).getZones();
+			Collection<Zone> zones = module.getPlugin().getModuleManager().getModule( ZoneAndChestsModule.class ).getZones();
 			Vector plrVector = plr.getLocation().toVector();
 			double minDistSquared = Double.MAX_VALUE;
 			Location nearest = null;
@@ -126,6 +125,8 @@ public enum CompassTarget {
 
 	/**
 	 * ignore result null - do not set to no aim
+	 *
+	 * currently not used
 	 */
 	@Nullable
 	abstract Location getTargetByOtherMove(@NotNull CompassTargetModule module, @NotNull Player moved, @NotNull Player plr);

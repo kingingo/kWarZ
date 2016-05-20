@@ -3,10 +3,9 @@ package de.janmm14.epicpvp.warz;
 import org.bukkit.event.Listener;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
+import java.util.logging.Level;
 
 import com.google.common.collect.Lists;
 
@@ -32,4 +31,26 @@ public abstract class Module<M extends Module> {
 	}
 
 	public abstract void reloadConfig();
+
+	final boolean tryReloadConfig() {
+		try {
+			reloadConfig();
+			return true;
+		}
+		catch ( Throwable t ) {
+			plugin.getLogger().log( Level.SEVERE, "An error occurred while reloading the configuration of " + getClass().getSimpleName(), t );
+			return false;
+		}
+	}
+
+	final boolean tryLoadConfig() {
+		try {
+			reloadConfig();
+			return true;
+		}
+		catch ( Throwable t ) {
+			plugin.getLogger().log( Level.SEVERE, "An error occurred while loading the configuration of " + getClass().getSimpleName(), t );
+			return false;
+		}
+	}
 }

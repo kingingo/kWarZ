@@ -27,6 +27,7 @@
 
                 <executions>
                     <execution>
+                        <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
@@ -45,11 +46,11 @@
                     <relocations>
                         <relocation>
                             <pattern>org.reflections</pattern>
-                            <shadedPattern>io.github.xxyy.lib.org.reflections</shadedPattern>
+                            <shadedPattern>de.janmm14.epicpvp.warz.lib.org.reflections</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.javassist</pattern>
-                            <shadedPattern>io.github.xxyy.lib.org.javassist</shadedPattern>
+                            <shadedPattern>de.janmm14.epicpvp.warz.lib.org.javassist</shadedPattern>
                         </relocation>
                     </relocations>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -69,18 +70,73 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>worldguard</artifactId>
+            <version>6.1.1-SNAPSHOT</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sk89q.spigot</groupId>
+                    <artifactId>bukkit-classloader-check</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sk89q</groupId>
+                    <artifactId>commandbook</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.yaml</groupId>
+                    <artifactId>snakeyaml</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sk89q</groupId>
+                    <artifactId>jchronic</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>rhino</groupId>
+                    <artifactId>js</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>de.schlichtherle</groupId>
+                    <artifactId>truezip</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
             <groupId>eu.epicpvp</groupId>
             <artifactId>core-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
+                    <groupId>eu.epicpvp</groupId>
+                    <artifactId>core-karcade</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>com.sk89q</groupId>
-                    <artifactId>worldguard</artifactId>
+                    <groupId>eu.epicpvp</groupId>
+                    <artifactId>core-skyblock</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>eu.epicpvp</groupId>
+                    <artifactId>core-kSkyBlock</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>com.sk89q</groupId>
@@ -103,36 +159,33 @@
                     <artifactId>packets</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>eu.epicpvp</groupId>
-                    <artifactId>core-kSkyBlock</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.bukkit</groupId>
-                    <artifactId>bukkit</artifactId>
+                    <groupId>com.vexsoftware</groupId>
+                    <artifactId>votifier</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.10</version>
+            <scope>compile</scope>
             <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.code.gson</groupId>
-                    <artifactId>gson</artifactId>
-                </exclusion>
+                <!--<exclusion>-->
+                    <!--<groupId>com.google.guava</groupId>-->
+                    <!--<artifactId>guava</artifactId>-->
+                <!--</exclusion>-->
+                <!--<exclusion>-->
+                    <!--<groupId>com.google.code.gson</groupId>-->
+                    <!--<artifactId>gson</artifactId>-->
+                <!--</exclusion>-->
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>com.shampaggon</groupId>
+            <artifactId>crackshot</artifactId>
+            <version>0.98.5</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/CrackShot.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -144,73 +197,7 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>13.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>0.9.10</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.code.gson</groupId>
-                    <artifactId>gson</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.shampaggon</groupId>
-            <artifactId>crackshot</artifactId>
-            <version>0.98.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/CrackShot.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.sk89q</groupId>
-            <artifactId>worldguard</artifactId>
-            <version>6.1.1-SNAPSHOT</version>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.sk89q.spigot</groupId>
-                    <artifactId>bukkit-classloader-check</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sk89q</groupId>
-                    <artifactId>commandbook</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.yaml</groupId>
-                    <artifactId>snakeyaml</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.code.gson</groupId>
-                    <artifactId>gson</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.bukkit</groupId>
-                    <artifactId>bukkit</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sk89q</groupId>
-                    <artifactId>jchronic</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>rhino</groupId>
-                    <artifactId>js</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>de.schlichtherle</groupId>
-                    <artifactId>truezip</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 
@@ -228,10 +215,10 @@
     </distributionManagement>
 
     <repositories>
-        <repository>
-            <id>epicpvp-all</id>
-            <url>http://149.202.150.185:8081/artifactory/epicpvp-all/</url>
-        </repository>
+        <!--<repository>-->
+            <!--<id>epicpvp-all</id>-->
+            <!--<url>http://149.202.150.185:8081/artifactory/epicpvp-all/</url>-->
+        <!--</repository>-->
         <repository>
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>
