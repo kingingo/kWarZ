@@ -24,8 +24,9 @@ import de.janmm14.epicpvp.warz.util.Tuple;
 
 public class CobWebModule extends Module<CobWebModule> implements Listener, Runnable {
 
+	private static final String PATH_PREFIX = "cobweb.";
 	private final Map<BlockVector, Tuple<BlockState, Long>> blockStates = new HashMap<>( 32 );
-	private long WEB_MILLIS = TimeUnit.SECONDS.toMillis( 30 );
+	private long webMillis = TimeUnit.SECONDS.toMillis( 30 );
 
 	public CobWebModule(WarZ plugin) {
 		super( plugin, (module) -> module );
@@ -34,17 +35,19 @@ public class CobWebModule extends Module<CobWebModule> implements Listener, Runn
 
 	@Override
 	public void reloadConfig() {
-		getPlugin().getConfig().addDefault( "cobweb.resetseconds", 30 );
-		WEB_MILLIS = TimeUnit.SECONDS.toMillis( getPlugin().getConfig().getInt( "cobweb.resetseconds" ) );
+		getPlugin().getConfig().addDefault( PATH_PREFIX + "resetseconds", 30 );
+		webMillis = TimeUnit.SECONDS.toMillis( getPlugin().getConfig().getInt( PATH_PREFIX + "resetseconds" ) );
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		if ( event.getBlockPlaced().getType() != Material.WEB ) {
-			event.setCancelled( true );
+			if ( !event.getPlayer().isOp() ) {
+				event.setCancelled( true );
+			}
 		} else {
-			BlockState blockReplacedState = event.getBlockReplacedState();
-			blockStates.put( blockReplacedState.getLocation().toVector().toBlockVector(), new Tuple<>( blockReplacedState, System.currentTimeMillis() ) );
+			BlockState oldBlockState = event.getBlockReplacedState();
+			blockStates.put( oldBlockState.getLocation().toVector().toBlockVector(), new Tuple<>( oldBlockState, System.currentTimeMillis() ) );
 		}
 	}
 
@@ -56,7 +59,7 @@ public class CobWebModule extends Module<CobWebModule> implements Listener, Runn
 		Iterator<Map.Entry<BlockVector, Tuple<BlockState, Long>>> iterator = blockStates.entrySet().iterator(); //using iterator because of Iterator.remove()
 		while ( iterator.hasNext() ) {
 			Tuple<BlockState, Long> value = iterator.next().getValue();
-			if ( value.getB() < System.currentTimeMillis() - WEB_MILLIS ) {
+			if ( value.getB() < System.currentTimeMillis() - webMillis ) {
 				value.getA().update( true, false );
 				iterator.remove();
 			}
