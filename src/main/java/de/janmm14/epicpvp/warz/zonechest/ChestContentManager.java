@@ -1,15 +1,16 @@
 package de.janmm14.epicpvp.warz.zonechest;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
 
 import java.util.Random;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.cache.Cache;
@@ -55,18 +56,23 @@ public class ChestContentManager implements Runnable {
 		}
 	}
 
-	public void getInventory(World world, BlockVector blockVector, Inventory inv) {
-		try {
-			createdInventories.get( blockVector, () -> fillInventory( world, blockVector, inv ) );
+	public Inventory getInventory(World world, BlockVector blockVector, CustomChestInventoryHolder owner) {
+		Inventory inv = createdInventories.getIfPresent( blockVector );
+		if (inv == null) {
+			inv = fillInventory( world, blockVector, Bukkit.createInventory( owner, InventoryType.CHEST ) );
+			if (inv != null) {
+				createdInventories.put( blockVector, inv );
+			}
 		}
-		catch ( ExecutionException e ) {
-			e.printStackTrace();
-		}
+		return inv;
 	}
 
 	private Inventory fillInventory(World world, BlockVector blockVector, Inventory inv) {
 		Random random = new Random();
 		Zone zone = module.getZone( world, blockVector );
+		if (zone == null) {
+			return null;
+		}
 		for ( ItemStack item : zone.getRandomChoosenChestItems() ) {
 			int pos = random.nextInt( inv.getSize() );
 			inv.setItem( pos, item );

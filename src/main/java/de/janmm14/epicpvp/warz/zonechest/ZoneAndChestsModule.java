@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
@@ -83,10 +85,12 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 		}
 	}
 
+	@Nullable
 	public Zone getZone(String name) {
 		return zones.get( name );
 	}
 
+	@Nullable
 	public Zone getZone(Location location) {
 		return WorldGuardPlugin.inst()
 			.getRegionManager( location.getWorld() )
@@ -100,10 +104,12 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 			.orElse( null );
 	}
 
+	@Nullable
 	public Zone getZone(World world, BlockVector blockVector) {
 		return getZone( new Location( world, blockVector.getX(), blockVector.getY(), blockVector.getZ() ) );
 	}
 
+	@Nullable
 	public Collection<Zone> getZones() {
 		return zones.values();
 	}
