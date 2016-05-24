@@ -1,12 +1,12 @@
 package de.janmm14.epicpvp.warz;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
-
-import java.util.Collections;
-import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 

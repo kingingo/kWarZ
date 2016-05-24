@@ -1,20 +1,20 @@
 package de.janmm14.epicpvp.warz.zonechest;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+
 import de.janmm14.epicpvp.warz.util.random.RandomThingGroupHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomThingHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomUtil;
-
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

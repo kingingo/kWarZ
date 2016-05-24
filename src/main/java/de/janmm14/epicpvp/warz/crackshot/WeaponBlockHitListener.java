@@ -1,5 +1,9 @@
 package de.janmm14.epicpvp.warz.crackshot;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -7,11 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.util.BlockVector;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import com.shampaggon.crackshot.events.WeaponHitBlockEvent;
+
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.Tuple;
 
