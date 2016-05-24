@@ -1,11 +1,11 @@
 package de.janmm14.epicpvp.warz;
 
-import org.bukkit.event.Listener;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.logging.Level;
+
+import org.bukkit.event.Listener;
 
 import com.google.common.collect.Lists;
 

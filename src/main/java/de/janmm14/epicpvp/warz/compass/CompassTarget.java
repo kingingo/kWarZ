@@ -1,12 +1,14 @@
 package de.janmm14.epicpvp.warz.compass;
 
+import java.util.Collection;
+
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-
-import java.util.Collection;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import de.janmm14.epicpvp.warz.friends.FriendInfo;
 import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
@@ -14,9 +16,6 @@ import de.janmm14.epicpvp.warz.friends.FriendModule;
 import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
 import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
-
-import org.jetbrains.annotations.NotNull;
-
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
