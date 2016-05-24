@@ -1,11 +1,11 @@
 package de.janmm14.epicpvp.warz.zombies;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffect;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;

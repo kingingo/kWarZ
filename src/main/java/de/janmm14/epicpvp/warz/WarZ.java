@@ -9,7 +9,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
 import de.janmm14.epicpvp.warz.hooks.UuidNameConverter;
-
 import lombok.Getter;
 
 @Getter
@@ -37,7 +36,7 @@ public class WarZ extends JavaPlugin {
 
 		moduleManager = new ModuleManager( this );
 		moduleManager.discoverAndLoadModules();
-
+		new WarZListener(this);
 		saveConfig();
 	}
 

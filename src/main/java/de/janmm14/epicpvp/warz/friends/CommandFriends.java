@@ -1,12 +1,5 @@
 package de.janmm14.epicpvp.warz.friends;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -21,12 +14,19 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import de.janmm14.epicpvp.warz.hooks.UuidNameConverter;
-import org.apache.commons.lang.StringUtils;
 
+import de.janmm14.epicpvp.warz.hooks.UuidNameConverter;
 import lombok.NonNull;
 
 public class CommandFriends implements TabExecutor {

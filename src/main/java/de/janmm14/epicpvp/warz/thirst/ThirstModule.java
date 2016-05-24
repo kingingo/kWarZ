@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 

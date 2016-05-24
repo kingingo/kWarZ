@@ -1,8 +1,8 @@
 package de.janmm14.epicpvp.warz.hooks;
 
-import org.bukkit.entity.Player;
-
 import java.util.Arrays;
+
+import org.bukkit.entity.Player;
 
 public class LanguageConverter {
 
