@@ -144,22 +144,6 @@
                     <artifactId>worldedit</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>DatenClient</groupId>
-                    <artifactId>DatenClient</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>dev.wolveringer</groupId>
-                    <artifactId>DatenClient</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>dev.wolveringer.datenserver</groupId>
-                    <artifactId>definitions</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>dev.wolveringer.datenserver</groupId>
-                    <artifactId>packets</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>com.vexsoftware</groupId>
                     <artifactId>votifier</artifactId>
                 </exclusion>
