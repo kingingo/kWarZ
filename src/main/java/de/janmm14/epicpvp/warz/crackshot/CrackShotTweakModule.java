@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
+
 import lombok.Getter;
 
 public class CrackShotTweakModule extends Module<CrackShotTweakModule> {

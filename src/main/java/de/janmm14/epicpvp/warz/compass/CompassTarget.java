@@ -1,21 +1,23 @@
 package de.janmm14.epicpvp.warz.compass;
 
 import java.util.Collection;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
 
 import de.janmm14.epicpvp.warz.friends.FriendInfo;
 import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
 import de.janmm14.epicpvp.warz.friends.FriendModule;
 import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
+import de.janmm14.epicpvp.warz.hooks.UuidNameConverter;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
 import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
+
+import org.jetbrains.annotations.NotNull;
+
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +27,7 @@ public enum CompassTarget {
 	ENEMY {
 		@Override
 		Location getTarget(@NonNull CompassTargetModule module, @NonNull Player plr) {
-			FriendInfoManager manager = FriendModule.getManager();
+			FriendInfoManager manager = module.getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
 			FriendInfo friendInfo = manager.get( plr.getUniqueId() );
 			double distanceSquared = Double.MAX_VALUE;
 			Player nearestEnemy = null;
@@ -33,7 +35,7 @@ public enum CompassTarget {
 				if ( !plr.getWorld().equals( possTarget.getWorld() ) ) {
 					continue;
 				}
-				if ( PlayerFriendRelation.areFriends( manager, friendInfo, possTarget.getUniqueId() ) ) {
+				if ( PlayerFriendRelation.areFriends( manager, friendInfo, friendInfo.getPlayerId() ) ) {
 					continue;
 				}
 				double currDistanceSquared = plr.getLocation().distanceSquared( possTarget.getLocation() );
@@ -50,9 +52,10 @@ public enum CompassTarget {
 			if ( !moved.getWorld().equals( plr.getWorld() ) ) {
 				return null;
 			}
-			FriendInfoManager manager = FriendModule.getManager();
+			FriendInfoManager manager = module.getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
 			FriendInfo friendInfo = manager.get( plr.getUniqueId() );
-			if ( PlayerFriendRelation.areFriends( manager, friendInfo, moved.getUniqueId() ) ) {
+			UuidNameConverter.Profile movedProfile = manager.getModule().getPlugin().getUuidNameConverter().getProfile( moved.getUniqueId() );
+			if ( PlayerFriendRelation.areFriends( manager, friendInfo, movedProfile.getPlayerId() ) ) {
 				return null;
 			}
 			return getTarget( module, plr );
@@ -61,7 +64,7 @@ public enum CompassTarget {
 	FRIEND {
 		@Override
 		Location getTarget(@NonNull CompassTargetModule module, @NonNull Player plr) {
-			FriendInfoManager manager = FriendModule.getManager();
+			FriendInfoManager manager = module.getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
 			FriendInfo friendInfo = manager.get( plr.getUniqueId() );
 			double distanceSquared = Double.MAX_VALUE;
 			Player nearestFriend = null;
@@ -69,7 +72,9 @@ public enum CompassTarget {
 				if ( !plr.getWorld().equals( possTarget.getWorld() ) ) {
 					continue;
 				}
-				if ( !PlayerFriendRelation.areFriends( manager, friendInfo, possTarget.getUniqueId() ) ) {
+
+				UuidNameConverter.Profile possTargetProfile = manager.getModule().getPlugin().getUuidNameConverter().getProfile( possTarget.getUniqueId() );
+				if ( !PlayerFriendRelation.areFriends( manager, friendInfo, possTargetProfile.getPlayerId() ) ) {
 					continue;
 				}
 				double currDistanceSquared = plr.getLocation().distanceSquared( possTarget.getLocation() );
@@ -86,9 +91,11 @@ public enum CompassTarget {
 			if ( !moved.getWorld().equals( plr.getWorld() ) ) {
 				return null;
 			}
-			FriendInfoManager manager = FriendModule.getManager();
+			FriendInfoManager manager = module.getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
 			FriendInfo friendInfo = manager.get( plr.getUniqueId() );
-			if ( !PlayerFriendRelation.areFriends( manager, friendInfo, moved.getUniqueId() ) ) {
+			UuidNameConverter.Profile movedProfile = manager.getModule().getPlugin().getUuidNameConverter().getProfile( moved.getUniqueId() );
+
+			if ( !PlayerFriendRelation.areFriends( manager, friendInfo, movedProfile.getPlayerId() ) ) {
 				return null;
 			}
 			return getTarget( module, plr );
@@ -98,7 +105,10 @@ public enum CompassTarget {
 		@Override
 		Location getTarget(@NonNull CompassTargetModule module, @NonNull Player plr) {
 			//nächste Zone
-			Collection<Zone> zones = module.getPlugin().getModuleManager().getModule( ZoneAndChestsModule.class ).getZones();
+			Collection<Zone> zones = module.getModuleManager().getModule( ZoneAndChestsModule.class ).getZones();
+			if ( zones == null ) {
+				return null;
+			}
 			Vector plrVector = plr.getLocation().toVector();
 			double minDistSquared = Double.MAX_VALUE;
 			Location nearest = null;

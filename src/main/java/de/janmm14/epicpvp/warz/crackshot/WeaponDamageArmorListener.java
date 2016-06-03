@@ -1,7 +1,5 @@
 package de.janmm14.epicpvp.warz.crackshot;
 
-import static de.janmm14.epicpvp.warz.crackshot.CrackShotTweakModule.ARMOR_PREFIX;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -10,11 +8,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
 
 import de.janmm14.epicpvp.warz.WarZ;
+
+import org.jetbrains.annotations.Nullable;
+
+import static de.janmm14.epicpvp.warz.crackshot.CrackShotTweakModule.ARMOR_PREFIX;
 
 public class WeaponDamageArmorListener implements Listener {
 

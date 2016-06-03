@@ -1,9 +1,10 @@
 package de.janmm14.epicpvp.warz;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
@@ -12,87 +13,84 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
-import eu.epicpvp.kcore.Listener.kListener;
 import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
-import eu.epicpvp.kcore.Util.UtilServer;
 
-public class WarZListener extends kListener{
-	
-	private JavaPlugin instance;
-	
-	public WarZListener(JavaPlugin instance) {
-		super(instance, "WarZListener");
-		this.instance=instance;
+public class WarZListener implements Listener {
+
+	private WarZ plugin;
+
+	public WarZListener(WarZ plugin) {
+		this.plugin = plugin;
 	}
-	
+
 	@EventHandler
-	public void BlockBurn(BlockBurnEvent ev){
-		ev.setCancelled(true);
+	public void onBlockBurn(BlockBurnEvent ev) {
+		ev.setCancelled( true );
 	}
-	
+
 	@EventHandler
-	public void Explosion(ExplosionPrimeEvent ev){
-		ev.setCancelled(true);
+	public void onExplosion(ExplosionPrimeEvent ev) {
+		ev.setCancelled( true );
 	}
-	
+
 	@EventHandler
-	public void soilChangeEntity(EntityInteractEvent event){
-	    if ((event.getEntityType() != EntityType.PLAYER) && (event.getBlock().getType() == Material.SOIL)) event.setCancelled(true);
-	}
-	
-	@EventHandler
-	public void Death(PlayerDeathEvent ev){
-		ev.setDeathMessage(null);
-		if(ev.getEntity() instanceof Player){
-			UtilPlayer.RespawnNow(((Player)ev.getEntity()), instance );
+	public void soilChangeEntity(EntityInteractEvent event) {
+		if ( ( event.getEntityType() != EntityType.PLAYER ) && ( event.getBlock().getType() == Material.SOIL ) ) {
+			event.setCancelled( true );
 		}
 	}
-	
+
 	@EventHandler
-	public void join(PlayerJoinEvent ev){
-		ev.setJoinMessage(null);
-		UtilPlayer.setTab(ev.getPlayer(), "WarZ");
+	public void onDeath(PlayerDeathEvent ev) {
+		ev.setDeathMessage( null );
+		UtilPlayer.RespawnNow( ev.getEntity(), plugin );
 	}
-	
+
 	@EventHandler
-	public void quit(PlayerQuitEvent ev){
-		ev.setQuitMessage(null);
+	public void onJoin(PlayerJoinEvent ev) {
+		ev.setJoinMessage( null );
+		UtilPlayer.setTab( ev.getPlayer(), "WarZ" );
 	}
-	
+
 	@EventHandler
-	public void update(ServerStatusUpdateEvent ev){
-		ev.getPacket().setPlayers(UtilServer.getPlayers().size());
-		ev.getPacket().setTyp(GameType.WARZ);
+	public void onQuit(PlayerQuitEvent ev) {
+		ev.setQuitMessage( null );
 	}
-	
+
 	@EventHandler
-	public void Sign(SignChangeEvent ev){
-		if(ev.getPlayer().hasPermission(PermissionType.CHAT_FARBIG.getPermissionToString())){
-			ev.setLine(0, ev.getLine(0).replaceAll("&", "§"));
-			ev.setLine(1, ev.getLine(1).replaceAll("&", "§"));
-			ev.setLine(2, ev.getLine(2).replaceAll("&", "§"));
-			ev.setLine(3, ev.getLine(3).replaceAll("&", "§"));
+	public void onServerStatusUpdate(ServerStatusUpdateEvent ev) {
+		ev.getPacket().setPlayers( plugin.getServer().getOnlinePlayers().size() );
+		ev.getPacket().setTyp( GameType.WARZ );
+	}
+
+	@EventHandler
+	public void onSignCreate(SignChangeEvent ev) {
+		if ( ev.getPlayer().hasPermission( PermissionType.CHAT_FARBIG.getPermissionToString() ) ) {
+			for ( int i = 0; i < 4; i++ ) {
+				ev.setLine( i, ChatColor.translateAlternateColorCodes( '&', ev.getLine( i ) ) );
+			}
 		}
 	}
-	
+
 	@EventHandler
-	public void Command(PlayerCommandPreprocessEvent ev){
+	public void onCommandPreprocess(PlayerCommandPreprocessEvent ev) {
+		if ( ev.getPlayer().isOp() ) {
+			return;
+		}
 		String cmd = "";
-	    if (ev.getMessage().contains(" ")){
-	      String[] parts = ev.getMessage().split(" ");
-	      cmd = parts[0];
-	    }else{
-	      cmd = ev.getMessage();
-	    }
-	     
-	    if(cmd.startsWith("/me") || cmd.startsWith("/bukkit")){
-			ev.setCancelled(true);
+		if ( ev.getMessage().contains( " " ) ) {
+			String[] parts = ev.getMessage().split( " " );
+			cmd = parts[ 0 ];
+		} else {
+			cmd = ev.getMessage();
+		}
+
+		if ( cmd.indexOf( ':' ) != -1 ) {
+			ev.setCancelled( true );
 		}
 	}
-
 }

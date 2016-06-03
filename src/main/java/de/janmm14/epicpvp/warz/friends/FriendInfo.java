@@ -1,7 +1,11 @@
 package de.janmm14.epicpvp.warz.friends;
 
-import java.util.List;
-import java.util.UUID;
+import java.lang.ref.SoftReference;
+
+import org.bukkit.entity.Player;
+
+import eu.epicpvp.kcore.kConfig.kConfig;
+import gnu.trove.set.TIntSet;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,24 +19,28 @@ import lombok.ToString;
  */
 @Getter
 @ToString
-@EqualsAndHashCode(of = "uuid")
+@EqualsAndHashCode(of = "playerId")
 public class FriendInfo {
 
+	private final FriendInfoManager manager;
+	private final int playerId;
 	@NonNull
-	private final UUID uuid;
+	private final TIntSet friendWith;
 	@NonNull
-	private final List<UUID> friendWith;
+	private final TIntSet requestsGot;
 	@NonNull
-	private final List<UUID> requestsGot;
+	private final TIntSet requestsSent;
 	@NonNull
-	private final List<UUID> requestsSent;
-	private boolean dirty;
+	private transient SoftReference<kConfig> config;
+	private transient boolean dirty;
 
-	public FriendInfo(@NonNull UUID uuid, @NonNull List<UUID> friendWith, @NonNull List<UUID> requestsGot, @NonNull List<UUID> requestsSent) {
-		this.uuid = uuid;
+	public FriendInfo(FriendInfoManager manager, int playerId, @NonNull TIntSet friendWith, @NonNull TIntSet requestsGot, @NonNull TIntSet requestsSent, kConfig cfg) {
+		this.manager = manager;
+		this.playerId = playerId;
 		this.friendWith = friendWith;
 		this.requestsGot = requestsGot;
 		this.requestsSent = requestsSent;
+		this.config = new SoftReference<>( cfg );
 	}
 
 	/**
@@ -62,5 +70,17 @@ public class FriendInfo {
 	 */
 	void setDirty() {
 		this.dirty = true;
+	}
+
+	kConfig getConfig() {
+		kConfig cfg = config.get();
+		if ( cfg == null ) {
+			config = new SoftReference<>( manager.getUserDataConfig().getConfig( playerId ) );
+		}
+		return cfg;
+	}
+
+	public Player getPlayer() {
+		return manager.getModule().getPlugin().getServer().getPlayer( manager.getModule().getPlugin().getUuidNameConverter().getProfile( playerId ).getUuid() );
 	}
 }

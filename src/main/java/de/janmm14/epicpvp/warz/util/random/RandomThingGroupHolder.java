@@ -2,7 +2,6 @@ package de.janmm14.epicpvp.warz.util.random;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 import lombok.NonNull;

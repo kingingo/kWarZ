@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
 import de.janmm14.epicpvp.warz.hooks.UuidNameConverter;
+
 import lombok.Getter;
 
 @Getter
@@ -28,6 +29,7 @@ public class WarZ extends JavaPlugin {
 		}
 
 		registerTabExecutor( "warz", new CommandWarZ( this ) );
+
 		World world = Bukkit.getWorld( "world" );
 		if ( world != null ) {
 			getLogger().info( "Disabled automatic saving of world 'world', please do not use /save-all /save-on or any plugin to save worlds." );
@@ -36,7 +38,7 @@ public class WarZ extends JavaPlugin {
 
 		moduleManager = new ModuleManager( this );
 		moduleManager.discoverAndLoadModules();
-		new WarZListener(this);
+		getServer().getPluginManager().registerEvents( new WarZListener( this ), this );
 		saveConfig();
 	}
 

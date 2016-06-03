@@ -30,6 +30,10 @@ public abstract class Module<M extends Module> {
 			} );
 	}
 
+	public ModuleManager getModuleManager() {
+		return plugin.getModuleManager();
+	}
+
 	public abstract void reloadConfig();
 
 	final boolean tryReloadConfig() {

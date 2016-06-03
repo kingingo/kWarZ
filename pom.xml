@@ -12,7 +12,7 @@
     <description>Main plugin for WarZ</description>
 
     <build>
-		<finalName>WarZ</finalName>
+        <finalName>WarZ</finalName>
         <defaultGoal>clean install</defaultGoal>
         <resources>
             <resource>

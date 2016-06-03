@@ -58,9 +58,9 @@ public class ChestContentManager implements Runnable {
 
 	public Inventory getInventory(World world, BlockVector blockVector, CustomChestInventoryHolder owner) {
 		Inventory inv = createdInventories.getIfPresent( blockVector );
-		if (inv == null) {
+		if ( inv == null ) {
 			inv = fillInventory( world, blockVector, Bukkit.createInventory( owner, InventoryType.CHEST ) );
-			if (inv != null) {
+			if ( inv != null ) {
 				createdInventories.put( blockVector, inv );
 			}
 		}
@@ -70,7 +70,7 @@ public class ChestContentManager implements Runnable {
 	private Inventory fillInventory(World world, BlockVector blockVector, Inventory inv) {
 		Random random = new Random();
 		Zone zone = module.getZone( world, blockVector );
-		if (zone == null) {
+		if ( zone == null ) {
 			return null;
 		}
 		for ( ItemStack item : zone.getRandomChoosenChestItems() ) {

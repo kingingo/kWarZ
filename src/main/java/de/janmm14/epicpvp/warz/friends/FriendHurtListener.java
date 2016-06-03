@@ -1,11 +1,49 @@
 package de.janmm14.epicpvp.warz.friends;
 
+import java.util.UUID;
+
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import lombok.RequiredArgsConstructor;
+import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
 
-@RequiredArgsConstructor
+import de.janmm14.epicpvp.warz.hooks.UuidNameConverter;
+
 public class FriendHurtListener implements Listener {
 
-	private final FriendModule module;
+	private final FriendInfoManager manager;
+	private final UuidNameConverter uuidNameConverter;
+
+	public FriendHurtListener(FriendModule module) {
+		this.manager = module.getFriendInfoManager();
+		this.uuidNameConverter = module.getPlugin().getUuidNameConverter();
+	}
+
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void onDamage(EntityDamageByEntityEvent event) {
+		if ( event.getEntityType() != EntityType.PLAYER || event.getDamager() instanceof Player ) {
+			return;
+		}
+		FriendInfo victimInfo = manager.get( event.getEntity().getUniqueId() );
+		UuidNameConverter.Profile damagerProfile = uuidNameConverter.getProfile( event.getDamager().getUniqueId() );
+		if ( PlayerFriendRelation.areFriends( manager, victimInfo, damagerProfile.getPlayerId() ) ) {
+			event.setCancelled( true );
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true) //highest is for CrackShotTweakModule
+	public void onWeaponDamage(WeaponDamageEntityEvent event) {
+		if ( event.getVictim() instanceof Player && event.getDamager() instanceof Player ) {
+			UUID victimUuid = event.getVictim().getUniqueId();
+			UUID damagerUuid = event.getDamager().getUniqueId();
+			UuidNameConverter.Profile damagerProfile = uuidNameConverter.getProfile( damagerUuid );
+			if ( PlayerFriendRelation.areFriends( manager, manager.get( victimUuid ), damagerProfile.getPlayerId() ) ) {
+				event.setCancelled( true );
+			}
+		}
+	}
 }

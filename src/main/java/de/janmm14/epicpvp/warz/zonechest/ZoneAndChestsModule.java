@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
@@ -22,6 +21,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
+
 import lombok.Getter;
 
 public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
