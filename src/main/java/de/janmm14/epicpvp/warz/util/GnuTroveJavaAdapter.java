@@ -18,7 +18,7 @@ public class GnuTroveJavaAdapter {
 
 	public static IntStream stream(TIntCollection c) {
 		IntStream.Builder builder = IntStream.builder();
-		c.forEach( toT( builder ) );
+		c.forEach( toT( builder::add ) );
 		return builder.build();
 	}
 

@@ -204,8 +204,11 @@ public class FriendInfoManager {
 		TIntSet friendWith = toTSet( cfg.getIntegerList( "friendWith" ) );
 		TIntSet requestsGot = toTSet( cfg.getIntegerList( "requestsGot" ) );
 		TIntSet requestsSent = toTSet( cfg.getIntegerList( "requestsSent" ) );
+		TIntSet notifyFriendshipEnded = toTSet( cfg.getIntegerList( "notifyFriendshipEnded" ) );
+		TIntSet notifyRequestDenied = toTSet( cfg.getIntegerList( "notifyRequestDenied" ) );
+		TIntSet notifyRequestAccepted = toTSet( cfg.getIntegerList( "notifyRequestAccepted" ) );
 
-		return new FriendInfo( this, playerId, friendWith, requestsGot, requestsSent, cfg );
+		return new FriendInfo( this, playerId, friendWith, requestsGot, requestsSent, notifyFriendshipEnded, notifyRequestDenied, notifyRequestAccepted, cfg );
 	}
 
 	private void save(FriendInfo friendInfo) {

@@ -31,15 +31,24 @@ public class FriendInfo {
 	@NonNull
 	private final TIntSet requestsSent;
 	@NonNull
+	private final TIntSet notifyFriendshipEnded;
+	@NonNull
+	private final TIntSet notifyRequestDenied;
+	@NonNull
+	private final TIntSet notifyRequestAccepted;
+	@NonNull
 	private transient SoftReference<kConfig> config;
 	private transient boolean dirty;
 
-	public FriendInfo(FriendInfoManager manager, int playerId, @NonNull TIntSet friendWith, @NonNull TIntSet requestsGot, @NonNull TIntSet requestsSent, kConfig cfg) {
+	public FriendInfo(FriendInfoManager manager, int playerId, @NonNull TIntSet friendWith, @NonNull TIntSet requestsGot, @NonNull TIntSet requestsSent, @NonNull TIntSet notifyFriendshipEnded, @NonNull TIntSet notifyRequestDenied, @NonNull TIntSet notifyRequestAccepted, kConfig cfg) {
 		this.manager = manager;
 		this.playerId = playerId;
 		this.friendWith = friendWith;
 		this.requestsGot = requestsGot;
 		this.requestsSent = requestsSent;
+		this.notifyFriendshipEnded = notifyFriendshipEnded;
+		this.notifyRequestDenied = notifyRequestDenied;
+		this.notifyRequestAccepted = notifyRequestAccepted;
 		this.config = new SoftReference<>( cfg );
 	}
 
