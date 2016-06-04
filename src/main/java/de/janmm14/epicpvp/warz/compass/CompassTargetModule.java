@@ -14,8 +14,21 @@ public class CompassTargetModule extends Module<CompassTargetModule> implements 
 	private final Map<UUID, CompassTarget> selectedTargets = new HashMap<>();
 
 	public CompassTargetModule(WarZ plugin) {
-		super( plugin );
+		super( plugin, CompassTargetSwitchListener::new );
 		plugin.getServer().getScheduler().runTaskTimerAsynchronously( plugin, this, 20, 10 );
+	}
+
+	public CompassTarget getCompassTarget(Player plr) {
+		CompassTarget compassTarget = selectedTargets.get( plr.getUniqueId() );
+		if (compassTarget == null) {
+			setCompassTarget( plr, CompassTarget.ENEMY );
+			return CompassTarget.ENEMY;
+		}
+		return compassTarget;
+	}
+
+	public void setCompassTarget(Player plr, CompassTarget target) {
+		selectedTargets.put( plr.getUniqueId(), target );
 	}
 
 	@Override
@@ -25,10 +38,8 @@ public class CompassTargetModule extends Module<CompassTargetModule> implements 
 	@Override
 	public void run() {
 		for ( Player plr : getPlugin().getServer().getOnlinePlayers() ) {
-			CompassTarget target = selectedTargets.get( plr.getUniqueId() );
-			if ( target != null ) {
-				plr.setCompassTarget( target.getTarget( this, plr ) );
-			}
+			CompassTarget target = getCompassTarget( plr );
+			plr.setCompassTarget( target.getTarget( this, plr ) );
 		}
 	}
 }
