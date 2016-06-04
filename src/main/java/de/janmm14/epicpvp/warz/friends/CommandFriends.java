@@ -210,19 +210,49 @@ public class CommandFriends implements TabExecutor {
 				if ( PlayerFriendRelation.areFriends( manager, initiator, targetPlayerId ) ) {
 					FriendInfo targetInfo = manager.get( targetPlayerId );
 
-					targetInfo.getFriendWith().remove( initiator.getPlayerId() );
-					targetInfo.setDirty();
-					initiator.getFriendWith().remove( targetPlayerId );
-					initiator.setDirty();
-
-					msg( plr, module.getPrefix() + "Du hast die Freundschaft mit §6" + targetProfile.getName() + "§7 aufgelöst." );
-					Player targetPlr = targetInfo.getPlayer();
-					if ( targetPlr != null ) {
-						msg( targetPlr, module.getPrefix() + "§6" + plrName + "§c hat eure Freundschaft aufgelöst." );
-					} else {
-						targetInfo.getNotifyFriendshipEnded().add( initiator.getPlayerId() );
-						targetInfo.setDirty();
+					Player targetPlr_ = targetInfo.getPlayer();
+					if ( targetPlr_ != null ) {
+						msg( targetPlr_, module.getPrefix() + "§6" + plrName + "§c hat eure Freundschaft aufgelöst. Dies tritt in 30 Sekunden in Kraft." );
 					}
+
+					module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
+						Player targetPlr = targetInfo.getPlayer();
+						if ( targetPlr != null ) {
+							msg( targetPlr, module.getPrefix() + "§6" + plrName + "§c hat eure Freundschaft aufgelöst. Dies tritt in 20 Sekunden in Kraft." );
+						}
+					}, ( 30 - 20 ) * 20 );
+					module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
+						Player targetPlr = targetInfo.getPlayer();
+						if ( targetPlr != null ) {
+							msg( targetPlr, module.getPrefix() + "§6" + plrName + "§c hat eure Freundschaft aufgelöst. Dies tritt in 10 Sekunden in Kraft." );
+						}
+					}, ( 30 - 10 ) * 20 );
+
+					for ( int i = 5; i > 0; i++ ) {
+						int iCopy = i;
+						module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
+							Player targetPlr = targetInfo.getPlayer();
+							if ( targetPlr != null ) {
+								msg( targetPlr, module.getPrefix() + "§6" + plrName + "§c hat eure Freundschaft aufgelöst. Dies tritt in " + iCopy + " Sekunden in Kraft." );
+							}
+						}, ( 30 - i ) * 20 );
+					}
+
+					module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
+						targetInfo.getFriendWith().remove( initiator.getPlayerId() );
+						targetInfo.setDirty();
+						initiator.getFriendWith().remove( targetPlayerId );
+						initiator.setDirty();
+
+						msg( plr, module.getPrefix() + "Du hast die Freundschaft mit §6" + targetProfile.getName() + "§7 aufgelöst." );
+						Player targetPlr = targetInfo.getPlayer();
+						if ( targetPlr != null ) {
+							msg( targetPlr, module.getPrefix() + "§6" + plrName + "§c hat eure Freundschaft aufgelöst." );
+						} else {
+							targetInfo.getNotifyFriendshipEnded().add( initiator.getPlayerId() );
+							targetInfo.setDirty();
+						}
+					}, 30 * 20 );
 				}
 				return msg( plr, module.getPrefix() + " §cDu bist mit §6" + targetProfile.getName() + " §cnicht befreundet und weder er noch du haben eine Freundschaftsanfrage geschickt." );
 			}
