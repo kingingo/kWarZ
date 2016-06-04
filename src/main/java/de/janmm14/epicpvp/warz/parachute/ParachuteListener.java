@@ -26,7 +26,7 @@ public class ParachuteListener implements Listener {
 	private final ParachuteModule module;
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void inter(PlayerInteractEvent event) {
+	public void onInteract(PlayerInteractEvent event) {
 		Player plr = event.getPlayer();
 		ItemStack itemInHand = plr.getItemInHand();
 		if ( itemInHand != null && itemInHand.getType() == Material.FEATHER ) {
@@ -91,7 +91,7 @@ public class ParachuteListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void damage(EntityDamageByEntityEvent event) {
+	public void onDamage(EntityDamageByEntityEvent event) {
 		Entity entity = event.getEntity();
 		Entity plrPassenger = entity.getPassenger();
 		if ( entity.getType() == EntityType.CHICKEN ) {
