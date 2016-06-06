@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import de.janmm14.epicpvp.warz.Module;
@@ -20,7 +21,7 @@ public class CompassTargetModule extends Module<CompassTargetModule> implements 
 
 	public CompassTarget getCompassTarget(Player plr) {
 		CompassTarget compassTarget = selectedTargets.get( plr.getUniqueId() );
-		if (compassTarget == null) {
+		if ( compassTarget == null ) {
 			setCompassTarget( plr, CompassTarget.ENEMY );
 			return CompassTarget.ENEMY;
 		}
@@ -39,7 +40,11 @@ public class CompassTargetModule extends Module<CompassTargetModule> implements 
 	public void run() {
 		for ( Player plr : getPlugin().getServer().getOnlinePlayers() ) {
 			CompassTarget target = getCompassTarget( plr );
-			plr.setCompassTarget( target.getTarget( this, plr ) );
+			Location targetLoc = target.getTarget( this, plr );
+			if ( targetLoc == null ) {
+				targetLoc = plr.getLocation().subtract( plr.getLocation().getDirection().setY( 0 ).normalize().multiply( -3 ) );
+			}
+			plr.setCompassTarget( targetLoc );
 		}
 	}
 }

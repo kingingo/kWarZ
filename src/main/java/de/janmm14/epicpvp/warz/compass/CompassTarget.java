@@ -32,6 +32,9 @@ public enum CompassTarget {
 			double distanceSquared = Double.MAX_VALUE;
 			Player nearestEnemy = null;
 			for ( Player possTarget : Bukkit.getOnlinePlayers() ) {
+				if ( possTarget.getUniqueId().equals( plr.getUniqueId() ) ) {
+					continue;
+				}
 				if ( !plr.getWorld().equals( possTarget.getWorld() ) ) {
 					continue;
 				}
@@ -49,6 +52,9 @@ public enum CompassTarget {
 
 		@Override
 		Location getTargetByOtherMove(@NonNull CompassTargetModule module, @NonNull Player moved, @NonNull Player plr) {
+			if ( moved.getUniqueId().equals( plr.getUniqueId() ) ) {
+				return null;
+			}
 			if ( !moved.getWorld().equals( plr.getWorld() ) ) {
 				return null;
 			}
@@ -69,6 +75,9 @@ public enum CompassTarget {
 			double distanceSquared = Double.MAX_VALUE;
 			Player nearestFriend = null;
 			for ( Player possTarget : Bukkit.getOnlinePlayers() ) {
+				if ( possTarget.getUniqueId().equals( plr.getUniqueId() ) ) {
+					continue;
+				}
 				if ( !plr.getWorld().equals( possTarget.getWorld() ) ) {
 					continue;
 				}
@@ -88,6 +97,9 @@ public enum CompassTarget {
 
 		@Override
 		Location getTargetByOtherMove(@NonNull CompassTargetModule module, @NonNull Player moved, @NonNull Player plr) {
+			if ( moved.getUniqueId().equals( plr.getUniqueId() ) ) {
+				return null;
+			}
 			if ( !moved.getWorld().equals( plr.getWorld() ) ) {
 				return null;
 			}

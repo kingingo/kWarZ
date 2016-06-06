@@ -19,6 +19,7 @@ public class ModuleManager {
 	public void discoverAndLoadModules() {
 		Reflections reflections = new Reflections( getClass().getPackage().getName() );
 		Set<Class<? extends Module>> moduleClasses = reflections.getSubTypesOf( Module.class );
+
 		for ( Class<? extends Module> clazz : moduleClasses ) {
 			String moduleName = clazz.getSimpleName();
 			try {

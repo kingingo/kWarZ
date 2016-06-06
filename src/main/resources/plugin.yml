@@ -4,7 +4,7 @@ description: ${project.description}
 author: ${bukkit.pluginyml.author}
 main: ${bukkit.pluginyml.main}
 
-depend: [CrackShot, WorldGuard]
+depend: [CrackShot, WorldGuard, kCore, DatenClient]
 
 commands:
   resourcepack:
@@ -12,7 +12,7 @@ commands:
     aliases: [rp]
     permission: warz.command.resourcepack.use
   warz:
-    description: Get the resource pack
+    description: Main WarZ command
     permission: warz.command.warz.see
 
 permissions:

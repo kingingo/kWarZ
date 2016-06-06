@@ -3,6 +3,7 @@ package de.janmm14.epicpvp.warz.itemrename;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.HumanEntity;
@@ -77,13 +78,13 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 			if ( renameInventory( player ) ) {
 				player.updateInventory();
 			}
-		}, 5);
+		}, 5 );
 	}
 
 	private boolean renameInventory(HumanEntity player) {
 		ItemStack[] contents = player.getInventory().getContents();
 		boolean renamed = renameInventory0( contents );
-		if (renamed) {
+		if ( renamed ) {
 			player.getInventory().setContents( contents );
 		}
 		return renamed;
@@ -94,7 +95,7 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 		for ( int i = 0; i < contents.length; i++ ) {
 			ItemStack is = contents[ i ];
 			if ( renameIfNeeded( is ) ) {
-				contents[i] = is;
+				contents[ i ] = is;
 				renamed = true;
 			}
 		}
@@ -103,6 +104,9 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 
 	@SuppressWarnings("deprecation")
 	private boolean renameIfNeeded(ItemStack is) {
+		if ( is == null ) {
+			return false;
+		}
 		int id = is.getTypeId();
 		byte data = is.getData().getData();
 		String name = itemNames.get( id + ":" + data );
@@ -111,7 +115,7 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 		}
 		if ( name != null ) {
 			ItemMeta im = is.getItemMeta();
-			im.setDisplayName( name );
+			im.setDisplayName( ChatColor.translateAlternateColorCodes( '&', name ) );
 			is.setItemMeta( im );
 			return true;
 		}

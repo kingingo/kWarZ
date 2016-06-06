@@ -19,13 +19,12 @@ import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
 import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class WarZListener implements Listener {
 
-	private WarZ plugin;
-
-	public WarZListener(WarZ plugin) {
-		this.plugin = plugin;
-	}
+	private final WarZ plugin;
 
 	@EventHandler
 	public void onBlockBurn(BlockBurnEvent ev) {
@@ -82,7 +81,7 @@ public class WarZListener implements Listener {
 			return;
 		}
 		String cmd = "";
-		if ( ev.getMessage().contains( " " ) ) {
+		if ( ev.getMessage().indexOf( ' ' ) != -1) {
 			String[] parts = ev.getMessage().split( " " );
 			cmd = parts[ 0 ];
 		} else {
