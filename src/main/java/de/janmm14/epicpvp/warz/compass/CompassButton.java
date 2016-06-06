@@ -33,6 +33,7 @@ public class CompassButton extends ButtonCopy{
 				
 				if(ptarget!=target){
 					module.setCompassTarget(player, target);
+					player.closeInventory();
 					inv.open(player, UtilInv.getBase());
 				}
 			}
