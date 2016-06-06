@@ -49,11 +49,11 @@ public class WarZ extends JavaPlugin {
 			world.setAutoSave( false );
 		}
 
+		setupKStuff();
+
 		moduleManager = new ModuleManager( this );
 		moduleManager.discoverAndLoadModules();
 		getServer().getPluginManager().registerEvents( new WarZListener( this ), this );
-
-		setupKStuff();
 
 		saveConfig();
 	}
