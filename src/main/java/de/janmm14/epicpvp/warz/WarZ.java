@@ -7,13 +7,13 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import dev.wolveringer.bukkit.permissions.GroupTyp;
 import dev.wolveringer.client.connection.ClientType;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.AACHack.AACHack;
 import eu.epicpvp.kcore.Listener.AntiCrashListener.AntiCrashListener;
 import eu.epicpvp.kcore.Listener.Chat.ChatListener;
 import eu.epicpvp.kcore.MySQL.MySQL;
-import eu.epicpvp.kcore.Permission.Group.GroupTyp;
 import eu.epicpvp.kcore.Permission.PermissionManager;
 import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
 import eu.epicpvp.kcore.Util.UtilServer;
@@ -71,7 +71,7 @@ public class WarZ extends JavaPlugin {
 
 		new PermissionManager( this, GroupTyp.WARZ );
 		StatsManagerRepository.getStatsManager( GameType.WARZ );
-		new AACHack( "WARZ", UtilServer.getMysql(), getClient() );
+		new AACHack( "WARZ" );
 
 		new ChatListener(this, UtilServer.getPermissionManager());
 		new AntiCrashListener(UtilServer.getClient(), UtilServer.getMysql());
