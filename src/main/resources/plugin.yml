@@ -3,7 +3,7 @@ version: ${project.version}-${build.number}
 description: ${project.description}
 author: ${bukkit.pluginyml.author}
 main: ${bukkit.pluginyml.main}
-
+load: STARTUP
 depend: [CrackShot, WorldGuard, kCore, DatenClient]
 
 commands:

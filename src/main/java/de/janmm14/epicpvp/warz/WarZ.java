@@ -5,12 +5,14 @@ import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.wolveringer.bukkit.permissions.GroupTyp;
 import dev.wolveringer.client.connection.ClientType;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.AACHack.AACHack;
+import eu.epicpvp.kcore.ChunkGenerator.CleanroomChunkGenerator;
 import eu.epicpvp.kcore.Listener.AntiCrashListener.AntiCrashListener;
 import eu.epicpvp.kcore.Listener.Chat.ChatListener;
 import eu.epicpvp.kcore.MySQL.MySQL;
@@ -47,6 +49,7 @@ public class WarZ extends JavaPlugin {
 		if ( world != null ) {
 			getLogger().info( "Disabled automatic saving of world 'world', please do not use /save-all /save-on or any plugin to save worlds." );
 			world.setAutoSave( false );
+			world.setSpawnLocation(0, 90, 0);
 		}
 
 		setupKStuff();
@@ -75,6 +78,10 @@ public class WarZ extends JavaPlugin {
 
 		new ChatListener(this, UtilServer.getPermissionManager());
 		new AntiCrashListener(UtilServer.getClient(), UtilServer.getMysql());
+	}
+	
+	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id){
+		return new CleanroomChunkGenerator("1,bedrock,31,dirt,2,water");
 	}
 
 	public void reloadCfg() {
