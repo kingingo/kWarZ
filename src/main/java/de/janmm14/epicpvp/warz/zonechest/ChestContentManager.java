@@ -15,7 +15,10 @@ import org.bukkit.util.BlockVector;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.RemovalListener;
+import com.google.common.cache.RemovalNotification;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -25,32 +28,43 @@ public class ChestContentManager implements Runnable {
 
 	private final ZoneAndChestsModule module;
 	private final Cache<BlockVector, Inventory> createdInventories = CacheBuilder.newBuilder()
-		.expireAfterWrite( 5, TimeUnit.MINUTES )
+		.expireAfterWrite( REFILL_SECONDS, TimeUnit.SECONDS )
+		.removalListener( new RemovalListener<BlockVector, Inventory>() {
+			@Override
+			public void onRemoval(@NonNull RemovalNotification<BlockVector, Inventory> notification) {
+				Inventory inventory = notification.getValue();
+				if (inventory != null) {
+					inventory.getViewers().forEach( HumanEntity::closeInventory );
+					inventory.clear();
+				}
+			}
+		} )
 		.build();
 
 	private int secsUntilReset = REFILL_SECONDS;
 
 	@Override
 	public void run() {
-		if ( secsUntilReset <= 0 ) {
+		sendRefillTimer( secsUntilReset );
+		if ( secsUntilReset == REFILL_SECONDS ) {
 			createdInventories.asMap()
 				.forEach( (blockVector, inventory) -> {
 					inventory.getViewers().forEach( HumanEntity::closeInventory );
 					inventory.clear();
 				} );
 			createdInventories.invalidateAll();
-			sendRefillTimer( secsUntilReset );
+			secsUntilReset--;
+		} else if (secsUntilReset <= 1) {
 			secsUntilReset = REFILL_SECONDS;
 		} else {
 			secsUntilReset--;
-			sendRefillTimer( secsUntilReset );
 		}
 	}
 
 	private void sendRefillTimer(int secsUntilReset) {
 		for ( Player plr : module.getPlugin().getServer().getOnlinePlayers() ) {
 			plr.setLevel( secsUntilReset );
-			if ( secsUntilReset == 0 ) {
+			if ( secsUntilReset == REFILL_SECONDS ) {
 				plr.playSound( plr.getLocation(), Sound.LEVEL_UP, 1, 1 );
 			}
 		}

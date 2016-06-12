@@ -3,6 +3,10 @@ package de.janmm14.epicpvp.warz.fishingrod;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,7 +25,7 @@ public class FishingRodListener implements Listener {
 
 	private final FishingRodModule module;
 	private final Cache<UUID, Object> noFallDamage = CacheBuilder.newBuilder()
-		.expireAfterWrite( 30, TimeUnit.SECONDS )  //if he did not got fall damage by the velocity, remove him after some time
+		.expireAfterWrite( 10, TimeUnit.SECONDS )  //if he did not got fall damage by the velocity, remove him after some time
 		.initialCapacity( 32 )
 		.concurrencyLevel( 1 ) //events are sync
 		.build();
@@ -29,11 +33,33 @@ public class FishingRodListener implements Listener {
 
 	@EventHandler
 	public void onFishingRod(PlayerFishEvent event) {
-		if ( event.getState() == PlayerFishEvent.State.IN_GROUND ) {
-			noFallDamage.put( event.getPlayer().getUniqueId(), DUMMY );
+		if ( event.getState() == PlayerFishEvent.State.IN_GROUND || event.getState() == PlayerFishEvent.State.FAILED_ATTEMPT ) {
+			Location location = event.getHook().getLocation();
+			boolean cancel = true;
+			for ( BlockFace face : BlockFace.values() ) {
+				if ( location.getBlock().getRelative( face ).getType() != Material.AIR ) {
+					cancel = false;
+					break;
+				}
+			}
+			if (cancel) {
+				return;
+			}
 
-			Vector diffVector = event.getHook().getLocation().add( 0, 1.8, 0 ).toVector().subtract( event.getPlayer().getLocation().toVector() );
-			event.getPlayer().setVelocity( diffVector.normalize().multiply( 2 ) );
+			Vector diffVector = location.toVector().subtract( event.getPlayer().getLocation().toVector() );
+			if (diffVector.lengthSquared() < 3 * 3) {
+				return;
+			}
+			noFallDamage.put( event.getPlayer().getUniqueId(), DUMMY );
+			double y = diffVector.getY();
+			if (y < .5) {
+				y = .5;
+			}
+			if ( y > 2 ) {
+				y = 2;
+			}
+			Vector normalize = diffVector.setY( 0 ).normalize();
+			event.getPlayer().setVelocity( normalize.setY( y / 5 ).multiply( 5 ) );
 		}
 	}
 

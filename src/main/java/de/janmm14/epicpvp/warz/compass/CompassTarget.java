@@ -125,6 +125,7 @@ public enum CompassTarget {
 			double minDistSquared = Double.MAX_VALUE;
 			Location nearest = null;
 			for ( Zone zone : zones ) {
+
 				Vector zoneMiddle = zone.getMiddle();
 				double distSquared = zoneMiddle.distanceSquared( plrVector );
 				if ( distSquared < minDistSquared ) {

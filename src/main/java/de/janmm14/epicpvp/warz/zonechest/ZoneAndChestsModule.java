@@ -87,6 +87,9 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 
 	@Nullable
 	public Zone getZone(String name) {
+		if (name.contains( "_" )) {
+			name = name.substring( 0, name.indexOf( '_' ) );
+		}
 		return zones.get( name );
 	}
 
@@ -97,7 +100,8 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 			.getApplicableRegions( location )
 			.getRegions()
 			.stream()
-			.sorted() //ProtectedRegion has already an inverted sort on getPriority() - it should be the highest priority first
+			.filter( Objects::nonNull )
+			.sorted((o1, o2) -> Integer.compare( o1.getPriority(), o2.getPriority() ) ) //ProtectedRegion has already an inverted sort on getPriority() - it should be the highest priority first
 			.map( (protectedRegion) -> getZone( protectedRegion.getId() ) )
 			.filter( Objects::nonNull )
 			.findFirst()
