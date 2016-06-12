@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.util.BlockVector;
@@ -17,6 +18,9 @@ public class ChestOpenListener implements Listener {
 
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
+		if (event.getPlayer().isOp() && event.getAction() == Action.LEFT_CLICK_BLOCK) {
+			return;
+		}
 		if ( event.hasBlock() && ( event.getClickedBlock().getType() == Material.CHEST || event.getClickedBlock().getType() == Material.TRAPPED_CHEST ) ) {
 
 			Player plr = event.getPlayer();
@@ -25,8 +29,10 @@ public class ChestOpenListener implements Listener {
 			CustomChestInventoryHolder owner = new CustomChestInventoryHolder( blockVector );
 			Inventory inv = module.getChestContentManager().getInventory( plr.getWorld(), blockVector, owner );
 			if ( inv != null ) {
+				System.out.println("Opening custom inventory for " + blockVector);
 				event.setCancelled( true );
 				owner.setInventory( inv );
+				plr.openInventory( inv );
 			}
 		}
 	}

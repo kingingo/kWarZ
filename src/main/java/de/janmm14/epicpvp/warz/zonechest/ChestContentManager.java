@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.HumanEntity;
@@ -17,6 +18,8 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
+
+import de.janmm14.epicpvp.warz.util.random.RandomUtil;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -73,6 +76,7 @@ public class ChestContentManager implements Runnable {
 	public Inventory getInventory(World world, BlockVector blockVector, CustomChestInventoryHolder owner) {
 		Inventory inv = createdInventories.getIfPresent( blockVector );
 		if ( inv == null ) {
+			System.out.println("Creating inventory for " + blockVector);
 			inv = fillInventory( world, blockVector, Bukkit.createInventory( owner, InventoryType.CHEST ) );
 			if ( inv != null ) {
 				createdInventories.put( blockVector, inv );
@@ -81,6 +85,7 @@ public class ChestContentManager implements Runnable {
 		return inv;
 	}
 
+	@SuppressWarnings("ConcatenationWithEmptyString")
 	private Inventory fillInventory(World world, BlockVector blockVector, Inventory inv) {
 		Random random = new Random();
 		Zone zone = module.getZone( world, blockVector );
@@ -88,6 +93,35 @@ public class ChestContentManager implements Runnable {
 			return null;
 		}
 		for ( ItemStack item : zone.getRandomChoosenChestItems() ) {
+			if ( item.getType() == Material.SNOW_BALL ) {
+				String s = String.valueOf( item.getAmount() );
+				int lower, upper;
+				switch ( s.length() ) {
+					case 2: {
+						char[] chars = s.toCharArray();
+						lower = Integer.valueOf( "" + chars[ 0 ] );
+						upper = Integer.valueOf( "" + chars[ 1 ] );
+						break;
+					}
+					case 3: {
+						char[] chars = s.toCharArray();
+						lower = Integer.valueOf( "" + chars[ 0 ] );
+						upper = Integer.valueOf( "" + chars[ 1 ] + chars[ 2 ] );
+						break;
+					}
+					case 4: {
+						char[] chars = s.toCharArray();
+						lower = Integer.valueOf( "" + chars[ 0 ] + chars[ 1 ] );
+						upper = Integer.valueOf( "" + chars[ 2 ] + chars[ 3 ] );
+						break;
+					}
+					default: {
+						lower = 1;
+						upper = 1;
+					}
+				}
+				item.setAmount( RandomUtil.getRandomInt( lower, upper ) );
+			}
 			int pos = random.nextInt( inv.getSize() );
 			inv.setItem( pos, item );
 		}
