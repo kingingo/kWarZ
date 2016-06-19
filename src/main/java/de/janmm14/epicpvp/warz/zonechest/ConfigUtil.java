@@ -36,7 +36,11 @@ public class ConfigUtil {
 			item = section.getItemStack( "item" );
 		} catch ( Exception ex ) {
 			WarZ.getInstance().getLogger().log( Level.SEVERE, "Could not read itemstack from " + section.getCurrentPath() + "!", ex );
-			item = new ItemStack( Material.BEDROCK, 42 );
+			item = new ItemStack( Material.STONE, 42 );
+		}
+		if (item == null) {
+			WarZ.getInstance().getLogger().log( Level.SEVERE, "Could not read itemstack from " + section.getCurrentPath() + "!" );
+			item = new ItemStack( Material.STONE, 42 );
 		}
 		double probability = section.getDouble( "probability" );
 		return new SimpleRandomThingHolder<>( item, probability );

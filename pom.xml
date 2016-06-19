@@ -10,6 +10,11 @@
 
     <name>WarZ</name>
     <description>Main plugin for WarZ</description>
+    <url>https://gitlab.com/Janmm14/WarZ</url>
+
+    <organization>
+        <name>ClashMC</name>
+    </organization>
 
     <build>
         <finalName>WarZ</finalName>
@@ -56,6 +61,40 @@
                     </relocations>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <!--suppress MavenModelInspection -->
+                            <Implementation-Version>${project.version}-git-${githash}</Implementation-Version>
+                        </manifestEntries>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.lukegb.mojo</groupId>
+                <artifactId>gitdescribe-maven-plugin</artifactId>
+                <version>3.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>gitdescribe</goal>
+                        </goals>
+                        <id>git-describe</id>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <descriptionProperty>githash</descriptionProperty>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -200,10 +239,10 @@
     </distributionManagement>
 
     <repositories>
-        <!--<repository>-->
-            <!--<id>epicpvp-all</id>-->
-            <!--<url>http://149.202.150.185:8081/artifactory/epicpvp-all/</url>-->
-        <!--</repository>-->
+        <repository>
+            <id>epicpvp-all</id>
+            <url>http://149.202.150.185:8081/artifactory/epicpvp-all/</url>
+        </repository>
         <repository>
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>
