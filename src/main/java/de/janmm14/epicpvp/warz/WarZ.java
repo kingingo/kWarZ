@@ -31,9 +31,15 @@ import static eu.epicpvp.kcore.Util.UtilServer.getClient;
 public class WarZ extends JavaPlugin {
 
 	public static boolean DEBUG;
+	@Getter
+	private static WarZ instance;
 	private ModuleManager moduleManager;
 	private UuidNameConverter uuidNameConverter = new UuidNameConverter();
 	private LanguageConverter languageConverter = new LanguageConverter();
+
+	public WarZ() {
+		instance = this;
+	}
 
 	@Override
 	public void onEnable() {
@@ -79,7 +85,13 @@ public class WarZ extends JavaPlugin {
 		new ChatListener(this, UtilServer.getPermissionManager());
 		new AntiCrashListener(UtilServer.getClient(), UtilServer.getMysql());
 	}
-	
+
+	@Override
+	public void onDisable() {
+		instance = null;
+	}
+
+	@Override
 	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id){
 		return new CleanroomChunkGenerator("1,bedrock,31,dirt,2,water");
 	}

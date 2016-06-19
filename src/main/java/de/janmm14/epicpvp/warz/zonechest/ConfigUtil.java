@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
@@ -34,8 +35,8 @@ public class ConfigUtil {
 		try {
 			item = section.getItemStack( "item" );
 		} catch ( Exception ex ) {
-			WarZ.getPlugin(WarZ.class).getLogger().log( Level.SEVERE, "Could not read itemstack from " + section.getCurrentPath() + "!", ex );
-			item = null;
+			WarZ.getInstance().getLogger().log( Level.SEVERE, "Could not read itemstack from " + section.getCurrentPath() + "!", ex );
+			item = new ItemStack( Material.BEDROCK, 42 );
 		}
 		double probability = section.getDouble( "probability" );
 		return new SimpleRandomThingHolder<>( item, probability );
