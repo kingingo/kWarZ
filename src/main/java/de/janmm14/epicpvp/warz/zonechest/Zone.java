@@ -52,8 +52,8 @@ public class Zone {
 		ConfigurationSection itemSection = section.getConfigurationSection( "itemgroups" );
 
 		List<RandomThingGroupHolder<ItemStack>> itemGroups = itemSection.getKeys( false ).stream()
-			.map( key -> ConfigUtil.readItemStackGroup( itemSection.getConfigurationSection( key ) ) )
-			.sorted( (o1, o2) -> -Double.compare( o1.getProbability(), o2.getProbability() ) ) //sort reverse probability - highest first
+			.map( key -> ConfigUtil.readItemStackRandomGroup( itemSection.getConfigurationSection( key ) ) )
+			.sorted( (o1, o2) -> Double.compare( o2.getProbability(), o1.getProbability() ) ) //sort reverse probability - highest first
 			.collect( Collectors.toList() );
 
 		return new Zone( name, itemGroups, section.getInt( "itemgroup_minamount" ), section.getInt( "itemgroup_maxamount" ) );
