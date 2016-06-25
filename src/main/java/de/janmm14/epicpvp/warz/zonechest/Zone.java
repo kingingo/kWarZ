@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
@@ -28,13 +30,14 @@ import lombok.ToString;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Zone {
 
-	private final String name;
-	private final List<RandomThingGroupHolder<ItemStack>> items;
+	private final String worldguardName;
+	private final String zoneName;
+	private final List<RandomThingGroupHolder<ItemStack>> itemGroups;
 	private final int minItemGroups;
 	private final int maxItemGroups;
 
 	public List<ItemStack> getRandomChoosenChestItems() {
-		List<RandomThingGroupHolder<ItemStack>> currItemgroups = this.items;
+		List<RandomThingGroupHolder<ItemStack>> currItemgroups = this.itemGroups;
 		List<ItemStack> result = new ArrayList<>();
 		int randomInt = RandomUtil.getRandomInt( minItemGroups, maxItemGroups );
 		for ( int i = 0; i < randomInt; i++ ) {
@@ -48,7 +51,7 @@ public class Zone {
 		return result;
 	}
 
-	public static Zone byConfigurationSection(String name, ConfigurationSection section) {
+	public static Zone byConfigurationSection(String worldguardName, String zoneName, ConfigurationSection section) {
 		ConfigurationSection itemSection = section.getConfigurationSection( "itemgroups" );
 
 		List<RandomThingGroupHolder<ItemStack>> itemGroups = itemSection.getKeys( false ).stream()
@@ -56,18 +59,18 @@ public class Zone {
 			.sorted( (o1, o2) -> Double.compare( o2.getProbability(), o1.getProbability() ) ) //sort reverse probability - highest first
 			.collect( Collectors.toList() );
 
-		return new Zone( name, itemGroups, section.getInt( "itemgroup_minamount" ), section.getInt( "itemgroup_maxamount" ) );
+		return new Zone( worldguardName, zoneName, itemGroups, section.getInt( "itemgroup_minamount" ), section.getInt( "itemgroup_maxamount" ) );
 	}
 
-	public Vector getMiddle() {
+	public Vector calculateMiddle() {
 		ProtectedRegion worldGuardRegion = WorldGuardPlugin.inst()
 			.getRegionManager( Bukkit.getWorld( "world" ) )
-			.getRegion( name );
+			.getRegion( worldguardName );
 		if ( worldGuardRegion == null ) {
-			new IllegalStateException( "Could not find worldedit region " + name + " while searching for middle point" ).printStackTrace();
+			new IllegalStateException( "Could not find worldedit region " + worldguardName + " (" + zoneName + ") while searching for middle point" ).printStackTrace();
 			return Bukkit.getWorld( "world" ).getSpawnLocation().toVector();
 		}
-		com.sk89q.worldedit.Vector middle = worldGuardRegion.getMaximumPoint().subtract( worldGuardRegion.getMinimumPoint() );
+		com.sk89q.worldedit.Vector middle = com.sk89q.worldedit.Vector.getMidpoint( worldGuardRegion.getMinimumPoint(), worldGuardRegion.getMaximumPoint() );
 		return new Vector( middle.getX(), middle.getY(), middle.getZ() );
 	}
 }

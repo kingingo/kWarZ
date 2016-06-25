@@ -2,11 +2,11 @@ package de.janmm14.epicpvp.warz.zonechest;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nullable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -17,12 +17,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.BlockVector;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 
 import lombok.Getter;
+import lombok.NonNull;
 
 public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 
@@ -38,7 +42,7 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 		getPlugin().getServer().getScheduler().runTaskTimerAsynchronously( getPlugin(), chestContentManager = new ChestContentManager( this ), 1 * 20, 1 * 20 );
 	}
 
-	private Map<String, Zone> zones = new HashMap<>();
+	private Multimap<String, Zone> zones = HashMultimap.create( 6, 1 );
 
 	private static ItemStack getExampleItemStackWithEverything() {
 		ItemStack is = new ItemStack( Material.WOOD_SWORD, 2, ( short ) 21 );
@@ -74,23 +78,43 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname2.item", getExampleItemStackWithEverything() );
 		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname2.probability", .3 );
 
-		//TODO load zones
 		ConfigurationSection section = getPlugin().getConfig().getConfigurationSection( PATH_ZONES );
 
-		for ( String key : section.getKeys( false ) ) {
-			if ( key.equalsIgnoreCase( "ignoredExampleZone" ) || key.equalsIgnoreCase( "info" ) ) {
-				continue;
-			}
-			zones.put( key, Zone.byConfigurationSection( key, section.getConfigurationSection( key ) ) );
-		}
+		WorldGuardPlugin.inst()
+			.getRegionManager( Bukkit.getWorlds().get( 0 ) )
+			.getRegions().entrySet()
+			.stream()
+			.filter( Objects::nonNull )
+			.map( Map.Entry::getValue )
+			.filter( Objects::nonNull )
+			.forEach( region -> {
+				String worldguardName = region.getId();
+				String zoneName = covertToZoneName( worldguardName );
+				if ( section.contains( zoneName ) ) {
+					zones.put( zoneName, Zone.byConfigurationSection( worldguardName, zoneName, section.getConfigurationSection( zoneName ) ) );
+				}
+			} );
 	}
 
 	@Nullable
 	public Zone getZone(String name) {
-		if (name.contains( "_" )) {
-			name = name.substring( 0, name.indexOf( '_' ) );
+		String zoneName = covertToZoneName( name );
+		Collection<Zone> zones = this.zones.get( zoneName );
+
+		if ( name.equalsIgnoreCase( zoneName ) )
+			return Iterables.getFirst( zones, null );
+		else
+			return zones.stream()
+				.filter( zone -> zone.getWorldguardName().equalsIgnoreCase( name ) )
+				.findFirst().orElse( null );
+	}
+
+	@NonNull
+	private static String covertToZoneName(String worldguardName) {
+		if ( worldguardName.contains( "_" ) ) {
+			worldguardName = worldguardName.substring( 0, worldguardName.indexOf( '_' ) );
 		}
-		return zones.get( name );
+		return worldguardName;
 	}
 
 	@Nullable
@@ -101,8 +125,8 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 			.getRegions()
 			.stream()
 			.filter( Objects::nonNull )
-			.sorted((o1, o2) -> Integer.compare( o1.getPriority(), o2.getPriority() ) ) //ProtectedRegion has already an inverted sort on getPriority() - it should be the highest priority first
-			.map( (protectedRegion) -> getZone( protectedRegion.getId() ) )
+			.sorted( (o1, o2) -> Integer.compare( o1.getPriority(), o2.getPriority() ) ) //invert the priority thing because its easier to setup
+			.map( (region) -> getZone( region.getId() ) )
 			.filter( Objects::nonNull )
 			.findFirst()
 			.orElse( null );

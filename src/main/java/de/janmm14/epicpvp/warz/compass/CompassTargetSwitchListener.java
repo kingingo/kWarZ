@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -14,10 +13,6 @@ import eu.epicpvp.kcore.Inventory.Inventory.InventoryCopy;
 import eu.epicpvp.kcore.Util.InventorySize;
 import eu.epicpvp.kcore.Util.UtilInv;
 import eu.epicpvp.kcore.Util.UtilItem;
-
-import de.janmm14.epicpvp.warz.WarZ;
-import de.janmm14.epicpvp.warz.zonechest.Zone;
-import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
 
 public class CompassTargetSwitchListener implements Listener {
 
@@ -43,17 +38,5 @@ public class CompassTargetSwitchListener implements Listener {
 
 	private void openSelectionInventory(Player plr) {
 		this.selectionInventory.open( plr, UtilInv.getBase() );
-	}
-
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onChat(AsyncPlayerChatEvent event) {
-		if (event.getMessage().equalsIgnoreCase( "zone" )) {
-			Zone zone = WarZ.getPlugin( WarZ.class ).getModuleManager().getModule( ZoneAndChestsModule.class ).getZone( event.getPlayer().getLocation() );
-			if (zone == null) {
-				event.getPlayer().sendMessage( "Keine Zone definiert" );
-			} else {
-				event.getPlayer().sendMessage( zone.getName() );
-			}
-		}
 	}
 }
