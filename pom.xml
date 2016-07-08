@@ -55,8 +55,8 @@
                             <shadedPattern>de.janmm14.epicpvp.warz.lib.org.reflections</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.javassist</pattern>
-                            <shadedPattern>de.janmm14.epicpvp.warz.lib.org.javassist</shadedPattern>
+                            <pattern>javassist</pattern>
+                            <shadedPattern>de.janmm14.epicpvp.warz.lib.javassist</shadedPattern>
                         </relocation>
                     </relocations>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
