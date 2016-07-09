@@ -19,6 +19,8 @@ import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
 import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 
+import de.janmm14.epicpvp.warz.util.MiscUtil;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -70,7 +72,7 @@ public class WarZListener implements Listener {
 	public void onSignCreate(SignChangeEvent ev) {
 		if ( ev.getPlayer().hasPermission( PermissionType.CHAT_FARBIG.getPermissionToString() ) ) {
 			for ( int i = 0; i < 4; i++ ) {
-				ev.setLine( i, ChatColor.translateAlternateColorCodes( '&', ev.getLine( i ) ) );
+				ev.setLine( i, MiscUtil.translateColorCode( ev.getLine( i ) ) );
 			}
 		}
 	}

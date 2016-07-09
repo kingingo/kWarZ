@@ -137,7 +137,7 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 		String name = Iterables.getFirst( nameAndLore, null );
 		if ( name != null ) {
 			ItemMeta im = is.getItemMeta();
-			im.setDisplayName( ChatColor.translateAlternateColorCodes( '&', name ) );
+			im.setDisplayName( MiscUtil.translateColorCode( name ) );
 			if ( nameAndLore.size() > 1 ) {
 				List<String> lore = nameAndLore.stream()
 					.map( MiscUtil::translateColorCode )

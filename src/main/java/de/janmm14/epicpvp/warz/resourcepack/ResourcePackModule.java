@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
+import de.janmm14.epicpvp.warz.util.MiscUtil;
 
 public class ResourcePackModule extends Module<ResourcePackModule> {
 
@@ -26,7 +27,7 @@ public class ResourcePackModule extends Module<ResourcePackModule> {
 		getPlugin().getConfig().addDefault( PATH_PACK_URL, "https://resourcepacks.epicpvp.org/warz.zip" );
 		getPlugin().getConfig().addDefault( PATH_EMPTY_PACK_URL, "https://resourcepacks.epicpvp.org/empty.zip" );
 		getPlugin().getConfig().addDefault( PATH_INFOTEXT, "&aBitte akzeptiere das Resourcepack!" );
-		getPlugin().getConfig().addDefault( PATH_INFOTEXT_RESET, "&aExperimentell! Dies setzt ein neues Resourcepack, welches das alte überschreiben sollte." );
+		getPlugin().getConfig().addDefault( PATH_INFOTEXT_RESET, "&aExperimentell! Dies setzt ein neues, leeres Resourcepack, welches das alte überschreiben sollte." );
 		getPlugin().getConfig().addDefault( PATH_PACK_DELAY, 2 * 20 );
 	}
 
@@ -60,7 +61,7 @@ public class ResourcePackModule extends Module<ResourcePackModule> {
 
 		String infoText = isResetTest ? getResetInfoText() : getInfoText();
 		if ( !infoText.trim().isEmpty() ) {
-			plr.sendMessage( ChatColor.translateAlternateColorCodes( '&', infoText ) );
+			plr.sendMessage( MiscUtil.translateColorCode( infoText ) );
 		}
 	}
 }

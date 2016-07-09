@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
+import de.janmm14.epicpvp.warz.util.MiscUtil;
 
 public class BrokenLegModule extends Module<BrokenLegModule> {
 
@@ -38,6 +39,6 @@ public class BrokenLegModule extends Module<BrokenLegModule> {
 	}
 
 	public String getNotificationMessage() {
-		return ChatColor.translateAlternateColorCodes( '&', getPlugin().getConfig().getString( PATH_NOTIFICATION_MESSAGE ) );
+		return MiscUtil.translateColorCode( getPlugin().getConfig().getString( PATH_NOTIFICATION_MESSAGE ) );
 	}
 }
