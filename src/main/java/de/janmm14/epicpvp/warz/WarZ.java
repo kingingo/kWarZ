@@ -5,6 +5,8 @@ import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,6 +20,7 @@ import eu.epicpvp.kcore.Listener.Chat.ChatListener;
 import eu.epicpvp.kcore.MySQL.MySQL;
 import eu.epicpvp.kcore.Permission.PermissionManager;
 import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
+import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
 
 import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
@@ -82,6 +85,12 @@ public class WarZ extends JavaPlugin {
 
 		new ChatListener( this, UtilServer.getPermissionManager() );
 		new AntiCrashListener( UtilServer.getClient(), UtilServer.getMysql() );
+
+		//lets try to support reloades
+		for ( Player plr : Bukkit.getOnlinePlayers() ) {
+			StatsManagerRepository.getStatsManager( GameType.WARZ ).join( new PlayerJoinEvent( plr, "" ) );
+			UtilServer.getPermissionManager().loadPlayer( plr, UtilPlayer.getPlayerId( plr ) );
+		}
 	}
 
 	@Override

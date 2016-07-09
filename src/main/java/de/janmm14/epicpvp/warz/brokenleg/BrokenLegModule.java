@@ -1,7 +1,5 @@
 package de.janmm14.epicpvp.warz.brokenleg;
 
-import org.bukkit.ChatColor;
-
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.MiscUtil;

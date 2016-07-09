@@ -1,6 +1,5 @@
 package de.janmm14.epicpvp.warz.resourcepack;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import de.janmm14.epicpvp.warz.Module;
