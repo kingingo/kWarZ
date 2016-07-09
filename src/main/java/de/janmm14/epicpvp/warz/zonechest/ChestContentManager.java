@@ -36,7 +36,7 @@ public class ChestContentManager implements Runnable {
 			@Override
 			public void onRemoval(@NonNull RemovalNotification<BlockVector, Inventory> notification) {
 				Inventory inventory = notification.getValue();
-				if (inventory != null) {
+				if ( inventory != null ) {
 					inventory.getViewers().forEach( HumanEntity::closeInventory );
 					inventory.clear();
 				}
@@ -57,7 +57,7 @@ public class ChestContentManager implements Runnable {
 				} );
 			createdInventories.invalidateAll();
 			secsUntilReset--;
-		} else if (secsUntilReset <= 1) {
+		} else if ( secsUntilReset <= 1 ) {
 			secsUntilReset = REFILL_SECONDS;
 		} else {
 			secsUntilReset--;
@@ -76,7 +76,7 @@ public class ChestContentManager implements Runnable {
 	public Inventory getInventory(World world, BlockVector blockVector, CustomChestInventoryHolder owner) {
 		Inventory inv = createdInventories.getIfPresent( blockVector );
 		if ( inv == null ) {
-			System.out.println("Creating inventory for " + blockVector);
+			System.out.println( "Creating inventory for " + blockVector );
 			inv = fillInventory( world, blockVector, Bukkit.createInventory( owner, InventoryType.CHEST ) );
 			if ( inv != null ) {
 				createdInventories.put( blockVector, inv );
@@ -85,7 +85,6 @@ public class ChestContentManager implements Runnable {
 		return inv;
 	}
 
-	@SuppressWarnings("ConcatenationWithEmptyString")
 	private Inventory fillInventory(World world, BlockVector blockVector, Inventory inv) {
 		Random random = new Random();
 		Zone zone = module.getZone( world, blockVector );
@@ -93,26 +92,26 @@ public class ChestContentManager implements Runnable {
 			return null;
 		}
 		for ( ItemStack item : zone.getRandomChoosenChestItems() ) {
-			if ( item.getType() == Material.SNOW_BALL ) {
+			if ( item.getType() == Material.INK_SACK ) {
 				String s = String.valueOf( item.getAmount() );
 				int lower, upper;
 				switch ( s.length() ) {
 					case 2: {
 						char[] chars = s.toCharArray();
-						lower = Integer.valueOf( "" + chars[ 0 ] );
-						upper = Integer.valueOf( "" + chars[ 1 ] );
+						lower = Integer.valueOf( String.valueOf( chars[ 0 ] ) );
+						upper = Integer.valueOf( String.valueOf( chars[ 1 ] ) );
 						break;
 					}
 					case 3: {
 						char[] chars = s.toCharArray();
-						lower = Integer.valueOf( "" + chars[ 0 ] );
-						upper = Integer.valueOf( "" + chars[ 1 ] + chars[ 2 ] );
+						lower = Integer.valueOf( String.valueOf( chars[ 0 ] ) );
+						upper = Integer.valueOf( String.valueOf( chars[ 1 ] ) + chars[ 2 ] );
 						break;
 					}
 					case 4: {
 						char[] chars = s.toCharArray();
-						lower = Integer.valueOf( "" + chars[ 0 ] + chars[ 1 ] );
-						upper = Integer.valueOf( "" + chars[ 2 ] + chars[ 3 ] );
+						lower = Integer.valueOf( String.valueOf( chars[ 0 ] ) + chars[ 1 ] );
+						upper = Integer.valueOf( String.valueOf( chars[ 2 ] ) + chars[ 3 ] );
 						break;
 					}
 					default: {

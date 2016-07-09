@@ -44,7 +44,7 @@ public class HealItemsModule extends Module<HealItemsModule> {
 					data = Byte.parseByte( split[ 1 ] );
 				}
 				catch ( NumberFormatException ex ) {
-					getPlugin().getLogger().warning( "Item " + key + " is not configured properly, invalid data value found." );
+					getPlugin().getLogger().warning( "[HealItemsModule] Item " + key + " is not configured properly, invalid data value found." );
 					continue;
 				}
 			} else {
@@ -52,11 +52,11 @@ public class HealItemsModule extends Module<HealItemsModule> {
 				data = 0;
 			}
 			Material mat = Material.matchMaterial( matStr );
-			if ( mat == Material.STONE ) {
+			if ( mat == Material.STONE ) { //ignore examples
 				continue;
 			}
 			if ( mat == null ) {
-				getPlugin().getLogger().warning( "Item " + key + " is not configured properly, could not find material " + matStr + '.' );
+				getPlugin().getLogger().warning( "[HealItemsModule] Item " + key + " is not configured properly, could not find material " + matStr + '.' );
 				continue;
 			}
 			HealItemValues healItemValues = itemHealTable.get( mat, data );
@@ -64,7 +64,7 @@ public class HealItemsModule extends Module<HealItemsModule> {
 			if ( healItemValues == null ) {
 				itemHealTable.put( mat, data, HealItemValues.fromConfigurationSection( subSection ) );
 			} else {
-				getPlugin().getLogger().warning( "Duplicate item configuration of item " + mat + ":" + data + " found, overwriting existing" );
+				getPlugin().getLogger().warning( "[HealItemsModule] Duplicate item configuration of item " + mat + ":" + data + " found, overwriting existing" );
 				itemHealTable.put( mat, data, HealItemValues.fromConfigurationSection( subSection, healItemValues ) );
 			}
 		}

@@ -2,11 +2,10 @@ package de.janmm14.epicpvp.warz.util.random;
 
 import java.util.Random;
 
-public final class RandomUtil {
+import lombok.experimental.UtilityClass;
 
-	private RandomUtil() {
-		throw new UnsupportedOperationException();
-	}
+@UtilityClass
+public final class RandomUtil {
 
 	public static final Random RANDOM = new Random();
 

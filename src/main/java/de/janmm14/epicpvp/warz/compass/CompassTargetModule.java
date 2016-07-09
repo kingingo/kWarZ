@@ -13,7 +13,7 @@ import de.janmm14.epicpvp.warz.WarZ;
 public class CompassTargetModule extends Module<CompassTargetModule> implements Runnable {
 
 	private final Map<UUID, CompassTarget> selectedTargets = new HashMap<>();
-	
+
 	public CompassTargetModule(WarZ plugin) {
 		super( plugin, CompassTargetSwitchListener::new );
 		plugin.getServer().getScheduler().runTaskTimerAsynchronously( plugin, this, 20, 10 );

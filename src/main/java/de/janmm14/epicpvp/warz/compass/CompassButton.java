@@ -12,18 +12,18 @@ public class CompassButton extends ButtonCopy {
 
 	public CompassButton(CompassTargetModule module, CompassTarget target, int slot, ItemStack item, InventoryCopy inv) {
 		super( (player, type, object) -> {
-            CompassTarget ptarget = module.getCompassTarget( player );
+			CompassTarget ptarget = module.getCompassTarget( player );
 
-            if ( ptarget == target ) {
-                ( ( InventoryPageBase ) object ).setItem( slot, UtilItem.addEnchantmentGlow( item.clone() ) );
-            }
-        }, (player, type, object) -> {
-            CompassTarget ptarget = module.getCompassTarget( player );
+			if ( ptarget == target ) {
+				( ( InventoryPageBase ) object ).setItem( slot, UtilItem.addEnchantmentGlow( item.clone() ) );
+			}
+		}, (player, type, object) -> {
+			CompassTarget ptarget = module.getCompassTarget( player );
 
-            if ( ptarget != target ) {
-                module.setCompassTarget( player, target );
-                inv.open( player, UtilInv.getBase() );
-            }
-        }, item );
+			if ( ptarget != target ) {
+				module.setCompassTarget( player, target );
+				inv.open( player, UtilInv.getBase() );
+			}
+		}, item );
 	}
 }

@@ -28,7 +28,7 @@ public class ChestOpenListener implements Listener {
 
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
-		if (event.getPlayer().isOp() && event.getAction() == Action.LEFT_CLICK_BLOCK) {
+		if ( event.getPlayer().isOp() && event.getAction() == Action.LEFT_CLICK_BLOCK ) {
 			return;
 		}
 		if ( event.hasBlock() && ( event.getClickedBlock().getType() == Material.CHEST || event.getClickedBlock().getType() == Material.TRAPPED_CHEST ) ) {
@@ -39,7 +39,7 @@ public class ChestOpenListener implements Listener {
 			CustomChestInventoryHolder owner = new CustomChestInventoryHolder( blockVector );
 			Inventory inv = module.getChestContentManager().getInventory( plr.getWorld(), blockVector, owner );
 			if ( inv != null ) {
-				System.out.println("Opening custom inventory for " + blockVector);
+				System.out.println( "Opening custom inventory for " + blockVector );
 				event.setCancelled( true );
 				owner.setInventory( inv );
 				plr.openInventory( inv );
@@ -50,29 +50,29 @@ public class ChestOpenListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChat(AsyncPlayerChatEvent event) {
 		Player plr = event.getPlayer();
-		if (event.getMessage().equalsIgnoreCase( ".zone" )) {
+		if ( event.getMessage().equalsIgnoreCase( ".zone" ) ) {
 			Zone zone = WarZ.getPlugin( WarZ.class ).getModuleManager().getModule( ZoneAndChestsModule.class ).getZone( plr.getLocation() );
-			if (zone == null) {
+			if ( zone == null ) {
 				plr.sendMessage( "Keine Zone definiert" );
 			} else {
 				plr.sendMessage( "Du bist in der Zone " + zone.getZoneName() );
 			}
 		}
-		if (event.getMessage().equalsIgnoreCase( ".zone more" )) {
+		if ( event.getMessage().equalsIgnoreCase( ".zone more" ) ) {
 			Zone zone = WarZ.getPlugin( WarZ.class ).getModuleManager().getModule( ZoneAndChestsModule.class ).getZone( plr.getLocation() );
-			if (zone == null) {
+			if ( zone == null ) {
 				plr.sendMessage( "Keine Zone definiert" );
 			} else {
 				plr.sendMessage( "Du bist in der Zone " + zone.getZoneName() );
 				Vector middle = zone.calculateMiddle();
 				plr.sendMessage( "Errechnete Mitte: x: " + middle.getX() + " z:" + middle.getZ() );
 				List<RandomThingGroupHolder<ItemStack>> itemGroups = zone.getItemGroups();
-				plr.sendMessage( "ItemGruppen: min: " + zone.getMinItemGroups() + " max: " + zone.getMaxItemGroups() + " Anzahl: " + itemGroups.size());
+				plr.sendMessage( "ItemGruppen: min: " + zone.getMinItemGroups() + " max: " + zone.getMaxItemGroups() + " Anzahl: " + itemGroups.size() );
 				for ( int i = 0; i < itemGroups.size(); i++ ) {
 					RandomThingGroupHolder<ItemStack> itemGroup = itemGroups.get( i );
 					plr.sendMessage( "ItemGruppe " + i + " Wahrscheinlichkeit: " + itemGroup.getProbability() * 100.0 + "%" );
 					List<RandomThingHolder<ItemStack>> items = itemGroup.getItem();
-					plr.sendMessage( "  Items min: " + itemGroup.getMinAmount() + " max: " + itemGroup.getMaxAmount() + " Anzahl: " + items.size());
+					plr.sendMessage( "  Items min: " + itemGroup.getMinAmount() + " max: " + itemGroup.getMaxAmount() + " Anzahl: " + items.size() );
 					for ( int j = 0; j < items.size(); j++ ) {
 						RandomThingHolder<ItemStack> item = items.get( j );
 						plr.sendMessage( "  #" + j + " " + item.getProbability() * 100.0 + "%: " + item.getItem() );

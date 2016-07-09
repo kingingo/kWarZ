@@ -5,15 +5,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
+import de.janmm14.epicpvp.warz.WarZ;
+import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
+import de.janmm14.epicpvp.warz.util.CoughtException;
 import de.janmm14.epicpvp.warz.util.random.RandomThingGroupHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomThingHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomUtil;
@@ -44,7 +45,10 @@ public class Zone {
 			RandomThingGroupHolder<ItemStack> itemgroup = RandomThingHolder.chooseRandomHolder( currItemgroups );
 			List<ItemStack> toAdd = RandomThingGroupHolder.groupChooseRandom( itemgroup );
 			if ( toAdd != null ) {
-				result.addAll( toAdd );
+				for ( ItemStack is : toAdd ) {
+					WarZ.getInstance().getModuleManager().getModule( ItemRenameModule.class ).renameIfNeeded( is );
+					result.add( is );
+				}
 				currItemgroups.remove( itemgroup );
 			}
 		}
@@ -67,7 +71,7 @@ public class Zone {
 			.getRegionManager( Bukkit.getWorld( "world" ) )
 			.getRegion( worldguardName );
 		if ( worldGuardRegion == null ) {
-			new IllegalStateException( "Could not find worldedit region " + worldguardName + " (" + zoneName + ") while searching for middle point" ).printStackTrace();
+			new CoughtException( new IllegalStateException( "Could not find worldedit region " + worldguardName + " (" + zoneName + ") while searching for middle point" ) ).printStackTrace();
 			return Bukkit.getWorld( "world" ).getSpawnLocation().toVector();
 		}
 		com.sk89q.worldedit.Vector middle = com.sk89q.worldedit.Vector.getMidpoint( worldGuardRegion.getMinimumPoint(), worldGuardRegion.getMaximumPoint() );

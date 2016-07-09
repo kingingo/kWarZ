@@ -3,7 +3,6 @@ package de.janmm14.epicpvp.warz.fishingrod;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -42,17 +41,17 @@ public class FishingRodListener implements Listener {
 					break;
 				}
 			}
-			if (cancel) {
+			if ( cancel ) {
 				return;
 			}
 
 			Vector diffVector = location.toVector().subtract( event.getPlayer().getLocation().toVector() );
-			if (diffVector.lengthSquared() < 3 * 3) {
+			if ( diffVector.lengthSquared() < 3 * 3 ) {
 				return;
 			}
 			noFallDamage.put( event.getPlayer().getUniqueId(), DUMMY );
 			double y = diffVector.getY();
-			if (y < .5) {
+			if ( y < .5 ) {
 				y = .5;
 			}
 			if ( y > 2 ) {

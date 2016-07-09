@@ -20,8 +20,8 @@ public class CompassTargetSwitchListener implements Listener {
 
 	public CompassTargetSwitchListener(CompassTargetModule module) {
 		this.selectionInventory = new InventoryCopy( InventorySize._9, "Set your Compass target" );
-		this.selectionInventory.addButton( 1, new CompassButton( module, CompassTarget.ENEMY, 1, UtilItem.Item( new ItemStack( Material.STAINED_CLAY, 1, (short) 14), new String[]{}, "§cEnemies" ), this.selectionInventory ) );
-		this.selectionInventory.addButton( 4, new CompassButton( module, CompassTarget.FRIEND, 4, UtilItem.Item( new ItemStack( Material.STAINED_CLAY, 1, (short) 5), new String[]{}, "§aFriends" ), this.selectionInventory ) );
+		this.selectionInventory.addButton( 1, new CompassButton( module, CompassTarget.ENEMY, 1, UtilItem.Item( new ItemStack( Material.STAINED_CLAY, 1, ( short ) 14 ), new String[]{}, "§cEnemies" ), this.selectionInventory ) );
+		this.selectionInventory.addButton( 4, new CompassButton( module, CompassTarget.FRIEND, 4, UtilItem.Item( new ItemStack( Material.STAINED_CLAY, 1, ( short ) 5 ), new String[]{}, "§aFriends" ), this.selectionInventory ) );
 		this.selectionInventory.addButton( 7, new CompassButton( module, CompassTarget.ZONE, 7, UtilItem.Item( new ItemStack( Material.FENCE ), new String[]{}, "§6Zones" ), this.selectionInventory ) );
 		this.selectionInventory.fill( Material.STAINED_GLASS_PANE, 7 );
 		this.selectionInventory.setCreate_new_inv( true );

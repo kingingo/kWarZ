@@ -36,8 +36,11 @@ public class ModuleManager {
 			catch ( InvocationTargetException ex ) {
 				plugin.getLogger().log( Level.SEVERE, "Could not load WarZ " + moduleName + ", constructor generated exception", ex.getTargetException() );
 			}
-			catch ( ReflectiveOperationException ex ) {
-				plugin.getLogger().log( Level.SEVERE, "Could not load WarZ " + moduleName + ", unknown error", ex );
+			catch ( InstantiationException ex ) {
+				plugin.getLogger().log( Level.SEVERE, "Could not load WarZ " + moduleName + ", invalid class", ex );
+			}
+			catch ( IllegalAccessException ex ) {
+				plugin.getLogger().log( Level.SEVERE, "Could not load WarZ " + moduleName + ", constructor not accessible", ex );
 			}
 			catch ( Throwable t ) {
 				plugin.getLogger().log( Level.SEVERE, "Unknown error while enabling " + moduleName, t );
@@ -45,7 +48,7 @@ public class ModuleManager {
 		}
 	}
 
-	public void triggerReloadConfig() {
+	public void reloadAllModuleConfigs() {
 		modules.values().forEach( Module::tryReloadConfig );
 	}
 

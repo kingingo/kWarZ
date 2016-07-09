@@ -25,8 +25,6 @@ import de.janmm14.epicpvp.warz.hooks.UuidNameConverter;
 
 import lombok.Getter;
 
-import static eu.epicpvp.kcore.Util.UtilServer.getClient;
-
 @Getter
 public class WarZ extends JavaPlugin {
 
@@ -55,7 +53,7 @@ public class WarZ extends JavaPlugin {
 		if ( world != null ) {
 			getLogger().info( "Disabled automatic saving of world 'world', please do not use /save-all /save-on or any plugin to save worlds." );
 			world.setAutoSave( false );
-			world.setSpawnLocation(0, 90, 0);
+			world.setSpawnLocation( 0, 90, 0 );
 		}
 
 		setupKStuff();
@@ -82,8 +80,8 @@ public class WarZ extends JavaPlugin {
 		StatsManagerRepository.getStatsManager( GameType.WARZ );
 		new AACHack( "WARZ" );
 
-		new ChatListener(this, UtilServer.getPermissionManager());
-		new AntiCrashListener(UtilServer.getClient(), UtilServer.getMysql());
+		new ChatListener( this, UtilServer.getPermissionManager() );
+		new AntiCrashListener( UtilServer.getClient(), UtilServer.getMysql() );
 	}
 
 	@Override
@@ -92,8 +90,8 @@ public class WarZ extends JavaPlugin {
 	}
 
 	@Override
-	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id){
-		return new CleanroomChunkGenerator("1,bedrock,31,dirt,2,water");
+	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
+		return new CleanroomChunkGenerator( "1,bedrock,31,dirt,2,water" );
 	}
 
 	public void reloadCfg() {
@@ -105,7 +103,7 @@ public class WarZ extends JavaPlugin {
 		} else {
 			getLogger().info( "Debug mode is deactivated!" );
 		}
-		moduleManager.triggerReloadConfig();
+		moduleManager.reloadAllModuleConfigs();
 		saveConfig();
 	}
 

@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class WarZListener implements Listener {
 
 	private final WarZ plugin;
-	
+
 	@EventHandler
 	public void onBlockBurn(BlockBurnEvent ev) {
 		ev.setCancelled( true );
@@ -42,7 +42,7 @@ public class WarZListener implements Listener {
 			event.setCancelled( true );
 		}
 	}
-	
+
 	@EventHandler
 	public void onDeath(PlayerDeathEvent ev) {
 		ev.setDeathMessage( null );
@@ -81,7 +81,7 @@ public class WarZListener implements Listener {
 			return;
 		}
 		String cmd = "";
-		if ( ev.getMessage().indexOf( ' ' ) != -1) {
+		if ( ev.getMessage().indexOf( ' ' ) != -1 ) {
 			String[] parts = ev.getMessage().split( " " );
 			cmd = parts[ 0 ];
 		} else {

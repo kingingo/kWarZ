@@ -34,11 +34,12 @@ public class ConfigUtil {
 		ItemStack item;
 		try {
 			item = section.getItemStack( "item" );
-		} catch ( Exception ex ) {
+		}
+		catch ( Exception ex ) {
 			WarZ.getInstance().getLogger().log( Level.SEVERE, "Could not read itemstack from " + section.getCurrentPath() + "!", ex );
 			item = new ItemStack( Material.STONE, 42 );
 		}
-		if (item == null) {
+		if ( item == null ) {
 			WarZ.getInstance().getLogger().log( Level.SEVERE, "Could not read itemstack from " + section.getCurrentPath() + "!" );
 			item = new ItemStack( Material.STONE, 42 );
 		}
