@@ -57,6 +57,10 @@ public class Zone {
 
 	public static Zone byConfigurationSection(String worldguardName, String zoneName, ConfigurationSection section) {
 		ConfigurationSection itemSection = section.getConfigurationSection( "itemgroups" );
+		if (itemSection == null) {
+			System.err.println( "Could not find itemgroups section for zone " + zoneName + " (" + worldguardName + ") in " + section.getCurrentPath() );
+			return null;
+		}
 
 		List<RandomThingGroupHolder<ItemStack>> itemGroups = itemSection.getKeys( false ).stream()
 			.map( key -> ConfigUtil.readItemStackRandomGroup( itemSection.getConfigurationSection( key ) ) )

@@ -9,14 +9,17 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import dev.wolveringer.client.ClientWrapper;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
 import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
+import eu.epicpvp.kcore.Util.UtilServer;
 
 import de.janmm14.epicpvp.warz.util.MiscUtil;
 
@@ -26,6 +29,13 @@ import lombok.RequiredArgsConstructor;
 public class WarZListener implements Listener {
 
 	private final WarZ plugin;
+
+	public void onAsnycPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
+		ClientWrapper client = UtilServer.getClient();
+		if ( client == null || !client.getHandle().isConnected() || !client.getHandle().isHandshakeCompleted() ) {
+			event.disallow( AsyncPlayerPreLoginEvent.Result.KICK_OTHER, "Server not fully started up." );
+		}
+	}
 
 	@EventHandler
 	public void onBlockBurn(BlockBurnEvent ev) {

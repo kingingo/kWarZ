@@ -61,11 +61,13 @@ public class WarZ extends JavaPlugin {
 
 		setupKStuff();
 
-		moduleManager = new ModuleManager( this );
-		moduleManager.discoverAndLoadModules();
 		getServer().getPluginManager().registerEvents( new WarZListener( this ), this );
-
-		saveConfig();
+		//need to delay
+		getServer().getScheduler().runTask( this, () -> {
+			moduleManager = new ModuleManager( this );
+			moduleManager.discoverAndLoadModules();
+			saveConfig();
+		} );
 	}
 
 	private void setupKStuff() {
