@@ -1,5 +1,6 @@
 package de.janmm14.epicpvp.warz.itemrename;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +33,9 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 	private static final String PATH_PREFIX = "itemrename.";
 	private static final String ITEM_PATH_PREFIX = PATH_PREFIX + "items";
 
-	private Multimap<String, String> itemNamesAndLores = HashMultimap.create();
+	private Multimap<String, String> itemNamesAndLores = HashMultimap.create();//have some default that will never occurr in the iterable
+	@SuppressWarnings("RedundantStringConstructorCall")
+	private static final String NOT_PRESENT_VALUE = new String( "notPresentValue" );
 
 	public ItemRenameModule(WarZ plugin) {
 		super( plugin, module -> module );
@@ -43,10 +46,11 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 		FileConfiguration cfg = getPlugin().getConfig();
 
 		cfg.addDefault( ITEM_PATH_PREFIX + ".7:0", "&c&lBedrock" );
+		cfg.addDefault( ITEM_PATH_PREFIX + ".7:1", Arrays.asList( null, "&c&lBedrock" ) );
 
 		ConfigurationSection itemSection = cfg.getConfigurationSection( ITEM_PATH_PREFIX );
 		for ( String key : itemSection.getKeys( false ) ) {
-			if ( key.equals( "7:0" ) ) {
+			if ( key.startsWith( "7:" ) ) {
 				continue;
 			}
 			List<String> stringList = itemSection.getStringList( key );
@@ -116,7 +120,7 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 		return renamed;
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "deprecation", "StringEquality" })
 	public boolean renameIfNeeded(ItemStack is) {
 		if ( is == null ) {
 			return false;
@@ -133,10 +137,12 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 		if ( nameAndLore == null ) {
 			nameAndLore = itemNamesAndLores.get( is.getType().toString() );
 		}
-		String name = Iterables.getFirst( nameAndLore, null );
-		if ( name != null ) {
+		String name = Iterables.getFirst( nameAndLore, NOT_PRESENT_VALUE );
+		if ( name != NOT_PRESENT_VALUE ) {
 			ItemMeta im = is.getItemMeta();
-			im.setDisplayName( MiscUtil.translateColorCode( name ) );
+			if ( name != null && !name.equals( "null" ) ) {
+				im.setDisplayName( MiscUtil.translateColorCode( name ) );
+			}
 			if ( nameAndLore.size() > 1 ) {
 				List<String> lore = nameAndLore.stream()
 					.map( MiscUtil::translateColorCode )

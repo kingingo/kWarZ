@@ -57,7 +57,7 @@ public class Zone {
 
 	public static Zone byConfigurationSection(String worldguardName, String zoneName, ConfigurationSection section) {
 		ConfigurationSection itemSection = section.getConfigurationSection( "itemgroups" );
-		if (itemSection == null) {
+		if ( itemSection == null ) {
 			System.err.println( "Could not find itemgroups section for zone " + zoneName + " (" + worldguardName + ") in " + section.getCurrentPath() );
 			return null;
 		}
