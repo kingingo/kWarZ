@@ -30,6 +30,7 @@ public class WarZListener implements Listener {
 
 	private final WarZ plugin;
 
+	@EventHandler(ignoreCancelled = true)
 	public void onAsnycPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
 		ClientWrapper client = UtilServer.getClient();
 		if ( client == null || !client.getHandle().isConnected() || !client.getHandle().isHandshakeCompleted() ) {

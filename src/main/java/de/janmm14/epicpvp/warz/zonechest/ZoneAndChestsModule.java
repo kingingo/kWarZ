@@ -64,7 +64,6 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 
 	@Override
 	public void reloadConfig() {
-		//TODO set example defaults
 		getPlugin().getConfig().set( PATH_ZONES + ".info", "Eine Itemgroup wird nur einmal ausgewählt. Somit kann die Wahrscheinlichkeit einer Gruppe auf 1 (=100%) gesetzt werden, " +
 			"um eine Gruppe zu erzwingen, wobei bei entsprechender Gruppenanzahl Gruppen mit kleinerer Wahrscheinlichkeit immer noch ausgewählt werden können. Jedoch können die " +
 			"Items von Gruppen mehrmals zufällig ausgewählt werden, was die Summe der Wahrscheinlichkeiten von Items einer Gruppe auf maximal 1 setzt." );

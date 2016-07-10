@@ -59,7 +59,6 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 			} else {
 				itemNamesAndLores.putAll( key, stringList );
 			}
-			itemNamesAndLores.put( key, itemSection.getString( key ) );
 		}
 	}
 
@@ -147,6 +146,7 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 				List<String> lore = nameAndLore.stream()
 					.map( MiscUtil::translateColorCode )
 					.collect( Collectors.toList() );
+				lore.remove( 0 );
 				im.setLore( lore );
 			}
 			is.setItemMeta( im );

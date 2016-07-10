@@ -29,6 +29,7 @@ public class ChestOpenListener implements Listener {
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
 		if ( event.getPlayer().isOp() && event.getAction() == Action.LEFT_CLICK_BLOCK ) {
+			event.getPlayer().sendMessage( "Opening raw chest as you're op and used left click" );
 			return;
 		}
 		if ( event.hasBlock() && ( event.getClickedBlock().getType() == Material.CHEST || event.getClickedBlock().getType() == Material.TRAPPED_CHEST ) ) {
@@ -43,14 +44,16 @@ public class ChestOpenListener implements Listener {
 				event.setCancelled( true );
 				owner.setInventory( inv );
 				plr.openInventory( inv );
+			} else {
+				System.out.println( "Inventory is null for " + blockVector );
 			}
 		}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onChat(AsyncPlayerChatEvent event) {
+	public void onChat(AsyncPlayerChatEvent event) { //TODO remove debug
 		Player plr = event.getPlayer();
-		if ( event.getMessage().equalsIgnoreCase( ".zone" ) ) {
+		if ( event.getMessage().equalsIgnoreCase( "zone" ) ) {
 			Zone zone = WarZ.getPlugin( WarZ.class ).getModuleManager().getModule( ZoneAndChestsModule.class ).getZone( plr.getLocation() );
 			if ( zone == null ) {
 				plr.sendMessage( "Keine Zone definiert" );
@@ -58,7 +61,7 @@ public class ChestOpenListener implements Listener {
 				plr.sendMessage( "Du bist in der Zone " + zone.getZoneName() );
 			}
 		}
-		if ( event.getMessage().equalsIgnoreCase( ".zone more" ) ) {
+		if ( event.getMessage().equalsIgnoreCase( "zone more" ) ) {
 			Zone zone = WarZ.getPlugin( WarZ.class ).getModuleManager().getModule( ZoneAndChestsModule.class ).getZone( plr.getLocation() );
 			if ( zone == null ) {
 				plr.sendMessage( "Keine Zone definiert" );
