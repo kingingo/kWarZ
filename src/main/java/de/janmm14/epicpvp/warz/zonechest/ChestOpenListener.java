@@ -36,7 +36,7 @@ public class ChestOpenListener implements Listener {
 
 			Player plr = event.getPlayer();
 
-			BlockVector blockVector = plr.getLocation().toVector().toBlockVector();
+			BlockVector blockVector = event.getClickedBlock().getLocation().toVector().toBlockVector();
 			CustomChestInventoryHolder owner = new CustomChestInventoryHolder( blockVector );
 			Inventory inv = module.getChestContentManager().getInventory( plr.getWorld(), blockVector, owner );
 			if ( inv != null ) {
