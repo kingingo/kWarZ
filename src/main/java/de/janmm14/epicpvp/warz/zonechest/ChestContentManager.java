@@ -1,5 +1,6 @@
 package de.janmm14.epicpvp.warz.zonechest;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -92,6 +93,10 @@ public class ChestContentManager implements Runnable {
 			return null;
 		}
 		for ( ItemStack item : zone.getRandomChoosenChestItems() ) {
+			if (item == null) {
+				module.getPlugin().getLogger().warning("Null element in chest at " + blockVector + ", contents: " + Arrays.asList(inv.getContents()));
+				continue;
+			}
 			if ( item.getType() == Material.INK_SACK ) {
 				String s = String.valueOf( item.getAmount() );
 				int lower, upper;
@@ -121,8 +126,20 @@ public class ChestContentManager implements Runnable {
 				}
 				item.setAmount( RandomUtil.getRandomInt( lower, upper ) );
 			}
-			int pos = random.nextInt( inv.getSize() );
-			inv.setItem( pos, item );
+			int tries = 0;
+			while (true) {
+				int pos = random.nextInt( inv.getSize() );
+				ItemStack origItem = inv.getItem( pos );
+				if ( origItem == null || origItem.getType() == Material.AIR ) {
+					inv.setItem( pos, item );
+					break;
+				} else {
+					if (++tries > 100) {
+						System.out.println("No place found for " + item + " in chest at " + blockVector + ", contents: " + Arrays.asList(inv.getContents()));
+						break;
+					}
+				}
+			}
 		}
 		return inv;
 	}
