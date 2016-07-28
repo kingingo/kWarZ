@@ -97,6 +97,8 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 
 	@Nullable
 	public Zone getZone(String name) {
+		if ( WarZ.DEBUG )
+			getPlugin().getLogger().info( "Searching zone for " + name );
 		String zoneName = covertToZoneName( name );
 		Collection<Zone> zones = this.zones.get( zoneName );
 
@@ -139,5 +141,13 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 	@Nullable
 	public Collection<Zone> getZones() {
 		return zones.values();
+	}
+
+	/**
+	 * @deprecated Should not be used by normal plugin, just for debugging
+     */
+	@Deprecated
+	public Map<String, Collection<Zone>> getZoneMap() {
+		return zones.asMap();
 	}
 }

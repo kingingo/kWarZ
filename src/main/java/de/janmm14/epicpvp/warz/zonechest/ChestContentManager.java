@@ -20,6 +20,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
 
+import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.random.RandomUtil;
 
 import lombok.NonNull;
@@ -51,18 +52,22 @@ public class ChestContentManager implements Runnable {
 	public void run() {
 		sendRefillTimer( secsUntilReset );
 		if ( secsUntilReset == REFILL_SECONDS ) {
-			createdInventories.asMap()
-				.forEach( (blockVector, inventory) -> {
-					inventory.getViewers().forEach( HumanEntity::closeInventory );
-					inventory.clear();
-				} );
-			createdInventories.invalidateAll();
+			reset();
 			secsUntilReset--;
 		} else if ( secsUntilReset <= 1 ) {
 			secsUntilReset = REFILL_SECONDS;
 		} else {
 			secsUntilReset--;
 		}
+	}
+
+	public void reset() {
+		createdInventories.asMap()
+			.forEach( (blockVector, inventory) -> {
+				inventory.getViewers().forEach( HumanEntity::closeInventory );
+				inventory.clear();
+			} );
+		createdInventories.invalidateAll();
 	}
 
 	private void sendRefillTimer(int secsUntilReset) {
@@ -92,15 +97,22 @@ public class ChestContentManager implements Runnable {
 		if ( zone == null ) {
 			return null;
 		}
+		if ( WarZ.DEBUG )
+			System.out.println( "zone " + zone.getWorldguardName() + " @" + Integer.toHexString( System.identityHashCode( zone ) ) );
 		for ( ItemStack item : zone.getRandomChoosenChestItems() ) {
-			if (item == null) {
-				module.getPlugin().getLogger().warning("Null element in chest at " + blockVector + ", contents: " + Arrays.asList(inv.getContents()));
+			if ( item == null ) {
+				module.getPlugin().getLogger().warning( "Null element in chest at " + blockVector + ", contents: " + Arrays.asList( inv.getContents() ) );
 				continue;
 			}
 			if ( item.getType() == Material.INK_SACK ) {
 				String s = String.valueOf( item.getAmount() );
 				int lower, upper;
 				switch ( s.length() ) {
+					case 1: {
+						lower = Integer.valueOf( s );
+						upper = Integer.valueOf( s );
+						break;
+					}
 					case 2: {
 						char[] chars = s.toCharArray();
 						lower = Integer.valueOf( String.valueOf( chars[ 0 ] ) );
@@ -127,15 +139,18 @@ public class ChestContentManager implements Runnable {
 				item.setAmount( RandomUtil.getRandomInt( lower, upper ) );
 			}
 			int tries = 0;
-			while (true) {
+			while ( true ) {
 				int pos = random.nextInt( inv.getSize() );
 				ItemStack origItem = inv.getItem( pos );
 				if ( origItem == null || origItem.getType() == Material.AIR ) {
+					if ( WarZ.DEBUG )
+						System.out.println( "Adding item " + item + " to chest at " + blockVector + " (pos: " + pos + ")" );
 					inv.setItem( pos, item );
 					break;
 				} else {
-					if (++tries > 100) {
-						System.out.println("No place found for " + item + " in chest at " + blockVector + ", contents: " + Arrays.asList(inv.getContents()));
+					if ( ++tries > 100 ) {
+						if ( WarZ.DEBUG )
+							System.out.println( "No place found for " + item + " in chest at " + blockVector + ", contents: " + Arrays.asList( inv.getContents() ) );
 						break;
 					}
 				}

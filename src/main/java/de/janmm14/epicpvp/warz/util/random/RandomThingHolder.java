@@ -19,16 +19,15 @@ public interface RandomThingHolder<V> {
 	}
 
 	@Nullable
-
 	static <T extends RandomThingHolder> T chooseRandomHolder(@NonNull List<T> list) {
 		double randomDouble = RandomUtil.RANDOM.nextDouble();
 		double overallProbability = 0;
 
 		for ( T itemHolder : list ) {
-			double startingProbability = overallProbability + itemHolder.getProbability();
+			double startingProbability = overallProbability;
 			overallProbability += itemHolder.getProbability();
-
-			if ( randomDouble > startingProbability && randomDouble <= ( startingProbability + itemHolder.getProbability() ) ) {
+			double max = startingProbability + itemHolder.getProbability();
+			if ( randomDouble > startingProbability && randomDouble <= max ) {
 				return itemHolder;
 			}
 		}

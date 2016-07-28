@@ -27,7 +27,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "worldguardName")
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Zone {
 
@@ -38,12 +38,20 @@ public class Zone {
 	private final int maxItemGroups;
 
 	public List<ItemStack> getRandomChoosenChestItems() {
-		List<RandomThingGroupHolder<ItemStack>> currItemgroups = this.itemGroups;
+		if ( WarZ.DEBUG )
+			System.out.println( "getting random chest items for zone " + zoneName + " (" + worldguardName + ")" );
+		List<RandomThingGroupHolder<ItemStack>> currItemgroups = new ArrayList<>( this.itemGroups );
 		List<ItemStack> result = new ArrayList<>();
 		int randomInt = RandomUtil.getRandomInt( minItemGroups, maxItemGroups );
+		if ( WarZ.DEBUG )
+			System.out.println( "randomInt = " + randomInt );
 		for ( int i = 0; i < randomInt; i++ ) {
 			RandomThingGroupHolder<ItemStack> itemgroup = RandomThingHolder.chooseRandomHolder( currItemgroups );
+//			if ( WarZ.DEBUG )
+//				System.out.println( "itemgroup = " + itemgroup );
 			List<ItemStack> toAdd = RandomThingGroupHolder.groupChooseRandom( itemgroup );
+			if ( WarZ.DEBUG )
+				System.out.println( "toAdd = " + toAdd );
 			if ( toAdd != null ) {
 				for ( ItemStack is : toAdd ) {
 					WarZ.getInstance().getModuleManager().getModule( ItemRenameModule.class ).renameIfNeeded( is );
@@ -56,6 +64,7 @@ public class Zone {
 	}
 
 	public static Zone byConfigurationSection(String worldguardName, String zoneName, ConfigurationSection section) {
+		System.out.println( "Loading zone " + zoneName + " for worldguard region " + worldguardName );
 		ConfigurationSection itemSection = section.getConfigurationSection( "itemgroups" );
 		if ( itemSection == null ) {
 			System.err.println( "Could not find itemgroups section for zone " + zoneName + " (" + worldguardName + ") in " + section.getCurrentPath() );
@@ -80,5 +89,9 @@ public class Zone {
 		}
 		com.sk89q.worldedit.Vector middle = com.sk89q.worldedit.Vector.getMidpoint( worldGuardRegion.getMinimumPoint(), worldGuardRegion.getMaximumPoint() );
 		return new Vector( middle.getX(), middle.getY(), middle.getZ() );
+	}
+
+	public String toShortString() {
+		return "Zone@" + Integer.toHexString( super.hashCode() ) + "(wgName=" + this.worldguardName + ", itemGroups.size()=" + this.itemGroups.size() + ")";
 	}
 }

@@ -1,6 +1,8 @@
 package de.janmm14.epicpvp.warz.zonechest;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -52,21 +54,26 @@ public class ChestOpenListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChat(AsyncPlayerChatEvent event) { //TODO remove debug
+		if ( !WarZ.DEBUG ) {
+			return;
+		}
 		Player plr = event.getPlayer();
 		if ( event.getMessage().equalsIgnoreCase( "zone" ) ) {
-			Zone zone = WarZ.getPlugin( WarZ.class ).getModuleManager().getModule( ZoneAndChestsModule.class ).getZone( plr.getLocation() );
+			event.setCancelled( true );
+			Zone zone = module.getZone( plr.getLocation() );
 			if ( zone == null ) {
 				plr.sendMessage( "Keine Zone definiert" );
 			} else {
-				plr.sendMessage( "Du bist in der Zone " + zone.getZoneName() );
+				plr.sendMessage( "Du bist in der Zone " + zone.getZoneName() + " (" + zone.getWorldguardName() + ")" );
 			}
 		}
 		if ( event.getMessage().equalsIgnoreCase( "zone more" ) ) {
-			Zone zone = WarZ.getPlugin( WarZ.class ).getModuleManager().getModule( ZoneAndChestsModule.class ).getZone( plr.getLocation() );
+			event.setCancelled( true );
+			Zone zone = module.getZone( plr.getLocation() );
 			if ( zone == null ) {
 				plr.sendMessage( "Keine Zone definiert" );
 			} else {
-				plr.sendMessage( "Du bist in der Zone " + zone.getZoneName() );
+				plr.sendMessage( "Du bist in der Zone " + zone.getZoneName() + " (" + zone.getWorldguardName() + ")" );
 				Vector middle = zone.calculateMiddle();
 				plr.sendMessage( "Errechnete Mitte: x: " + middle.getX() + " z:" + middle.getZ() );
 				List<RandomThingGroupHolder<ItemStack>> itemGroups = zone.getItemGroups();
@@ -79,6 +86,22 @@ public class ChestOpenListener implements Listener {
 					for ( int j = 0; j < items.size(); j++ ) {
 						RandomThingHolder<ItemStack> item = items.get( j );
 						plr.sendMessage( "  #" + j + " " + item.getProbability() * 100.0 + "%: " + item.getItem() );
+					}
+				}
+			}
+		}
+		if ( event.getMessage().equalsIgnoreCase( "zones" ) ) {
+			event.setCancelled( true );
+			Map<String, Collection<Zone>> zoneMap = module.getZoneMap();
+			for ( Map.Entry<String, Collection<Zone>> entry : zoneMap.entrySet() ) {
+				String name = entry.getKey();
+				Collection<Zone> zones = entry.getValue();
+				plr.sendMessage( "zone: " + name );
+				for ( Zone zone : zones ) {
+					if ( zone == null ) {
+						plr.sendMessage( "  null" );
+					} else {
+						plr.sendMessage( "  " + zone.toShortString() );
 					}
 				}
 			}

@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 
+import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -20,6 +22,7 @@ public class CommandWarZ implements TabExecutor {
 		if ( args.length == 0 ) {
 			sender.sendMessage( "§aWarZ Plugin by Janmm14" );
 			sender.sendMessage( "§c/warz reload §7- §6Liest die Config neu ein." );
+			sender.sendMessage( "§c/warz refill §7- §6Füllt die Kisten neu." );
 			return true;
 		}
 		switch ( args[ 0 ].toLowerCase() ) {
@@ -29,6 +32,10 @@ public class CommandWarZ implements TabExecutor {
 				if ( !( sender instanceof ConsoleCommandSender ) ) {
 					plugin.getServer().getConsoleSender().sendMessage( "§aWarZ config reloaded by" + sender.getName() );
 				}
+				break;
+			case "refill":
+				plugin.getModuleManager().getModule( ZoneAndChestsModule.class ).getChestContentManager().reset();
+				sender.sendMessage( "§aDie Kisten wurden neu gefüllt." );
 				break;
 			default:
 				sender.sendMessage( "§cUnbekannte Aktion §6" + args[ 0 ] );
