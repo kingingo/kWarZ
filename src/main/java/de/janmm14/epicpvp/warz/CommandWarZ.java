@@ -23,6 +23,7 @@ public class CommandWarZ implements TabExecutor {
 			sender.sendMessage( "§aWarZ Plugin by Janmm14" );
 			sender.sendMessage( "§c/warz reload §7- §6Liest die Config neu ein." );
 			sender.sendMessage( "§c/warz refill §7- §6Füllt die Kisten neu." );
+			sender.sendMessage( "§c/warz debug §7- §6Wechselt den Debug-Modus." );
 			return true;
 		}
 		switch ( args[ 0 ].toLowerCase() ) {
@@ -30,12 +31,20 @@ public class CommandWarZ implements TabExecutor {
 				plugin.reloadCfg();
 				sender.sendMessage( "§aWarZ config reloaded." );
 				if ( !( sender instanceof ConsoleCommandSender ) ) {
-					plugin.getServer().getConsoleSender().sendMessage( "§aWarZ config reloaded by" + sender.getName() );
+					plugin.getServer().getConsoleSender().sendMessage( "§6WarZ config reloaded by " + sender.getName() );
 				}
 				break;
 			case "refill":
 				plugin.getModuleManager().getModule( ZoneAndChestsModule.class ).getChestContentManager().reset();
 				sender.sendMessage( "§aDie Kisten wurden neu gefüllt." );
+				break;
+			case "debug":
+				WarZ.DEBUG = !WarZ.DEBUG;
+				if (WarZ.DEBUG) {
+					sender.sendMessage( "§6Der Debug-Modus ist nun§a angeschaltet§6." );
+				} else {
+					sender.sendMessage( "§6Der Debug-Modus ist nun§a ausgeschaltet§6." );
+				}
 				break;
 			default:
 				sender.sendMessage( "§cUnbekannte Aktion §6" + args[ 0 ] );
