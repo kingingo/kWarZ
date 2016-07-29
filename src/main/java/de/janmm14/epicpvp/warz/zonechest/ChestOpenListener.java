@@ -31,7 +31,7 @@ public class ChestOpenListener implements Listener {
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
 		if ( event.getPlayer().isOp() && event.getAction() == Action.LEFT_CLICK_BLOCK ) {
-			event.getPlayer().sendMessage( "Opening raw chest as you're op and used left click" );
+			//allow block to be destroyed by not doing anything
 			return;
 		}
 		if ( event.hasBlock() && ( event.getClickedBlock().getType() == Material.CHEST || event.getClickedBlock().getType() == Material.TRAPPED_CHEST ) ) {
@@ -54,7 +54,7 @@ public class ChestOpenListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChat(AsyncPlayerChatEvent event) { //TODO remove debug
-		if ( !WarZ.DEBUG ) {
+		if ( !WarZ.DEBUG || !event.getPlayer().isOp() ) {
 			return;
 		}
 		Player plr = event.getPlayer();
