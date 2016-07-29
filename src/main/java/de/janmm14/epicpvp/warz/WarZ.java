@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.wolveringer.bukkit.permissions.GroupTyp;
 import dev.wolveringer.client.connection.ClientType;
-import dev.wolveringer.client.debug.Debugger;
+//import dev.wolveringer.client.debug.Debugger;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.AACHack.AACHack;
 import eu.epicpvp.kcore.ChunkGenerator.CleanroomChunkGenerator;
@@ -72,7 +72,7 @@ public class WarZ extends JavaPlugin {
 	}
 
 	private void setupKStuff() {
-		Debugger.setEnabled( false ); //remove "Pong" and "handeling x packets per second" from console
+//		Debugger.setEnabled( false ); //remove "Pong" and "handeling x packets per second" from console
 		getConfig().addDefault( "mysql.host", "localhost" );
 		getConfig().addDefault( "mysql.user", "user" );
 		getConfig().addDefault( "mysql.database", "database" );
