@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.logging.Level;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 
 import com.google.common.collect.Lists;
@@ -56,5 +57,10 @@ public abstract class Module<M extends Module> {
 			plugin.getLogger().log( Level.SEVERE, "An error occurred while loading the configuration of " + getClass().getSimpleName(), t );
 			return false;
 		}
+	}
+
+	public final FileConfiguration getConfig() {
+		//for possible configuration splitting later on
+		return getPlugin().getConfig();
 	}
 }

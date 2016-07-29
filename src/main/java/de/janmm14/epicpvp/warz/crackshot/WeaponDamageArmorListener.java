@@ -94,10 +94,10 @@ public class WeaponDamageArmorListener implements Listener {
 			String armorName = armorItem.getType().toString().toUpperCase();
 
 			String path = ARMOR_PREFIX + weaponTitle.toLowerCase() + "." + armorName;
-			if ( module.getPlugin().getConfig().get( path ) != null ) {
-				return module.getPlugin().getConfig().getDouble( path );
+			if ( module.getConfig().get( path ) != null ) {
+				return module.getConfig().getDouble( path );
 			} else {
-				return module.getPlugin().getConfig().getDouble( ARMOR_PREFIX + "default." + armorName );
+				return module.getConfig().getDouble( ARMOR_PREFIX + "default." + armorName );
 			}
 		}
 		return 0;

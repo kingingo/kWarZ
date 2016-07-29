@@ -43,7 +43,7 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 
 	@Override
 	public void reloadConfig() {
-		FileConfiguration cfg = getPlugin().getConfig();
+		FileConfiguration cfg = getConfig();
 
 		cfg.addDefault( ITEM_PATH_PREFIX + ".7:0", "&c&lBedrock" );
 		cfg.addDefault( ITEM_PATH_PREFIX + ".7:1", Arrays.asList( null, "&c&lBedrock" ) );

@@ -64,20 +64,20 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 
 	@Override
 	public void reloadConfig() {
-		getPlugin().getConfig().set( PATH_ZONES + ".info", "Eine Itemgroup wird nur einmal ausgewählt. Somit kann die Wahrscheinlichkeit einer Gruppe auf 1 (=100%) gesetzt werden, " +
+		getConfig().set( PATH_ZONES + ".info", "Eine Itemgroup wird nur einmal ausgewählt. Somit kann die Wahrscheinlichkeit einer Gruppe auf 1 (=100%) gesetzt werden, " +
 			"um eine Gruppe zu erzwingen, wobei bei entsprechender Gruppenanzahl Gruppen mit kleinerer Wahrscheinlichkeit immer noch ausgewählt werden können. Jedoch können die " +
 			"Items von Gruppen mehrmals zufällig ausgewählt werden, was die Summe der Wahrscheinlichkeiten von Items einer Gruppe auf maximal 1 setzt." );
-		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroup_minamount", 2 );
-		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroup_maxamount", 2 );
-		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.minamount", 1 );
-		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.maxamount", 1 );
-		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.probability", .5 );
-		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname.item", new ItemStack( Material.STONE, 1 ) );
-		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname.probability", .5 );
-		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname2.item", getExampleItemStackWithEverything() );
-		getPlugin().getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname2.probability", .3 );
+		getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroup_minamount", 2 );
+		getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroup_maxamount", 2 );
+		getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.minamount", 1 );
+		getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.maxamount", 1 );
+		getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.probability", .5 );
+		getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname.item", new ItemStack( Material.STONE, 1 ) );
+		getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname.probability", .5 );
+		getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname2.item", getExampleItemStackWithEverything() );
+		getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname2.probability", .3 );
 
-		ConfigurationSection section = getPlugin().getConfig().getConfigurationSection( PATH_ZONES );
+		ConfigurationSection section = getConfig().getConfigurationSection( PATH_ZONES );
 
 		WorldGuardPlugin.inst()
 			.getRegionManager( Bukkit.getWorlds().get( 0 ) )
@@ -145,7 +145,7 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 
 	/**
 	 * @deprecated Should not be used by normal plugin, just for debugging
-     */
+	 */
 	@Deprecated
 	public Map<String, Collection<Zone>> getZoneMap() {
 		return zones.asMap();

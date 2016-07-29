@@ -7,6 +7,7 @@ public class ParachuteModule extends Module<ParachuteModule> {
 
 	private static final String PATH_PREFIX = "parachute.";
 	private static final String PATH_MAX_TIME_TICKS = PATH_PREFIX + "max_time_ticks";
+	private int maxTimeTicks;
 
 	public ParachuteModule(WarZ plugin) {
 		super( plugin, ParachuteListener::new );
@@ -14,10 +15,11 @@ public class ParachuteModule extends Module<ParachuteModule> {
 
 	@Override
 	public void reloadConfig() {
-		getPlugin().getConfig().addDefault( PATH_MAX_TIME_TICKS, 30 * 20 );
+		getConfig().addDefault( PATH_MAX_TIME_TICKS, 30 * 20 );
+		maxTimeTicks = getConfig().getInt( PATH_MAX_TIME_TICKS );
 	}
 
 	public int getMaxTimeTicks() {
-		return getPlugin().getConfig().getInt( PATH_MAX_TIME_TICKS );
+		return maxTimeTicks;
 	}
 }

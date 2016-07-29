@@ -15,6 +15,11 @@ public class ResourcePackModule extends Module<ResourcePackModule> {
 	private static final String PATH_INFOTEXT = PATH_PREFIX + "infotext";
 	private static final String PATH_INFOTEXT_RESET = PATH_PREFIX + "resetinfotext";
 	private static final String PATH_PACK_DELAY = PATH_PREFIX + "joindelay_ticks";
+	private String packUrl;
+	private String emptyPackUrl;
+	private String infoText;
+	private String resetInfoText;
+	private int resourcePackDelay;
 
 	public ResourcePackModule(WarZ plugin) {
 		super( plugin, ResourcePackListener::new );
@@ -23,31 +28,36 @@ public class ResourcePackModule extends Module<ResourcePackModule> {
 
 	@Override
 	public void reloadConfig() {
-		getPlugin().getConfig().addDefault( PATH_PACK_URL, "https://resourcepacks.epicpvp.org/warz.zip" );
-		getPlugin().getConfig().addDefault( PATH_EMPTY_PACK_URL, "https://resourcepacks.epicpvp.org/empty.zip" );
-		getPlugin().getConfig().addDefault( PATH_INFOTEXT, "&aBitte akzeptiere das Resourcepack!" );
-		getPlugin().getConfig().addDefault( PATH_INFOTEXT_RESET, "&aExperimentell! Dies setzt ein neues, leeres Resourcepack, welches das alte überschreiben sollte." );
-		getPlugin().getConfig().addDefault( PATH_PACK_DELAY, 2 * 20 );
+		getConfig().addDefault( PATH_PACK_URL, "https://resourcepacks.epicpvp.org/warz.zip" );
+		packUrl = getConfig().getString( PATH_PACK_URL );
+		getConfig().addDefault( PATH_EMPTY_PACK_URL, "https://resourcepacks.epicpvp.org/empty.zip" );
+		emptyPackUrl = getConfig().getString( PATH_EMPTY_PACK_URL );
+		getConfig().addDefault( PATH_INFOTEXT, "&aBitte akzeptiere das Resourcepack!" );
+		infoText = getConfig().getString( PATH_INFOTEXT );
+		getConfig().addDefault( PATH_INFOTEXT_RESET, "&aExperimentell! Dies setzt ein neues, leeres Resourcepack, welches das alte überschreiben sollte." );
+		resetInfoText = getConfig().getString( PATH_INFOTEXT_RESET );
+		getConfig().addDefault( PATH_PACK_DELAY, 2 * 20 );
+		resourcePackDelay = getConfig().getInt( PATH_PACK_DELAY );
 	}
 
 	public String getPackUrl() {
-		return getPlugin().getConfig().getString( PATH_PACK_URL );
+		return packUrl;
 	}
 
 	public String getEmptyPackUrl() {
-		return getPlugin().getConfig().getString( PATH_EMPTY_PACK_URL );
+		return emptyPackUrl;
 	}
 
 	public String getInfoText() {
-		return getPlugin().getConfig().getString( PATH_INFOTEXT );
+		return infoText;
 	}
 
 	public String getResetInfoText() {
-		return getPlugin().getConfig().getString( PATH_INFOTEXT_RESET );
+		return resetInfoText;
 	}
 
 	public int getResourcePackDelay() {
-		return getPlugin().getConfig().getInt( PATH_PACK_DELAY );
+		return resourcePackDelay;
 	}
 
 	/**

@@ -35,8 +35,8 @@ public class CobWebModule extends Module<CobWebModule> implements Listener, Runn
 
 	@Override
 	public void reloadConfig() {
-		getPlugin().getConfig().addDefault( PATH_PREFIX + "resetseconds", 30 );
-		webMillis = TimeUnit.SECONDS.toMillis( getPlugin().getConfig().getInt( PATH_PREFIX + "resetseconds" ) );
+		getConfig().addDefault( PATH_PREFIX + "resetseconds", 30 );
+		webMillis = TimeUnit.SECONDS.toMillis( getConfig().getInt( PATH_PREFIX + "resetseconds" ) );
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)

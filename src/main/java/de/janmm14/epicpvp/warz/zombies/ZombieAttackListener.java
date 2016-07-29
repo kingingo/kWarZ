@@ -23,8 +23,9 @@ public class ZombieAttackListener implements Listener {
 				( ( LivingEntity ) event.getEntity() ).addPotionEffect( randomAttackEffect );
 			}
 			double dmg = module.getZombieDamage();
-			if ( dmg >= 0 ) {
-				event.setDamage( dmg );
+			int dmgInt = ( int ) ( dmg * 2.0 );
+			if ( dmgInt >= 0 ) {
+				event.setDamage( dmgInt / 2 );
 			}
 		}
 	}

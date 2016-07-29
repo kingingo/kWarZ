@@ -20,10 +20,11 @@ public class ZombieModule extends Module<ZombieModule> {
 	private static final String PATH_ATTACK_DAMAGE = PATH_PREFIX + "attack_damage";
 
 	private final List<ZombieAttackInfo> randomEffectHolderList = new ArrayList<>();
+	private double zombieDamage;
 
 	public ZombieModule(WarZ plugin) {
 		super( plugin, ZombieBehaviourListener::new, ZombieSpawnListener::new, ZombieAttackListener::new );
-		getPlugin().getConfig().addDefault( PATH_REDSTONE_TORCH_RANGE, 15 );
+		getConfig().addDefault( PATH_REDSTONE_TORCH_RANGE, 15 );
 	}
 
 	public void setupZombie(Zombie zombie) {
@@ -33,12 +34,13 @@ public class ZombieModule extends Module<ZombieModule> {
 
 	@Override
 	public void reloadConfig() {
-		getPlugin().getConfig().addDefault( PATH_ATTACK_DAMAGE, 2.0 );
-		getPlugin().getConfig().addDefault( PATH_RANDOM_ATTACK_CONFIGURATION + ".irgendwashierhinaberimmerunterschiedlich.effect", "CONFUSION" );
-		getPlugin().getConfig().addDefault( PATH_RANDOM_ATTACK_CONFIGURATION + ".irgendwashierhinaberimmerunterschiedlich.duration_in_half_ticks", 40 );
-		getPlugin().getConfig().addDefault( PATH_RANDOM_ATTACK_CONFIGURATION + ".irgendwashierhinaberimmerunterschiedlich.amplifier", 1 );
-		getPlugin().getConfig().addDefault( PATH_RANDOM_ATTACK_CONFIGURATION + ".irgendwashierhinaberimmerunterschiedlich.probability", 0.1 );
-		ConfigurationSection section = getPlugin().getConfig().getConfigurationSection( PATH_RANDOM_ATTACK_CONFIGURATION );
+		getConfig().addDefault( PATH_ATTACK_DAMAGE, 2.0 );
+		zombieDamage = getConfig().getDouble( PATH_ATTACK_DAMAGE );
+		getConfig().addDefault( PATH_RANDOM_ATTACK_CONFIGURATION + ".irgendwashierhinaberimmerunterschiedlich.effect", "CONFUSION" );
+		getConfig().addDefault( PATH_RANDOM_ATTACK_CONFIGURATION + ".irgendwashierhinaberimmerunterschiedlich.duration_in_half_ticks", 40 );
+		getConfig().addDefault( PATH_RANDOM_ATTACK_CONFIGURATION + ".irgendwashierhinaberimmerunterschiedlich.amplifier", 1 );
+		getConfig().addDefault( PATH_RANDOM_ATTACK_CONFIGURATION + ".irgendwashierhinaberimmerunterschiedlich.probability", 0.1 );
+		ConfigurationSection section = getConfig().getConfigurationSection( PATH_RANDOM_ATTACK_CONFIGURATION );
 		for ( String key : section.getKeys( false ) ) {
 			if ( key.equalsIgnoreCase( "irgendwashierhinaberimmerunterschiedlich" ) ) {
 				continue;
@@ -54,6 +56,6 @@ public class ZombieModule extends Module<ZombieModule> {
 	}
 
 	public double getZombieDamage() {
-		return getPlugin().getConfig().getDouble( PATH_ATTACK_DAMAGE );
+		return zombieDamage;
 	}
 }

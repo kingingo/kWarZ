@@ -40,7 +40,7 @@ public class CommandWarZ implements TabExecutor {
 				break;
 			case "debug":
 				WarZ.DEBUG = !WarZ.DEBUG;
-				if (WarZ.DEBUG) {
+				if ( WarZ.DEBUG ) {
 					sender.sendMessage( "§6Der Debug-Modus ist nun§a angeschaltet§6." );
 				} else {
 					sender.sendMessage( "§6Der Debug-Modus ist nun§a ausgeschaltet§6." );

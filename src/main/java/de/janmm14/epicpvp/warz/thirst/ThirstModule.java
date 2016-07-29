@@ -15,6 +15,8 @@ public class ThirstModule extends Module<ThirstModule> {
 	private static final String PATH_PREFIX = "thirst.";
 	private static final String FOOD_CFG_PREFIX = PATH_PREFIX + "thirst.items"; //no dot at the end (!)
 	private final Table<Material, Byte, Double> itemThirstFillTable = HashBasedTable.create( 1, 4 );
+	private double distanceMultiplier;
+	private double lowThirstThreshold;
 
 	public ThirstModule(WarZ plugin) {
 		super( plugin, ThirstListener::new );
@@ -23,17 +25,19 @@ public class ThirstModule extends Module<ThirstModule> {
 
 	@Override
 	public void reloadConfig() {
-		getPlugin().getConfig().addDefault( PATH_PREFIX + "fullThirstBlockDistance", 400.0 );
-		getPlugin().getConfig().addDefault( PATH_PREFIX + "lowThirstThreshold", .2 );
+		getConfig().addDefault( PATH_PREFIX + "fullThirstBlockDistance", 400.0 );
+		distanceMultiplier = 1.0D / getConfig().getDouble( PATH_PREFIX + "fullThirstBlockDistance" );
+		getConfig().addDefault( PATH_PREFIX + "lowThirstThreshold", .2 );
+		lowThirstThreshold = getConfig().getDouble( PATH_PREFIX + "lowThirstThreshold" );
 
 		itemThirstFillTable.clear();
 
-		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE:13", .2 );
-		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE", .2 );
-		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".1", .2 );
-		getPlugin().getConfig().addDefault( FOOD_CFG_PREFIX + ".1:0", .2 );
+		getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE:13", .2 );
+		getConfig().addDefault( FOOD_CFG_PREFIX + ".STONE", .2 );
+		getConfig().addDefault( FOOD_CFG_PREFIX + ".1", .2 );
+		getConfig().addDefault( FOOD_CFG_PREFIX + ".1:0", .2 );
 
-		ConfigurationSection section = getPlugin().getConfig().getConfigurationSection( FOOD_CFG_PREFIX );
+		ConfigurationSection section = getConfig().getConfigurationSection( FOOD_CFG_PREFIX );
 		for ( String key : section.getKeys( false ) ) {
 			String matStr;
 			Byte data;
@@ -69,10 +73,10 @@ public class ThirstModule extends Module<ThirstModule> {
 	}
 
 	public double getDistanceMultiplier() {
-		return 1.0D / getPlugin().getConfig().getDouble( PATH_PREFIX + "fullThirstBlockDistance" );
+		return distanceMultiplier;
 	}
 
 	public double getLowThirstThreshold() {
-		return getPlugin().getConfig().getDouble( PATH_PREFIX + "lowThirstThreshold" );
+		return lowThirstThreshold;
 	}
 }
