@@ -34,9 +34,6 @@ public class FriendInfoManager {
 	@Getter
 	@NonNull
 	private final FriendModule module;
-	@Getter
-	@NonNull
-	private final UserDataConfig userDataConfig;
 	private final UuidNameConverter uuidNameConverter;
 	private final ExecutorService asyncSaverThread = Executors
 		.newSingleThreadScheduledExecutor(
@@ -80,7 +77,6 @@ public class FriendInfoManager {
 
 	public FriendInfoManager(@NonNull FriendModule module) {
 		this.module = module;
-		userDataConfig = new UserDataConfig( getModule().getPlugin() );
 		uuidNameConverter = module.getPlugin().getUuidNameConverter();
 	}
 
@@ -199,7 +195,7 @@ public class FriendInfoManager {
 	}
 
 	private FriendInfo fetch(int playerId) {
-		kConfig cfg = userDataConfig.getConfig( playerId );
+		kConfig cfg = getModule().getPlugin().getUserDataConfig().getConfig( playerId );
 
 		TIntSet friendWith = toTSet( cfg.getIntegerList( "friendWith" ) );
 		TIntSet requestsGot = toTSet( cfg.getIntegerList( "requestsGot" ) );
@@ -218,7 +214,7 @@ public class FriendInfoManager {
 		cfg.set( "requestsGot", toJava( friendInfo.getRequestsGot() ) );
 		cfg.set( "requestsSent", toJava( friendInfo.getRequestsSent() ) );
 
-		userDataConfig.saveConfig( friendInfo.getPlayerId() );
+		getModule().getPlugin().getUserDataConfig().saveConfig( friendInfo.getPlayerId() );
 
 		friendInfo.setDirty( false );
 	}

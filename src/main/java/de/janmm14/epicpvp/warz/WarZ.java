@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.wolveringer.bukkit.permissions.GroupTyp;
 import dev.wolveringer.client.connection.ClientType;
-//import dev.wolveringer.client.debug.Debugger;
+import dev.wolveringer.client.debug.Debugger;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.AACHack.AACHack;
 import eu.epicpvp.kcore.ChunkGenerator.CleanroomChunkGenerator;
@@ -21,11 +21,14 @@ import eu.epicpvp.kcore.Listener.Chat.ChatListener;
 import eu.epicpvp.kcore.MySQL.MySQL;
 import eu.epicpvp.kcore.Permission.PermissionManager;
 import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
+import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
 
+import de.janmm14.epicpvp.warz.command.CommandWarZ;
 import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
 import de.janmm14.epicpvp.warz.hooks.UuidNameConverter;
+import de.janmm14.epicpvp.warz.spawn.CommandSpawn;
 
 import lombok.Getter;
 
@@ -38,6 +41,8 @@ public class WarZ extends JavaPlugin {
 	private ModuleManager moduleManager;
 	private UuidNameConverter uuidNameConverter = new UuidNameConverter();
 	private LanguageConverter languageConverter = new LanguageConverter();
+	private UserDataConfig userDataConfig;
+	private CommandSpawn commandSpawn;
 
 	public WarZ() {
 		instance = this;
@@ -45,6 +50,7 @@ public class WarZ extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		Debugger.setEnabled( false );
 		setConfigOptions();
 		DEBUG = getConfig().getBoolean( "debug" );
 		if ( DEBUG ) {
@@ -72,7 +78,8 @@ public class WarZ extends JavaPlugin {
 	}
 
 	private void setupKStuff() {
-//		Debugger.setEnabled( false ); //remove "Pong" and "handeling x packets per second" from console
+		userDataConfig = new UserDataConfig( this );
+
 		getConfig().addDefault( "mysql.host", "localhost" );
 		getConfig().addDefault( "mysql.user", "user" );
 		getConfig().addDefault( "mysql.database", "database" );

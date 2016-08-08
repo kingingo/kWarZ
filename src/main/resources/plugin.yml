@@ -14,6 +14,14 @@ commands:
   warz:
     description: Main WarZ command
     permission: warz.command.warz.see
+    aliases: [wz]
+  spawn:
+    description: Teleport to the spawn
+    permission: warz.command.spawn
+  back:
+    description: Teleport to the map
+    permission: warz.command.back
+    aliases: [start]
 
 permissions:
   warz.command.resourcepack.use:

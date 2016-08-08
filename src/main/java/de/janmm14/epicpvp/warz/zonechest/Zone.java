@@ -9,12 +9,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import com.shampaggon.crackshot.CSUtility;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
-import de.janmm14.epicpvp.warz.util.CoughtException;
 import de.janmm14.epicpvp.warz.util.random.RandomThingGroupHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomThingHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomUtil;
@@ -31,6 +31,7 @@ import lombok.ToString;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Zone {
 
+	private static final CSUtility CS_UTILITY = new CSUtility();
 	private final String worldguardName;
 	private final String zoneName;
 	private final List<RandomThingGroupHolder<ItemStack>> itemGroups;
@@ -55,12 +56,21 @@ public class Zone {
 			if ( toAdd != null ) {
 				for ( ItemStack is : toAdd ) {
 					WarZ.getInstance().getModuleManager().getModule( ItemRenameModule.class ).renameIfNeeded( is );
+					is = crackshotRename( is );
 					result.add( is );
 				}
 				currItemgroups.remove( itemgroup );
 			}
 		}
 		return result;
+	}
+
+	public ItemStack crackshotRename(ItemStack is) {
+		String weaponTitle = CS_UTILITY.getWeaponTitle( is );
+		if (weaponTitle != null) {
+            is = CS_UTILITY.generateWeapon( weaponTitle );
+        }
+		return is;
 	}
 
 	public static Zone byConfigurationSection(String worldguardName, String zoneName, ConfigurationSection section) {
@@ -84,7 +94,7 @@ public class Zone {
 			.getRegionManager( Bukkit.getWorld( "world" ) )
 			.getRegion( worldguardName );
 		if ( worldGuardRegion == null ) {
-			new CoughtException( new IllegalStateException( "Could not find worldedit region " + worldguardName + " (" + zoneName + ") while searching for middle point" ) ).printStackTrace();
+			new IllegalStateException( "Could not find worldedit region " + worldguardName + " (" + zoneName + ") while searching for middle point" ).printStackTrace();
 			return Bukkit.getWorld( "world" ).getSpawnLocation().toVector();
 		}
 		com.sk89q.worldedit.Vector middle = com.sk89q.worldedit.Vector.getMidpoint( worldGuardRegion.getMinimumPoint(), worldGuardRegion.getMaximumPoint() );

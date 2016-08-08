@@ -1,4 +1,4 @@
-package de.janmm14.epicpvp.warz;
+package de.janmm14.epicpvp.warz.command;
 
 import java.util.Collections;
 import java.util.List;
@@ -8,6 +8,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 
+import dev.wolveringer.client.debug.Debugger;
+
+import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
 
 import lombok.RequiredArgsConstructor;
@@ -39,11 +42,21 @@ public class CommandWarZ implements TabExecutor {
 				sender.sendMessage( "§aDie Kisten wurden neu gefüllt." );
 				break;
 			case "debug":
-				WarZ.DEBUG = !WarZ.DEBUG;
-				if ( WarZ.DEBUG ) {
+				boolean newState = !WarZ.DEBUG;
+				WarZ.DEBUG = newState;
+				if ( newState ) {
 					sender.sendMessage( "§6Der Debug-Modus ist nun§a angeschaltet§6." );
 				} else {
 					sender.sendMessage( "§6Der Debug-Modus ist nun§a ausgeschaltet§6." );
+				}
+				break;
+			case "debug2":
+				boolean newState2 = !Debugger.isEnabled();
+				Debugger.setEnabled( newState2 );
+				if ( newState2 ) {
+					sender.sendMessage( "§6Der DatenClient-Debug-Modus ist nun§a angeschaltet§6." );
+				} else {
+					sender.sendMessage( "§6Der DatenClient-Debug-Modus ist nun§a ausgeschaltet§6." );
 				}
 				break;
 			default:
