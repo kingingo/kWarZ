@@ -55,18 +55,23 @@ public class Zone {
 				System.out.println( "toAdd = " + toAdd );
 			if ( toAdd != null ) {
 				for ( ItemStack is : toAdd ) {
+					if (is == null) {
+						if ( WarZ.DEBUG )
+							System.out.println( "ItemStack is null" );
+						continue;
+					}
 					WarZ.getInstance().getModuleManager().getModule( ItemRenameModule.class ).renameIfNeeded( is );
 					is = crackshotRename( is );
 					result.add( is );
 				}
-				currItemgroups.remove( itemgroup );
+//				currItemgroups.remove( itemgroup );
 			}
 		}
 		return result;
 	}
 
 	public ItemStack crackshotRename(ItemStack is) {
-		String weaponTitle = CS_UTILITY.getWeaponTitle( is );
+		String weaponTitle = CS_UTILITY.getHandle().convItem( is ); //String weaponTitle = CS_UTILITY.getWeaponTitle( is );
 		if (weaponTitle != null) {
             is = CS_UTILITY.generateWeapon( weaponTitle );
         }
@@ -83,7 +88,7 @@ public class Zone {
 
 		List<RandomThingGroupHolder<ItemStack>> itemGroups = itemSection.getKeys( false ).stream()
 			.map( key -> ConfigUtil.readItemStackRandomGroup( itemSection.getConfigurationSection( key ) ) )
-			.sorted( (o1, o2) -> Double.compare( o2.getProbability(), o1.getProbability() ) ) //sort reverse probability - highest first
+//			.sorted( (o1, o2) -> Double.compare( o2.getProbability(), o1.getProbability() ) ) //sort reverse probability - highest first
 			.collect( Collectors.toList() );
 
 		return new Zone( worldguardName, zoneName, itemGroups, section.getInt( "itemgroup_minamount" ), section.getInt( "itemgroup_maxamount" ) );
