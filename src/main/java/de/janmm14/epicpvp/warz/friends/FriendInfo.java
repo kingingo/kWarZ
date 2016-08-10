@@ -84,7 +84,7 @@ public class FriendInfo {
 	kConfig getConfig() {
 		kConfig cfg = config.get();
 		if ( cfg == null ) {
-			config = new SoftReference<>( manager.getUserDataConfig().getConfig( playerId ) );
+			config = new SoftReference<>( manager.getModule().getPlugin().getUserDataConfig().getConfig( playerId ) );
 		}
 		return cfg;
 	}
