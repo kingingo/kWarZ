@@ -21,7 +21,7 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 	private final StatsManager manager = StatsManagerRepository.getStatsManager( GameType.WARZ );
 
 	public StatsModule(WarZ plugin) {
-		super( plugin/*, module -> module*/ );
+		super( plugin, module -> module );
 	}
 
 	@Override
