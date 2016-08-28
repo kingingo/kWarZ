@@ -24,7 +24,17 @@ commands:
     aliases: [start]
   shop:
     description: Open the shop
-    permission: warz.command.shop
+    permission: warz.command.shop.browse
+  giveshopitem:
+    description: Put an item into the player's chest
+    permission: warz.command.shop.giveitem
+  setdelivery:
+    description: Set delivery chest position
+    permission: warz.command.shop.setdeliverychest
+  friends:
+    description: Manage friendships
+    permission: warz.command.friends
+    aliases: [friend, freund, freunde, frieden, friede]
 
 permissions:
   warz.command.resourcepack.use:

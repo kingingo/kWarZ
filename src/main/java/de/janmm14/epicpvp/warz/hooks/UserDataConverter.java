@@ -10,7 +10,7 @@ import eu.epicpvp.kcore.Util.UtilServer;
 
 import lombok.Data;
 
-public class UuidNameConverter {
+public class UserDataConverter {
 
 	public Profile getProfileFromInput(String nameOrUuid) {
 		if ( nameOrUuid.length() > 16 ) {
@@ -55,6 +55,10 @@ public class UuidNameConverter {
 
 		public boolean isOnline() {
 			return Bukkit.getPlayerExact( name ) == null;
+		}
+
+		public LoadedPlayer toLoadedPlayer() {
+			return UtilServer.getClient().getPlayerAndLoad( name );
 		}
 
 		public static Profile byLoadedPlayer(LoadedPlayer lplr) {

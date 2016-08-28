@@ -11,16 +11,16 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
 
-import de.janmm14.epicpvp.warz.hooks.UuidNameConverter;
+import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 
 public class FriendHurtListener implements Listener {
 
 	private final FriendInfoManager manager;
-	private final UuidNameConverter uuidNameConverter;
+	private final UserDataConverter userDataConverter;
 
 	public FriendHurtListener(FriendModule module) {
 		this.manager = module.getFriendInfoManager();
-		this.uuidNameConverter = module.getPlugin().getUuidNameConverter();
+		this.userDataConverter = module.getPlugin().getUserDataConverter();
 	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -29,7 +29,7 @@ public class FriendHurtListener implements Listener {
 			return;
 		}
 		FriendInfo victimInfo = manager.get( event.getEntity().getUniqueId() );
-		UuidNameConverter.Profile damagerProfile = uuidNameConverter.getProfile( event.getDamager().getUniqueId() );
+		UserDataConverter.Profile damagerProfile = userDataConverter.getProfile( event.getDamager().getUniqueId() );
 		if ( PlayerFriendRelation.areFriends( manager, victimInfo, damagerProfile.getPlayerId() ) ) {
 			event.setCancelled( true );
 		}
@@ -40,7 +40,7 @@ public class FriendHurtListener implements Listener {
 		if ( event.getVictim() instanceof Player && event.getDamager() instanceof Player ) {
 			UUID victimUuid = event.getVictim().getUniqueId();
 			UUID damagerUuid = event.getDamager().getUniqueId();
-			UuidNameConverter.Profile damagerProfile = uuidNameConverter.getProfile( damagerUuid );
+			UserDataConverter.Profile damagerProfile = userDataConverter.getProfile( damagerUuid );
 			if ( PlayerFriendRelation.areFriends( manager, manager.get( victimUuid ), damagerProfile.getPlayerId() ) ) {
 				event.setCancelled( true );
 			}

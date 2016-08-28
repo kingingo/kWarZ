@@ -19,7 +19,7 @@ public class CommandShop implements CommandExecutor {
 			sender.sendMessage( "§cNur für Spieler." );
 			return true;
 		}
-		module.getListener( ShopModuleListener.class ).openInventory( ( Player ) sender );
+		module.getBuyInventoryHandler().openInventory( ( Player ) sender );
 		return false;
 	}
 }

@@ -27,7 +27,7 @@ import eu.epicpvp.kcore.Util.UtilServer;
 
 import de.janmm14.epicpvp.warz.command.CommandWarZ;
 import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
-import de.janmm14.epicpvp.warz.hooks.UuidNameConverter;
+import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 import de.janmm14.epicpvp.warz.spawn.CommandSpawn;
 
 import lombok.Getter;
@@ -39,10 +39,9 @@ public class WarZ extends JavaPlugin {
 	@Getter
 	private static WarZ instance;
 	private ModuleManager moduleManager;
-	private UuidNameConverter uuidNameConverter = new UuidNameConverter();
+	private UserDataConverter userDataConverter = new UserDataConverter();
 	private LanguageConverter languageConverter = new LanguageConverter();
 	private UserDataConfig userDataConfig;
-	private CommandSpawn commandSpawn;
 
 	public WarZ() {
 		instance = this;

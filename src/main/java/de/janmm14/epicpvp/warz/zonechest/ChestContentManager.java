@@ -10,7 +10,6 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
@@ -79,11 +78,11 @@ public class ChestContentManager implements Runnable {
 		}
 	}
 
-	public Inventory getInventory(World world, BlockVector blockVector, CustomChestInventoryHolder owner) {
+	public Inventory getInventory(World world, BlockVector blockVector, CustomChestInventoryHolder owner, BlockVector doubleChest) {
 		Inventory inv = createdInventories.getIfPresent( blockVector );
 		if ( inv == null ) {
 			System.out.println( "Creating inventory for " + blockVector );
-			inv = fillInventory( world, blockVector, Bukkit.createInventory( owner, InventoryType.CHEST ) );
+			inv = fillInventory( world, blockVector, Bukkit.createInventory( owner, doubleChest == null ? 3 * 9 : 6 * 9 ) );
 			if ( inv != null ) {
 				createdInventories.put( blockVector, inv );
 			}
@@ -99,6 +98,15 @@ public class ChestContentManager implements Runnable {
 		}
 		if ( WarZ.DEBUG )
 			System.out.println( "zone " + zone.getWorldguardName() + " @" + Integer.toHexString( System.identityHashCode( zone ) ) );
+
+		fillInventory0( blockVector, inv, random, zone, 0 );
+		if ( inv.getSize() == 6 * 9 ) {
+			fillInventory0( blockVector, inv, random, zone, 3 * 9 );
+		}
+		return inv;
+	}
+
+	private void fillInventory0(BlockVector blockVector, Inventory inv, Random random, Zone zone, int posOffset) {
 		for ( ItemStack item : zone.getRandomChoosenChestItems() ) {
 			if ( item == null ) {
 				module.getPlugin().getLogger().warning( "Null element in chest at " + blockVector + ", contents: " + Arrays.asList( inv.getContents() ) );
@@ -146,7 +154,7 @@ public class ChestContentManager implements Runnable {
 			}
 			int tries = 0;
 			while ( true ) {
-				int pos = random.nextInt( inv.getSize() );
+				int pos = posOffset + random.nextInt( 3 * 9 );
 				ItemStack origItem = inv.getItem( pos );
 				if ( origItem == null || origItem.getType() == Material.AIR ) {
 					if ( WarZ.DEBUG )
@@ -162,6 +170,5 @@ public class ChestContentManager implements Runnable {
 				}
 			}
 		}
-		return inv;
 	}
 }

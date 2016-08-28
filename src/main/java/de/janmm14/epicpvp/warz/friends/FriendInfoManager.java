@@ -16,7 +16,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import eu.epicpvp.kcore.kConfig.kConfig;
 import gnu.trove.set.TIntSet;
 
-import de.janmm14.epicpvp.warz.hooks.UuidNameConverter;
+import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +33,7 @@ public class FriendInfoManager {
 	@Getter
 	@NonNull
 	private final FriendModule module;
-	private final UuidNameConverter uuidNameConverter;
+	private final UserDataConverter userDataConverter;
 	private final ExecutorService asyncSaverThread = Executors
 		.newSingleThreadScheduledExecutor(
 			new ThreadFactoryBuilder()
@@ -76,7 +76,7 @@ public class FriendInfoManager {
 
 	public FriendInfoManager(@NonNull FriendModule module) {
 		this.module = module;
-		uuidNameConverter = module.getPlugin().getUuidNameConverter();
+		userDataConverter = module.getPlugin().getUserDataConverter();
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class FriendInfoManager {
 	 * @return the FriendInfo
 	 */
 	public FriendInfo get(UUID uuid) {
-		return friendInfoCache.getUnchecked( uuidNameConverter.getProfile( uuid ).getPlayerId() );
+		return friendInfoCache.getUnchecked( userDataConverter.getProfile( uuid ).getPlayerId() );
 	}
 
 	/**

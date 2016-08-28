@@ -78,6 +78,9 @@ public abstract class Module<M extends Module> {
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface Priority {
 
+		/**
+		 * A higher priority means it is loaded later - a bad logic atm
+		 */
 		int value() default 0;
 	}
 }

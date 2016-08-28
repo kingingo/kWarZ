@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,6 +20,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
+import com.google.common.collect.ImmutableList;
+
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.random.RandomThingGroupHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomThingHolder;
@@ -28,10 +33,10 @@ public class ChestOpenListener implements Listener {
 
 	private final ZoneAndChestsModule module;
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onInteract(PlayerInteractEvent event) {
 		if ( event.getPlayer().isOp() && event.getAction() == Action.LEFT_CLICK_BLOCK ) {
-			//allow block to be destroyed by not doing anything
+			//allow block to be destroyed by ops
 			return;
 		}
 		if ( event.hasBlock() && ( event.getClickedBlock().getType() == Material.CHEST || event.getClickedBlock().getType() == Material.TRAPPED_CHEST ) ) {
@@ -39,17 +44,44 @@ public class ChestOpenListener implements Listener {
 			Player plr = event.getPlayer();
 
 			BlockVector blockVector = event.getClickedBlock().getLocation().toVector().toBlockVector();
+			BlockVector doubleChestBase = getDoubleChestBase( plr.getWorld(), blockVector );
 			CustomChestInventoryHolder owner = new CustomChestInventoryHolder( blockVector );
-			Inventory inv = module.getChestContentManager().getInventory( plr.getWorld(), blockVector, owner );
+			Inventory inv;
+			if ( doubleChestBase != null ) {
+				inv = module.getChestContentManager().getInventory( plr.getWorld(), doubleChestBase, owner, doubleChestBase == blockVector ? blockVector : doubleChestBase );
+			} else {
+				inv = module.getChestContentManager().getInventory( plr.getWorld(), blockVector, owner, null );
+			}
 			if ( inv != null ) {
-				System.out.println( "Opening custom inventory for " + blockVector );
+				if ( WarZ.DEBUG )
+					System.out.println( "Opening custom inventory for " + blockVector );
 				event.setCancelled( true );
 				owner.setInventory( inv );
 				plr.openInventory( inv );
 			} else {
-				System.out.println( "Inventory is null for " + blockVector );
+				if ( WarZ.DEBUG )
+					System.out.println( "Inventory is null for " + blockVector );
 			}
 		}
+	}
+
+	private static List<BlockFace> faces = ImmutableList.of( BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST );
+
+	private static BlockVector getDoubleChestBase(World world, BlockVector blockVector) {
+		Block block = blockVector.toLocation( world ).getBlock();
+		BlockFace blockFace = faces.stream()
+			.filter( face -> {
+				Block relBlock = block.getRelative( face );
+				return relBlock.getType() == block.getType();
+			} )
+			.findFirst().orElse( null );
+		if ( blockFace == null ) {
+			return null;
+		}
+		if ( blockFace == BlockFace.SOUTH || blockFace == BlockFace.EAST ) {
+			return blockVector;
+		}
+		return block.getRelative( blockFace ).getLocation().toVector().toBlockVector();
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)

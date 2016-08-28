@@ -107,7 +107,7 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 		return renamed;
 	}
 
-	private boolean renameItemStackArray(ItemStack[] contents) {
+	public boolean renameItemStackArray(ItemStack[] contents) {
 		boolean renamed = false;
 		for ( int i = 0; i < contents.length; i++ ) {
 			ItemStack is = contents[ i ];

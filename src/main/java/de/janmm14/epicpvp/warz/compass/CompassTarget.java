@@ -12,7 +12,7 @@ import de.janmm14.epicpvp.warz.friends.FriendInfo;
 import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
 import de.janmm14.epicpvp.warz.friends.FriendModule;
 import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
-import de.janmm14.epicpvp.warz.hooks.UuidNameConverter;
+import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
 import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
 
@@ -60,7 +60,7 @@ public enum CompassTarget {
 			}
 			FriendInfoManager manager = module.getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
 			FriendInfo friendInfo = manager.get( plr.getUniqueId() );
-			UuidNameConverter.Profile movedProfile = manager.getModule().getPlugin().getUuidNameConverter().getProfile( moved.getUniqueId() );
+			UserDataConverter.Profile movedProfile = manager.getModule().getPlugin().getUserDataConverter().getProfile( moved.getUniqueId() );
 			if ( PlayerFriendRelation.areFriends( manager, friendInfo, movedProfile.getPlayerId() ) ) {
 				return null;
 			}
@@ -82,7 +82,7 @@ public enum CompassTarget {
 					continue;
 				}
 
-				UuidNameConverter.Profile possTargetProfile = manager.getModule().getPlugin().getUuidNameConverter().getProfile( possTarget.getUniqueId() );
+				UserDataConverter.Profile possTargetProfile = manager.getModule().getPlugin().getUserDataConverter().getProfile( possTarget.getUniqueId() );
 				if ( !PlayerFriendRelation.areFriends( manager, friendInfo, possTargetProfile.getPlayerId() ) ) {
 					continue;
 				}
@@ -105,7 +105,7 @@ public enum CompassTarget {
 			}
 			FriendInfoManager manager = module.getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
 			FriendInfo friendInfo = manager.get( plr.getUniqueId() );
-			UuidNameConverter.Profile movedProfile = manager.getModule().getPlugin().getUuidNameConverter().getProfile( moved.getUniqueId() );
+			UserDataConverter.Profile movedProfile = manager.getModule().getPlugin().getUserDataConverter().getProfile( moved.getUniqueId() );
 
 			if ( !PlayerFriendRelation.areFriends( manager, friendInfo, movedProfile.getPlayerId() ) ) {
 				return null;

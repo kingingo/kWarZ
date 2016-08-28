@@ -1,5 +1,7 @@
 package de.janmm14.epicpvp.warz.friends;
 
+import org.bukkit.command.PluginCommand;
+
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 
@@ -15,6 +17,10 @@ public class FriendModule extends Module<FriendModule> {
 	public FriendModule(WarZ plugin) {
 		super( plugin, FriendHurtListener::new, FriendNotifyListener::new );
 		friendInfoManager = new FriendInfoManager( this );
+		CommandFriends handler = new CommandFriends( this );
+		PluginCommand cmd = getPlugin().getCommand( "friends" );
+		cmd.setExecutor( handler );
+		cmd.setTabCompleter( handler );
 	}
 
 	public String getPrefix() {

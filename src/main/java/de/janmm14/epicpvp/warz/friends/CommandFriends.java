@@ -29,7 +29,7 @@ import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.TIntSet;
 import org.apache.commons.lang.StringUtils;
 
-import de.janmm14.epicpvp.warz.hooks.UuidNameConverter;
+import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 
 import lombok.NonNull;
 
@@ -44,7 +44,7 @@ public class CommandFriends implements TabExecutor {
 	@NonNull
 	private final FriendModule module;
 	private final FriendInfoManager manager;
-	private final UuidNameConverter uuidNameConverter;
+	private final UserDataConverter userDataConverter;
 
 	private final Server server;
 
@@ -54,7 +54,7 @@ public class CommandFriends implements TabExecutor {
 	public CommandFriends(@NonNull FriendModule module) {
 		this.module = module;
 		manager = module.getFriendInfoManager();
-		uuidNameConverter = module.getPlugin().getUuidNameConverter();
+		userDataConverter = module.getPlugin().getUserDataConverter();
 
 		server = module.getPlugin().getServer();
 
@@ -129,7 +129,7 @@ public class CommandFriends implements TabExecutor {
 				if ( args[ 1 ].equalsIgnoreCase( plrName ) || args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() ) || args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
 					return msg( plr, module.getPrefix() + "Ich nehme an, dass du mit dir selbst Frieden hast." );
 				}
-				UuidNameConverter.Profile targetProfile = uuidNameConverter.getProfileFromInput( args[ 1 ] );
+				UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
 				if ( targetProfile == null ) {
 					return msg( plr, module.getPrefix() + "§cDer Spieler §6" + args[ 1 ] + "§c wurde nicht gefunden." );
 				}
@@ -169,7 +169,7 @@ public class CommandFriends implements TabExecutor {
 					return msg( plr, module.getPrefix() + "Du hast dir selbst keine Friedensanfrage gesendet." );
 				}
 				FriendInfo initiator = manager.get( initiatorUuid );
-				UuidNameConverter.Profile targetProfile = uuidNameConverter.getProfileFromInput( args[ 1 ] );
+				UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
 				if ( targetProfile == null ) {
 					return msg( plr, module.getPrefix() + "§cDer Spieler §6" + args[ 1 ] + "§c wurde nicht gefunden." );
 				}
@@ -268,7 +268,7 @@ public class CommandFriends implements TabExecutor {
 					return msg( plr, module.getPrefix() + "§cDu bist bereits mit deinem Alter Ego befreundet." );
 				}
 				FriendInfo initiatorInfo = manager.get( initiatorUuid );
-				UuidNameConverter.Profile targetProfile = uuidNameConverter.getProfileFromInput( args[ 1 ] );
+				UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
 				if ( targetProfile == null ) {
 					return msg( plr, module.getPrefix() + "§cDer Spieler §6" + args[ 1 ] + "§c wurde nicht gefunden." );
 				}
@@ -313,7 +313,7 @@ public class CommandFriends implements TabExecutor {
 					return msg( plr, module.getPrefix() + "§cDir selbst brauchst du keine Freundschaftsanfrage schicken. Hoffe ich zumindest..." );
 				}
 				FriendInfo initiatorInfo = manager.get( initiatorUuid );
-				UuidNameConverter.Profile targetProfile = uuidNameConverter.getProfileFromInput( args[ 1 ] );
+				UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
 				if ( targetProfile == null ) {
 					return msg( plr, module.getPrefix() + "§cDer Spieler §6" + args[ 1 ] + "§c wurde nicht gefunden." );
 				}
@@ -359,7 +359,7 @@ public class CommandFriends implements TabExecutor {
 		if ( args.length == 0 ) { //should not happen; api behaviour not documented enough to remove
 			return ImmutableList.of();
 		}
-		UuidNameConverter.Profile profile = uuidNameConverter.getProfile( plr );
+		UserDataConverter.Profile profile = userDataConverter.getProfile( plr );
 		int playerId = profile.getPlayerId();
 		switch ( args[ 0 ].toLowerCase().trim() ) {
 			case "": {
@@ -373,7 +373,7 @@ public class CommandFriends implements TabExecutor {
 				return getTabCompleteMatchesAndGetFriendInfo( playerId, args, 1, friendInfo -> {
 					return IntStream.concat(
 						IntStream.concat(
-							Bukkit.getOnlinePlayers().stream().mapToInt( p -> uuidNameConverter.getProfile( p ).getPlayerId() ),
+							Bukkit.getOnlinePlayers().stream().mapToInt( p -> userDataConverter.getProfile( p ).getPlayerId() ),
 							stream( friendInfo.getFriendWith() ) ),
 						IntStream.concat(
 							stream( friendInfo.getRequestsGot() ),
@@ -404,7 +404,7 @@ public class CommandFriends implements TabExecutor {
 			case "anfragen": {
 				return getTabCompleteMatchesAndGetFriendInfo( playerId, args, 1, friendInfo -> {
 					return Bukkit.getOnlinePlayers().stream()
-						.mapToInt( p -> uuidNameConverter.getProfile( p ).getPlayerId() )
+						.mapToInt( p -> userDataConverter.getProfile( p ).getPlayerId() )
 						.filter( not( friendInfo.getFriendWith()::contains ) );
 				} );
 			}
@@ -459,7 +459,7 @@ public class CommandFriends implements TabExecutor {
 	}
 
 	private Stream<String> mapStreamUuidsToNames(IntStream uuidStream) {
-		return uuidStream.mapToObj( uuidNameConverter::getProfile ).map( UuidNameConverter.Profile::getName );
+		return uuidStream.mapToObj( userDataConverter::getProfile ).map( UserDataConverter.Profile::getName );
 	}
 
 	private List<String> getNamesFromUuid(TIntCollection uuids) {
@@ -488,7 +488,7 @@ public class CommandFriends implements TabExecutor {
 	}
 
 	private String getPlayerStringColoredByOnlineState(int playerId) {
-		UuidNameConverter.Profile profile = uuidNameConverter.getProfile( playerId );
+		UserDataConverter.Profile profile = userDataConverter.getProfile( playerId );
 		String name = profile.getName();
 		if ( profile.isOnline() ) {
 			return "§4" + name;

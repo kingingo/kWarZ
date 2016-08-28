@@ -90,6 +90,6 @@ public class FriendInfo {
 	}
 
 	public Player getPlayer() {
-		return manager.getModule().getPlugin().getServer().getPlayer( manager.getModule().getPlugin().getUuidNameConverter().getProfile( playerId ).getUuid() );
+		return manager.getModule().getPlugin().getServer().getPlayer( manager.getModule().getPlugin().getUserDataConverter().getProfile( playerId ).getUuid() );
 	}
 }
