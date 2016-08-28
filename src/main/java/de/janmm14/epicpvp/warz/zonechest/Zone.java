@@ -55,7 +55,7 @@ public class Zone {
 				System.out.println( "toAdd = " + toAdd );
 			if ( toAdd != null ) {
 				for ( ItemStack is : toAdd ) {
-					if (is == null) {
+					if ( is == null ) {
 						if ( WarZ.DEBUG )
 							System.out.println( "ItemStack is null" );
 						continue;
@@ -72,9 +72,9 @@ public class Zone {
 
 	public ItemStack crackshotRename(ItemStack is) {
 		String weaponTitle = CS_UTILITY.getHandle().convItem( is ); //String weaponTitle = CS_UTILITY.getWeaponTitle( is );
-		if (weaponTitle != null) {
-            is = CS_UTILITY.generateWeapon( weaponTitle );
-        }
+		if ( weaponTitle != null ) {
+			is = CS_UTILITY.generateWeapon( weaponTitle );
+		}
 		return is;
 	}
 

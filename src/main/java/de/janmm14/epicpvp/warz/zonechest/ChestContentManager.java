@@ -136,10 +136,10 @@ public class ChestContentManager implements Runnable {
 						upper = 1;
 					}
 				}
-				if (lower < 0) {
+				if ( lower < 0 ) {
 					lower = 1;
 				}
-				if (lower > upper) {
+				if ( lower > upper ) {
 					upper = lower;
 				}
 				item.setAmount( RandomUtil.getRandomInt( lower, upper ) );

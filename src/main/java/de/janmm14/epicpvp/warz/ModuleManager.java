@@ -1,9 +1,10 @@
 package de.janmm14.epicpvp.warz;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 
 import org.reflections.Reflections;
@@ -18,7 +19,8 @@ public class ModuleManager {
 
 	public void discoverAndLoadModules() {
 		Reflections reflections = new Reflections( getClass().getPackage().getName() );
-		Set<Class<? extends Module>> moduleClasses = reflections.getSubTypesOf( Module.class );
+		List<Class<? extends Module>> moduleClasses = new ArrayList<>( reflections.getSubTypesOf( Module.class ) );
+		moduleClasses.sort( (o1, o2) -> Integer.compare( getPriority( o1 ), getPriority( o2 ) ) );
 
 		for ( Class<? extends Module> clazz : moduleClasses ) {
 			String moduleName = clazz.getSimpleName();
@@ -46,6 +48,11 @@ public class ModuleManager {
 				plugin.getLogger().log( Level.SEVERE, "Unknown error while enabling " + moduleName, t );
 			}
 		}
+	}
+
+	private int getPriority(Class<? extends Module> clazz) {
+		Module.Priority priority = clazz.getAnnotation( Module.Priority.class );
+		return priority == null ? 0 : priority.value();
 	}
 
 	public void reloadAllModuleConfigs() {

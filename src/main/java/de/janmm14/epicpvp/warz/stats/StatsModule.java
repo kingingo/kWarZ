@@ -1,12 +1,12 @@
 package de.janmm14.epicpvp.warz.stats;
 
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import dev.wolveringer.dataserver.gamestats.GameType;
 import dev.wolveringer.dataserver.gamestats.StatsKey;
@@ -29,15 +29,15 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onJoin(PlayerJoinEvent event) {
+//	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+//	public void onJoin(PlayerJoinEvent event) {
+//
+//	}
 
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onLeave(PlayerQuitEvent event) {
-
-	}
+//	@EventHandler(priority = EventPriority.MONITOR)
+//	public void onLeave(PlayerQuitEvent event) {
+//
+//	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onDeath(PlayerDeathEvent event) {
@@ -48,10 +48,10 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 				return;
 			}
 			int deaths = ( Integer ) o;
-			manager.set( victim, StatsKey.DEATHS, deaths + 1);
+			manager.set( victim, StatsKey.DEATHS, deaths + 1 );
 		} );
-		Player killer = event.getEntity().getKiller();
-		if (killer == null) {
+		Player killer = victim.getKiller();
+		if ( killer == null ) {
 			return;
 		}
 		manager.getAsync( killer, StatsKey.KILLS, (o, throwable) -> {
@@ -61,6 +61,26 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 			}
 			int kills = ( Integer ) o;
 			manager.set( killer, StatsKey.KILLS, kills + 1 );
+		} );
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onMobDeath(EntityDeathEvent event) {
+		LivingEntity victim = event.getEntity();
+		if ( victim instanceof Player ) {
+			return;
+		}
+		Player killer = victim.getKiller();
+		if ( killer == null ) {
+			return;
+		}
+		manager.getAsync( killer, StatsKey.MONSTER_KILLS, (o, throwable) -> {
+			if ( throwable != null ) {
+				throwable.printStackTrace();
+				return;
+			}
+			int kills = ( Integer ) o;
+			manager.set( killer, StatsKey.MONSTER_KILLS, kills + 1 );
 		} );
 	}
 }

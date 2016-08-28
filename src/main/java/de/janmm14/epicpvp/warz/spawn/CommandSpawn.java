@@ -39,7 +39,7 @@ public class CommandSpawn implements CommandExecutor {
 		} else {
 			if ( args[ 0 ].equalsIgnoreCase( "setsave" ) ) {
 				sender.sendMessage( "§aSicherer Spawnpunkt gesetzt." );
-				module.setSpawn(plr.getLocation());
+				module.setSpawn( plr.getLocation() );
 			}
 			if ( args[ 0 ].equalsIgnoreCase( "setmap" ) ) {
 				sender.sendMessage( "§aStartmappunkt gesetzt." );

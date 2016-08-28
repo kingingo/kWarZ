@@ -22,6 +22,9 @@ commands:
     description: Teleport to the map
     permission: warz.command.back
     aliases: [start]
+  shop:
+    description: Open the shop
+    permission: warz.command.shop
 
 permissions:
   warz.command.resourcepack.use:

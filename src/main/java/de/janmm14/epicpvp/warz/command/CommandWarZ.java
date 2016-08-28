@@ -1,13 +1,15 @@
 package de.janmm14.epicpvp.warz.command;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 
+import com.google.common.collect.ImmutableList;
 import dev.wolveringer.client.debug.Debugger;
 
 import de.janmm14.epicpvp.warz.WarZ;
@@ -65,11 +67,19 @@ public class CommandWarZ implements TabExecutor {
 		return true;
 	}
 
+	private ImmutableList<String> options = ImmutableList.of( "reload", "refill", "debug", "debug2" );
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-		if ( args.length == 1 && ( args[ 0 ].isEmpty() || "reload".startsWith( args[ 0 ].toLowerCase() ) ) ) {
-			return Collections.singletonList( "reload" );
+		if ( args.length != 1 ) {
+			return null;
 		}
-		return null;
+		String arg0 = args[ 0 ].toLowerCase();
+		if ( arg0.isEmpty() ) {
+			return Arrays.asList( "reload", "refill", "debug", "debug2" );
+		}
+		return options.stream()
+			.filter( option -> option.toLowerCase().startsWith( arg0 ) )
+			.collect( Collectors.toList() );
 	}
 }
