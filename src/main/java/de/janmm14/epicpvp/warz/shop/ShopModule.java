@@ -3,6 +3,7 @@ package de.janmm14.epicpvp.warz.shop;
 import javax.annotation.Nullable;
 
 import org.bukkit.util.BlockVector;
+import org.bukkit.util.Vector;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
@@ -31,7 +32,10 @@ public class ShopModule extends Module<ShopModule> {
 
 	@Override
 	public void reloadConfig() {
-		deliveryChestLocation = getConfig().getVector( "shop.delivery.chestLocation" ).toBlockVector();
+		Vector vector = getConfig().getVector( "shop.delivery.chestLocation" );
+		if (vector != null) {
+			deliveryChestLocation = vector.toBlockVector();
+		}
 	}
 
 	public ShopChestDeliveryHandler getShopDeliveryHandler() {

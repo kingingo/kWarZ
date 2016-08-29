@@ -14,13 +14,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
-
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 
-import com.sun.org.apache.regexp.internal.RE;
 import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.kConfig.kConfig;
 import gnu.trove.map.TIntObjectMap;
@@ -62,13 +60,15 @@ public class ShopChestDeliveryHandler implements Listener {
 
 	private Inventory loadInventory(UserDataConverter.Profile profile) {
 		kConfig config = userDataConfig.getConfig( profile.getPlayerId() );
-		ItemStack[] items = config.getItemStackArray( "shop.delivery.chestcontent" );
 		Inventory inv = module.getPlugin().getServer().createInventory( null, 6 * 9, "§6Shop delivery" );
-		for ( ItemStack item : items ) {
-			if ( item == null ) {
-				continue;
+		if ( config.contains( "shop.delivery.chestcontent" ) ) {
+			ItemStack[] items = config.getItemStackArray( "shop.delivery.chestcontent" );
+			for ( ItemStack item : items ) {
+				if ( item == null ) {
+					continue;
+				}
+				inv.addItem( item );
 			}
-			inv.addItem( item );
 		}
 		return inv;
 	}
@@ -123,7 +123,7 @@ public class ShopChestDeliveryHandler implements Listener {
 			return;
 		}
 		ItemStack[] contents = inv.getContents();
-		if (module.getModuleManager().getModule( ItemRenameModule.class ).renameItemStackArray( contents )) {
+		if ( module.getModuleManager().getModule( ItemRenameModule.class ).renameItemStackArray( contents ) ) {
 			inv.setContents( contents );
 		}
 		plr.openInventory( inv );
