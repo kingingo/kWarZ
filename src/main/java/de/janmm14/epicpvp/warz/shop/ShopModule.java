@@ -16,8 +16,7 @@ public class ShopModule extends Module<ShopModule> {
 
 	@Getter
 	private final ShopBuyInventoryHandler buyInventoryHandler = new ShopBuyInventoryHandler( getModuleManager().getModule( ItemRenameModule.class ) );
-	@Getter
-	private ShopChestDeliveryHandler shopDeliveryHandler = new ShopChestDeliveryHandler( this );
+	private ShopChestDeliveryHandler shopDeliveryHandler;
 	@Getter
 	@Setter
 	@Nullable
@@ -33,5 +32,13 @@ public class ShopModule extends Module<ShopModule> {
 	@Override
 	public void reloadConfig() {
 		deliveryChestLocation = getConfig().getVector( "shop.delivery.chestLocation" ).toBlockVector();
+	}
+
+	public ShopChestDeliveryHandler getShopDeliveryHandler() {
+		ShopChestDeliveryHandler shopDeliveryHandler = this.shopDeliveryHandler;
+		if (shopDeliveryHandler == null) {
+			this.shopDeliveryHandler = shopDeliveryHandler = new ShopChestDeliveryHandler( this );
+		}
+		return shopDeliveryHandler;
 	}
 }
