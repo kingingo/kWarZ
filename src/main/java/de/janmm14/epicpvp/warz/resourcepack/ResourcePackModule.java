@@ -6,6 +6,9 @@ import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.MiscUtil;
 
+import lombok.Getter;
+
+@Getter
 public class ResourcePackModule extends Module<ResourcePackModule> {
 
 	private static final String PATH_PREFIX = "resourcepack.";
@@ -38,26 +41,6 @@ public class ResourcePackModule extends Module<ResourcePackModule> {
 		resetInfoText = getConfig().getString( PATH_INFOTEXT_RESET );
 		getConfig().addDefault( PATH_PACK_DELAY, 2 * 20 );
 		resourcePackDelay = getConfig().getInt( PATH_PACK_DELAY );
-	}
-
-	public String getPackUrl() {
-		return packUrl;
-	}
-
-	public String getEmptyPackUrl() {
-		return emptyPackUrl;
-	}
-
-	public String getInfoText() {
-		return infoText;
-	}
-
-	public String getResetInfoText() {
-		return resetInfoText;
-	}
-
-	public int getResourcePackDelay() {
-		return resourcePackDelay;
 	}
 
 	/**
