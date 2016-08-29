@@ -22,6 +22,7 @@ import de.janmm14.epicpvp.warz.util.random.RandomUtil;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
@@ -32,8 +33,11 @@ import lombok.ToString;
 public class Zone {
 
 	private static final CSUtility CS_UTILITY = new CSUtility();
+	@NonNull
 	private final String worldguardName;
+	@NonNull
 	private final String zoneName;
+	@NonNull
 	private final List<RandomThingGroupHolder<ItemStack>> itemGroups;
 	private final int minItemGroups;
 	private final int maxItemGroups;

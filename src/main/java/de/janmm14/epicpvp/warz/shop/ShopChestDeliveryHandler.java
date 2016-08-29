@@ -47,15 +47,19 @@ public class ShopChestDeliveryHandler implements Listener {
 		userDataConfig = module.getPlugin().getUserDataConfig();
 	}
 
-	public void deliverItem(UserDataConverter.Profile profile, ItemStack item) {
+	/**
+	 * @return true - player is online, false - player is offline
+	 */
+	public boolean deliverItem(UserDataConverter.Profile profile, ItemStack item) {
 		Inventory inv = inventories.get( profile.getPlayerId() );
 		if ( inv != null ) {
 			inv.addItem( item );
-			return;
+			return true;
 		}
 		inv = loadInventory( profile );
 		inv.addItem( item );
 		saveInventory( profile, inv );
+		return false;
 	}
 
 	private Inventory loadInventory(UserDataConverter.Profile profile) {

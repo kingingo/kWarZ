@@ -128,7 +128,7 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 		byte data = is.getData().getData();
 		Collection<String> nameAndLore = itemNamesAndLores.get( id + ":" + data );
 		if ( nameAndLore == null ) {
-			nameAndLore = itemNamesAndLores.get( String.valueOf( id ) );
+			nameAndLore = itemNamesAndLores.get( Integer.toString( id ) );
 		}
 		if ( nameAndLore == null ) {
 			nameAndLore = itemNamesAndLores.get( is.getType() + ":" + data );

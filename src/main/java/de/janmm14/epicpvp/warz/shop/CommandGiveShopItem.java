@@ -66,7 +66,9 @@ public class CommandGiveShopItem implements CommandExecutor {
 			sender.sendMessage( "Could not execute /" + label + " " + SPACE_JOINER.join( args ) + " - Invalid item spec " + itemSpec );
 			return true;
 		}
-		module.getShopDeliveryHandler().deliverItem( profile, item );
+		sender.sendMessage( "Delivering shop item from command /" + label + " " + SPACE_JOINER.join( args ) + " - item: " + item + " - profile: " + profile );
+		boolean online = module.getShopDeliveryHandler().deliverItem( profile, item );
+		sender.sendMessage( "Delivered to " + ( online ? "online" : "offline" ) + " player - item: " + item + " - profile: " + profile );
 		return true;
 	}
 }
