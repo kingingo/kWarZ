@@ -80,6 +80,9 @@ public class CobWebModule extends Module<CobWebModule> implements Listener, Runn
 				}
 				Player plr = event.getPlayer();
 				short durability = item.getDurability();
+				if (WarZ.DEBUG) {
+					getPlugin().getServer().broadcastMessage( "durability: " + durability );
+				}
 				if ( durability > 1 ) {
 					item.setDurability( --durability );
 					plr.setItemInHand( item );
