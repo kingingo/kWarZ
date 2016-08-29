@@ -57,6 +57,10 @@ public class UserDataConverter {
 			return Bukkit.getPlayerExact( name ) == null;
 		}
 
+		/**
+		 * @deprecated returns implementation-specific class
+		 */
+		@Deprecated
 		public LoadedPlayer toLoadedPlayer() {
 			return UtilServer.getClient().getPlayerAndLoad( name );
 		}

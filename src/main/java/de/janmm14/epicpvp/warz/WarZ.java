@@ -96,7 +96,7 @@ public class WarZ extends JavaPlugin {
 		new ChatListener( this, UtilServer.getPermissionManager() );
 		new AntiCrashListener( UtilServer.getClient(), UtilServer.getMysql() );
 
-		//lets try to support reloades
+		//lets try to support reloades to some extend
 		for ( Player plr : Bukkit.getOnlinePlayers() ) {
 			StatsManagerRepository.getStatsManager( GameType.WARZ ).join( new PlayerJoinEvent( plr, "" ) );
 			UtilServer.getPermissionManager().loadPlayer( plr, UtilPlayer.getPlayerId( plr ) );

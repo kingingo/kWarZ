@@ -48,12 +48,12 @@ public class ShopChestDeliveryHandler implements Listener {
 	}
 
 	public void deliverItem(UserDataConverter.Profile profile, ItemStack item) {
-		Player plr = module.getPlugin().getServer().getPlayer( profile.getUuid() );
-		if ( plr != null ) {
-			inventories.get( profile.getPlayerId() ).addItem( item );
+		Inventory inv = inventories.get( profile.getPlayerId() );
+		if ( inv != null ) {
+			inv.addItem( item );
 			return;
 		}
-		Inventory inv = loadInventory( profile );
+		inv = loadInventory( profile );
 		inv.addItem( item );
 		saveInventory( profile, inv );
 	}
