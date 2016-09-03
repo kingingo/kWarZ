@@ -37,8 +37,13 @@ public class ZombieSpawnListener implements Listener {
 				module.setupZombie( ( Zombie ) event.getEntity() );
 			}
 		} else {
-			//TODO no other mobs?
-			event.setCancelled( true );
+			switch ( event.getEntityType() ) {
+				case WITHER_SKULL:
+					break;
+				default:
+					event.setCancelled( true );
+					break;
+			}
 		}
 	}
 }

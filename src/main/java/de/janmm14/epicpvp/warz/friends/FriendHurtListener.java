@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
 
+import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 
 public class FriendHurtListener implements Listener {
@@ -27,6 +28,9 @@ public class FriendHurtListener implements Listener {
 	public void onDamage(EntityDamageByEntityEvent event) {
 		if ( event.getEntityType() != EntityType.PLAYER || event.getDamager() instanceof Player ) {
 			return;
+		}
+		if ( WarZ.DEBUG ) {
+			System.out.println( "friend on dmg " + event.getEntity() );
 		}
 		FriendInfo victimInfo = manager.get( event.getEntity().getUniqueId() );
 		UserDataConverter.Profile damagerProfile = userDataConverter.getProfile( event.getDamager().getUniqueId() );

@@ -24,7 +24,7 @@ public class CommandGiveShopItem implements CommandExecutor {
 		if ( !sender.isOp() ) {
 			return true;
 		}
-		if ( args.length != 2 ) {
+		if ( args.length != 2 && args.length != 3 ) {
 			sender.sendMessage( "Could not execute /" + label + " " + SPACE_JOINER.join( args ) + " - Command argument count invalid" );
 		}
 
@@ -66,6 +66,21 @@ public class CommandGiveShopItem implements CommandExecutor {
 			sender.sendMessage( "Could not execute /" + label + " " + SPACE_JOINER.join( args ) + " - Invalid item spec " + itemSpec );
 			return true;
 		}
+		int amount = 1;
+		if ( args.length == 3 ) {
+			try {
+				amount = Integer.parseInt( args[ 2 ] );
+			}
+			catch ( NumberFormatException ex ) {
+				sender.sendMessage( "Could not execute /" + label + " " + SPACE_JOINER.join( args ) + " - Invalid item amount " + args[ 2 ] );
+				return true;
+			}
+			if ( amount < 1 ) {
+				sender.sendMessage( "Could not execute /" + label + " " + SPACE_JOINER.join( args ) + " - Negative item amount " + args[ 2 ] );
+				return true;
+			}
+		}
+		item.setAmount( amount );
 		sender.sendMessage( "Delivering shop item from command /" + label + " " + SPACE_JOINER.join( args ) + " - item: " + item + " - profile: " + profile );
 		boolean online = module.getShopDeliveryHandler().deliverItem( profile, item );
 		sender.sendMessage( "Delivered to " + ( online ? "online" : "offline" ) + " player - item: " + item + " - profile: " + profile );
