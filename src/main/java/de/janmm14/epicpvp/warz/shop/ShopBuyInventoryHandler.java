@@ -8,6 +8,7 @@ import eu.epicpvp.kcore.Inventory.Inventory.InventoryCopy;
 import eu.epicpvp.kcore.Util.UtilInv;
 
 import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
+import de.janmm14.epicpvp.warz.zonechest.Zone;
 
 public class ShopBuyInventoryHandler {
 
@@ -76,6 +77,7 @@ public class ShopBuyInventoryHandler {
 		ItemStack item = new ItemStack( material );
 		item.setDurability( ( short ) durability );
 		renameModule.renameIfNeeded( item );
+		Zone.crackshotRename( item );
 		inventory.addButton( pos, new ShopLinkButton( item, buycraftId ) );
 	}
 }

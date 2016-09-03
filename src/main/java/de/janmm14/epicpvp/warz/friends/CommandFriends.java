@@ -29,6 +29,7 @@ import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.TIntSet;
 import org.apache.commons.lang.StringUtils;
 
+import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 
 import lombok.NonNull;
@@ -174,39 +175,6 @@ public class CommandFriends implements TabExecutor {
 					return msg( plr, module.getPrefix() + "§cDer Spieler §6" + args[ 1 ] + "§c wurde nicht gefunden." );
 				}
 				int targetPlayerId = targetProfile.getPlayerId();
-				if ( PlayerFriendRelation.isRequestSent( manager, initiator, targetPlayerId ) ) {
-					FriendInfo targetInfo = manager.get( targetPlayerId );
-
-					targetInfo.getRequestsGot().remove( initiator.getPlayerId() );
-					targetInfo.setDirty();
-					initiator.getRequestsSent().remove( targetPlayerId );
-					initiator.setDirty();
-
-					msg( plr, module.getPrefix() + "Du hast deine Freundschaftsanfrage an §6" + targetProfile.getName() + "§7 zurückgezogen." );
-					Player targetPlr = server.getPlayer( targetProfile.getUuid() );
-					if ( targetPlr != null ) {
-						return msg( targetPlr, module.getPrefix() + "§6" + plrName + "§7 hat seine Freundschaftsanfrage zurückgezogen." );
-					}
-					return true;
-				}
-				if ( PlayerFriendRelation.isRequestRecieved( manager, initiator, targetPlayerId ) ) {
-					FriendInfo targetInfo = manager.get( targetPlayerId );
-
-					targetInfo.getRequestsSent().remove( initiator.getPlayerId() );
-					targetInfo.setDirty();
-					initiator.getRequestsGot().remove( targetPlayerId );
-					initiator.setDirty();
-
-					msg( plr, module.getPrefix() + "Du hast die Freundschaftsanfrage von §6" + targetProfile.getName() + "§7 abgelehnt." );
-					Player targetPlr = server.getPlayer( targetProfile.getUuid() );
-					if ( targetPlr != null ) {
-						return msg( targetPlr, module.getPrefix() + "§6" + plrName + "§7 hat deine Freundschaftsanfrage abgelehnt." );
-					} else {
-						targetInfo.getNotifyRequestDenied().add( initiator.getPlayerId() );
-						targetInfo.setDirty();
-					}
-					return true;
-				}
 				if ( PlayerFriendRelation.areFriends( manager, initiator, targetPlayerId ) ) {
 					FriendInfo targetInfo = manager.get( targetPlayerId );
 
@@ -253,6 +221,40 @@ public class CommandFriends implements TabExecutor {
 							targetInfo.setDirty();
 						}
 					}, 30 * 20 );
+					return true;
+				}
+				if ( PlayerFriendRelation.isRequestSent( manager, initiator, targetPlayerId ) ) {
+					FriendInfo targetInfo = manager.get( targetPlayerId );
+
+					targetInfo.getRequestsGot().remove( initiator.getPlayerId() );
+					targetInfo.setDirty();
+					initiator.getRequestsSent().remove( targetPlayerId );
+					initiator.setDirty();
+
+					msg( plr, module.getPrefix() + "Du hast deine Freundschaftsanfrage an §6" + targetProfile.getName() + "§7 zurückgezogen." );
+					Player targetPlr = server.getPlayer( targetProfile.getUuid() );
+					if ( targetPlr != null ) {
+						return msg( targetPlr, module.getPrefix() + "§6" + plrName + "§7 hat seine Freundschaftsanfrage zurückgezogen." );
+					}
+					return true;
+				}
+				if ( PlayerFriendRelation.isRequestRecieved( manager, initiator, targetPlayerId ) ) {
+					FriendInfo targetInfo = manager.get( targetPlayerId );
+
+					targetInfo.getRequestsSent().remove( initiator.getPlayerId() );
+					targetInfo.setDirty();
+					initiator.getRequestsGot().remove( targetPlayerId );
+					initiator.setDirty();
+
+					msg( plr, module.getPrefix() + "Du hast die Freundschaftsanfrage von §6" + targetProfile.getName() + "§7 abgelehnt." );
+					Player targetPlr = server.getPlayer( targetProfile.getUuid() );
+					if ( targetPlr != null ) {
+						return msg( targetPlr, module.getPrefix() + "§6" + plrName + "§7 hat deine Freundschaftsanfrage abgelehnt." );
+					} else {
+						targetInfo.getNotifyRequestDenied().add( initiator.getPlayerId() );
+						targetInfo.setDirty();
+					}
+					return true;
 				}
 				return msg( plr, module.getPrefix() + " §cDu bist mit §6" + targetProfile.getName() + " §cnicht befreundet und weder er noch du haben eine Freundschaftsanfrage geschickt." );
 			}

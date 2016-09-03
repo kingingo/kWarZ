@@ -26,6 +26,7 @@ public class CommandGiveShopItem implements CommandExecutor {
 		}
 		if ( args.length != 2 && args.length != 3 ) {
 			sender.sendMessage( "Could not execute /" + label + " " + SPACE_JOINER.join( args ) + " - Command argument count invalid" );
+			return true;
 		}
 
 		String plr = args[ 0 ];

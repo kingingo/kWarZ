@@ -74,7 +74,7 @@ public class Zone {
 		return result;
 	}
 
-	public ItemStack crackshotRename(ItemStack is) {
+	public static ItemStack crackshotRename(ItemStack is) {
 		String weaponTitle = CS_UTILITY.getHandle().convItem( is ); //String weaponTitle = CS_UTILITY.getWeaponTitle( is );
 		if ( weaponTitle != null ) {
 			is = CS_UTILITY.generateWeapon( weaponTitle );
