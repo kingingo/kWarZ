@@ -17,6 +17,7 @@ public class SpawnModule extends Module<SpawnModule> {
 
 	public SpawnModule(WarZ plugin) {
 		super( plugin );
+		plugin.getCommand( "spawn" ).setExecutor( new CommandSpawn( this ) );
 	}
 
 	@Override

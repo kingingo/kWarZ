@@ -28,14 +28,15 @@ public class CommandSpawn implements CommandExecutor {
 		Player plr = ( Player ) sender;
 		if ( args.length == 0 || !sender.isOp() ) {
 			Collection<Entity> nearbyEntities = plr.getWorld().getNearbyEntities( plr.getLocation(), 25, 25, 25 );
-			if ( nearbyEntities.stream().anyMatch( entity -> entity instanceof Player || entity instanceof Zombie ) ) {
-				sender.sendMessage( "§cIn deiner Nähe sind Gegner, daher kannst du nicht zum Spawn." );
-			} else {
-				module.saveLastMapPos( plr, plr.getLocation() );
-				//TODO save old location to UserDataConfig
-				plr.teleport( module.getSpawn() );
-				sender.sendMessage( "§aDu wurdest zu Spawn teleportiert." );
+			for ( Entity e : nearbyEntities ) {
+				if ( e instanceof Player || e instanceof Zombie ) {
+					sender.sendMessage( "§cIn deiner Nähe sind Gegner, daher kannst du nicht zum Spawn." );
+					return true;
+				}
 			}
+			module.saveLastMapPos( plr, plr.getLocation() );
+			plr.teleport( module.getSpawn() );
+			sender.sendMessage( "§aDu wurdest zu Spawn teleportiert." );
 		} else {
 			if ( args[ 0 ].equalsIgnoreCase( "setsave" ) ) {
 				sender.sendMessage( "§aSicherer Spawnpunkt gesetzt." );

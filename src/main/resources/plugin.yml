@@ -18,6 +18,7 @@ commands:
   spawn:
     description: Teleport to the spawn
     permission: warz.command.spawn
+    aliases: [wspawn]
   back:
     description: Teleport to the map
     permission: warz.command.back
