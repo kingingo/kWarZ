@@ -29,7 +29,7 @@ public class CommandSpawn implements CommandExecutor {
 		if ( args.length == 0 || !sender.isOp() ) {
 			Collection<Entity> nearbyEntities = plr.getWorld().getNearbyEntities( plr.getLocation(), 25, 25, 25 );
 			for ( Entity e : nearbyEntities ) {
-				if ( e instanceof Player || e instanceof Zombie ) {
+				if ( e instanceof Player ) {
 					sender.sendMessage( "§cIn deiner Nähe sind Gegner, daher kannst du nicht zum Spawn." );
 					return true;
 				}
