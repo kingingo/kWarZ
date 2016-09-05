@@ -108,7 +108,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener{
 					ev.getPlayer().teleport(getUserConfig(ev.getPlayer()).getLocation("lastMapPos"));
 				}else{
 					if(!this.map_spawns.isEmpty())
-						ev.getPlayer().teleport(this.map_spawns.get(UtilMath.randomInteger(this.map_spawns.size())));
+						ev.getPlayer().teleport(this.map_spawns.get( UtilMath.randomInteger(this.map_spawns.size()) ));
 				}
 			}
 		}
