@@ -25,7 +25,7 @@ import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
 import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
-
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
 import de.janmm14.epicpvp.warz.command.CommandWarZ;
 import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
@@ -99,7 +99,8 @@ public class WarZ extends JavaPlugin {
 
 		new ChatListener( this, UtilServer.getPermissionManager() );
 		new AntiCrashListener( UtilServer.getClient(), UtilServer.getMysql() );
-
+		
+		
 		//lets try to support reloades to some extend
 		for ( Player plr : Bukkit.getOnlinePlayers() ) {
 			StatsManagerRepository.getStatsManager( GameType.WARZ ).join( new PlayerJoinEvent( plr, "" ) );
@@ -110,6 +111,7 @@ public class WarZ extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		instance = null;
+		saveConfig();
 	}
 
 	@Override
