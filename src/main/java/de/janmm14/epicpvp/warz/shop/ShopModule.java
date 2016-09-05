@@ -10,7 +10,6 @@ import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Module.Priority(1)
 public class ShopModule extends Module<ShopModule> {
@@ -19,7 +18,6 @@ public class ShopModule extends Module<ShopModule> {
 	private final ShopBuyInventoryHandler buyInventoryHandler = new ShopBuyInventoryHandler( getModuleManager().getModule( ItemRenameModule.class ) );
 	private ShopChestDeliveryHandler shopDeliveryHandler;
 	@Getter
-	@Setter
 	@Nullable
 	private BlockVector deliveryChestLocation;
 
@@ -33,16 +31,22 @@ public class ShopModule extends Module<ShopModule> {
 	@Override
 	public void reloadConfig() {
 		Vector vector = getConfig().getVector( "shop.delivery.chestLocation" );
-		if (vector != null) {
+		if ( vector != null ) {
 			deliveryChestLocation = vector.toBlockVector();
 		}
 	}
 
 	public ShopChestDeliveryHandler getShopDeliveryHandler() {
 		ShopChestDeliveryHandler shopDeliveryHandler = this.shopDeliveryHandler;
-		if (shopDeliveryHandler == null) {
+		if ( shopDeliveryHandler == null ) {
 			this.shopDeliveryHandler = shopDeliveryHandler = new ShopChestDeliveryHandler( this );
 		}
 		return shopDeliveryHandler;
+	}
+
+	public void setDeliveryChestLocation(@Nullable BlockVector deliveryChestLocation) {
+		this.deliveryChestLocation = deliveryChestLocation;
+		getConfig().set( "shop.delivery.chestLocation", deliveryChestLocation );
+		getPlugin().saveConfig();
 	}
 }
