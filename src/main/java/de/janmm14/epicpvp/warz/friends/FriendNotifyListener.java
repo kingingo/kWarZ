@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter;
-
+import eu.epicpvp.kcore.Translation.TranslationHandler;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -22,24 +22,24 @@ public class FriendNotifyListener implements Listener {
 		GnuTroveJavaAdapter.stream( friendInfo.getNotifyFriendshipEnded() )
 			.mapToObj( module.getFriendInfoManager()::get )
 			.map( rqFriendInfo -> module.getPlugin().getUserDataConverter().getProfile( rqFriendInfo.getPlayerId() ) )
-			.forEach( rqProfile -> player.sendMessage( module.getPrefix() + "§6" + rqProfile.getName() + "§c hat eure Freundschaft aufgelöst." ) );
+			.forEach( rqProfile -> player.sendMessage( module.getPrefix() +  TranslationHandler.getText(player, "WARZ_CMD_FRIEND_DISSOLVE_FROM_FRIENDSHIP",rqProfile.getName())) );
 		friendInfo.getNotifyFriendshipEnded().clear();
 
 		GnuTroveJavaAdapter.stream( friendInfo.getRequestsGot() )
 			.mapToObj( module.getFriendInfoManager()::get )
 			.map( rqFriendInfo -> module.getPlugin().getUserDataConverter().getProfile( rqFriendInfo.getPlayerId() ) )
-			.forEach( rqProfile -> player.sendMessage( module.getPrefix() + "§6" + rqProfile.getName() + "§7 hat dir eine Freundschaftsanfrage geschickt." ) );
+			.forEach( rqProfile -> player.sendMessage( module.getPrefix() +  TranslationHandler.getText(player, "WARZ_CMD_FRIEND_RECEIVE_FRIENDSHIP",rqProfile.getName())) );
 
 		GnuTroveJavaAdapter.stream( friendInfo.getNotifyRequestAccepted() )
 			.mapToObj( module.getFriendInfoManager()::get )
 			.map( rqFriendInfo -> module.getPlugin().getUserDataConverter().getProfile( rqFriendInfo.getPlayerId() ) )
-			.forEach( rqProfile -> player.sendMessage( module.getPrefix() + "§6" + rqProfile.getName() + "§7 hat deine Freundschaftsanfrage angenommen." ) );
+			.forEach( rqProfile -> player.sendMessage( module.getPrefix() +  TranslationHandler.getText(player, "WARZ_CMD_FRIEND_ACCEPT_FROM_FRIENDSHIP",rqProfile.getName())) );
 		friendInfo.getNotifyRequestAccepted().clear();
 
 		GnuTroveJavaAdapter.stream( friendInfo.getNotifyRequestDenied() )
 			.mapToObj( module.getFriendInfoManager()::get )
 			.map( rqFriendInfo -> module.getPlugin().getUserDataConverter().getProfile( rqFriendInfo.getPlayerId() ) )
-			.forEach( rqProfile -> player.sendMessage( module.getPrefix() + "§6" + rqProfile.getName() + "§7 hat deine Freundschaftsanfrage abgelehnt." ) );
+			.forEach( rqProfile -> player.sendMessage( module.getPrefix() +  TranslationHandler.getText(player, "WARZ_CMD_FRIEND_REJECT_FROM_FRIENDSHIP_REQUEST",rqProfile.getName())) );
 		friendInfo.getNotifyRequestDenied().clear();
 
 		friendInfo.setDirty();

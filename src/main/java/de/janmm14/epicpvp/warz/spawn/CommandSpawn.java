@@ -11,6 +11,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 
+import eu.epicpvp.kcore.Translation.TranslationHandler;
+
 public class CommandSpawn implements CommandExecutor {
 
 	private final SpawnModule module;
@@ -30,20 +32,20 @@ public class CommandSpawn implements CommandExecutor {
 			Collection<Entity> nearbyEntities = plr.getWorld().getNearbyEntities( plr.getLocation(), 25, 25, 25 );
 			for ( Entity e : nearbyEntities ) {
 				if ( e instanceof Player ) {
-					sender.sendMessage( "§cIn deiner Nähe sind Gegner, daher kannst du nicht zum Spawn." );
+					sender.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_CMD_SPAWN_NEAR_TO_PLAYER") );
 					return true;
 				}
 			}
 			module.saveLastMapPos( plr, plr.getLocation() );
 			plr.teleport( module.getSpawn() );
-			sender.sendMessage( "§aDu wurdest zu Spawn teleportiert." );
+			sender.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_CMD_SPAWN_TELEPORT") );
 		} else {
 			if ( args[ 0 ].equalsIgnoreCase( "setsave" ) ) {
-				sender.sendMessage( "§aSicherer Spawnpunkt gesetzt." );
+				sender.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_CMD_SPAWN_SAVE") );
 				module.setSpawn( plr.getLocation() );
 			}
 			if ( args[ 0 ].equalsIgnoreCase( "setmap" ) ) {
-				sender.sendMessage( "§aStartmappunkt gesetzt." );
+				sender.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_CMD_SPAWN_SET") );
 				Location loc = plr.getLocation();
 				Bukkit.getWorlds().get( 0 ).setSpawnLocation( loc.getBlockX(), loc.getBlockY(), loc.getBlockZ() );
 			}

@@ -31,7 +31,7 @@ import org.apache.commons.lang.StringUtils;
 
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
-
+import eu.epicpvp.kcore.Translation.TranslationHandler;
 import lombok.NonNull;
 
 import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.stream;
@@ -103,20 +103,20 @@ public class CommandFriends implements TabExecutor {
 			case "list": {
 				FriendInfo initiatorInfo = manager.get( initiatorUuid );
 				if ( initiatorInfo == null ) {
-					return msg( plr, "§cFehler bei der Verarbeitung." );
+					return msg( plr, TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_WORK_FAIL") );
 				}
 				int rowstart = 0;
 				int page = 1;
 				if ( args.length > 2 ) {
 					if ( !StringUtils.isNumeric( args[ 1 ] ) ) {
-						return msg( plr, "§cDas ist keine gültige Zahl!" );
+						return msg( plr, TranslationHandler.getText(plr, "BG_INTEGER") );
 					}
 					page = Integer.parseInt( args[ 1 ] );
 					if ( page < 1 ) {// if 0, rowstart would be negative
 						page = 1;
 					}
 					if ( page > ( initiatorInfo.getFriendWith().size() / FRIEND_LIST_PAGE_SIZE + 1 ) ) {
-						return msg( plr, "§cDas ist keine gültige Seitenzahl!" );
+						return msg( plr, TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_PAGEAMOUNT_FALSE") );
 					}
 					rowstart = ( page - 1 ) * FRIEND_LIST_PAGE_SIZE;
 				}
@@ -128,25 +128,25 @@ public class CommandFriends implements TabExecutor {
 					return msg( plr, "halp" );
 				}
 				if ( args[ 1 ].equalsIgnoreCase( plrName ) || args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() ) || args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
-					return msg( plr, module.getPrefix() + "Ich nehme an, dass du mit dir selbst Frieden hast." );
+					return msg( plr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_SELF_PEACE") );
 				}
 				UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
 				if ( targetProfile == null ) {
-					return msg( plr, module.getPrefix() + "§cDer Spieler §6" + args[ 1 ] + "§c wurde nicht gefunden." );
+					return msg( plr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ]) );
 				}
 				FriendInfo initiator = manager.get( initiatorUuid );
 
 				int targetPlayerId = targetProfile.getPlayerId();
 				if ( PlayerFriendRelation.areFriends( manager, initiator, targetPlayerId ) ) {
-					return msg( plr, "§6Status:§7 Du bist mit §6" + targetProfile.getName() + " §7befreundet." );
+					return msg( plr, TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_FRIENDSHIP", targetProfile.getName()) );
 				}
 				if ( PlayerFriendRelation.isRequestSent( manager, initiator, targetPlayerId ) ) {
-					return msg( plr, "§6Status:§7 Du hast §6" + targetProfile.getName() + " §7 eine Freundschaftsanfrage geschickt." );
+					return msg( plr, TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_SEND_FRIENDSHIP", targetProfile.getName()) );
 				}
 				if ( PlayerFriendRelation.isRequestRecieved( manager, initiator, targetPlayerId ) ) {
-					return msg( plr, "§6Status:§7 Du hast eine Freundschaftsanfrage von §6" + targetProfile.getName() + "§7 erhalten." );
+					return msg( plr, TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_RECEIVE_FRIENDSHIP", targetProfile.getName()) );
 				}
-				return msg( plr, "Du bist mit §6" + targetProfile.getName() + "§7 nicht befreundet." );
+				return msg( plr, TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_NOT_FRIENDSHIP", targetProfile.getName()) );
 			}
 			case "hilfe":
 			case "help": {
@@ -167,12 +167,12 @@ public class CommandFriends implements TabExecutor {
 				if ( args[ 1 ].equalsIgnoreCase( plrName )
 					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
 					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
-					return msg( plr, module.getPrefix() + "Du hast dir selbst keine Friedensanfrage gesendet." );
+					return msg( plr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_SEND_SELF_FRIENDSHIP") );
 				}
 				FriendInfo initiator = manager.get( initiatorUuid );
 				UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
 				if ( targetProfile == null ) {
-					return msg( plr, module.getPrefix() + "§cDer Spieler §6" + args[ 1 ] + "§c wurde nicht gefunden." );
+					return msg( plr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ]) );
 				}
 				int targetPlayerId = targetProfile.getPlayerId();
 				if ( PlayerFriendRelation.areFriends( manager, initiator, targetPlayerId ) ) {
@@ -180,19 +180,19 @@ public class CommandFriends implements TabExecutor {
 
 					Player targetPlr_ = targetInfo.getPlayer();
 					if ( targetPlr_ != null ) {
-						msg( targetPlr_, module.getPrefix() + "§6" + plrName + "§c hat eure Freundschaft aufgelöst. Dies tritt in 30 Sekunden in Kraft." );
+						msg( targetPlr_, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, "30") );
 					}
 
 					module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
 						Player targetPlr = targetInfo.getPlayer();
 						if ( targetPlr != null ) {
-							msg( targetPlr, module.getPrefix() + "§6" + plrName + "§c hat eure Freundschaft aufgelöst. Dies tritt in 20 Sekunden in Kraft." );
+							msg( targetPlr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, "20") );
 						}
 					}, ( 30 - 20 ) * 20 );
 					module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
 						Player targetPlr = targetInfo.getPlayer();
 						if ( targetPlr != null ) {
-							msg( targetPlr, module.getPrefix() + "§6" + plrName + "§c hat eure Freundschaft aufgelöst. Dies tritt in 10 Sekunden in Kraft." );
+							msg( targetPlr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, "10") );
 						}
 					}, ( 30 - 10 ) * 20 );
 
@@ -201,7 +201,7 @@ public class CommandFriends implements TabExecutor {
 						module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
 							Player targetPlr = targetInfo.getPlayer();
 							if ( targetPlr != null ) {
-								msg( targetPlr, module.getPrefix() + "§6" + plrName + "§c hat eure Freundschaft aufgelöst. Dies tritt in " + iCopy + " Sekunden in Kraft." );
+								msg( targetPlr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, iCopy) );
 							}
 						}, ( 30 - i ) * 20 );
 					}
@@ -212,10 +212,10 @@ public class CommandFriends implements TabExecutor {
 						initiator.getFriendWith().remove( targetPlayerId );
 						initiator.setDirty();
 
-						msg( plr, module.getPrefix() + "Du hast die Freundschaft mit §6" + targetProfile.getName() + "§7 aufgelöst." );
+						msg( plr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_DISSOLVE_FRIENDSHIP", targetPlr_.getName()) );
 						Player targetPlr = targetInfo.getPlayer();
 						if ( targetPlr != null ) {
-							msg( targetPlr, module.getPrefix() + "§6" + plrName + "§c hat eure Freundschaft aufgelöst." );
+							msg( targetPlr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_DISSOLVE_FROM_FRIENDSHIP", plrName) );
 						} else {
 							targetInfo.getNotifyFriendshipEnded().add( initiator.getPlayerId() );
 							targetInfo.setDirty();
@@ -231,10 +231,10 @@ public class CommandFriends implements TabExecutor {
 					initiator.getRequestsSent().remove( targetPlayerId );
 					initiator.setDirty();
 
-					msg( plr, module.getPrefix() + "Du hast deine Freundschaftsanfrage an §6" + targetProfile.getName() + "§7 zurückgezogen." );
+					msg( plr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_CANCEL_FRIENDSHIP_REQUEST", targetProfile.getName()) );
 					Player targetPlr = server.getPlayer( targetProfile.getUuid() );
 					if ( targetPlr != null ) {
-						return msg( targetPlr, module.getPrefix() + "§6" + plrName + "§7 hat seine Freundschaftsanfrage zurückgezogen." );
+						return msg( targetPlr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_CANCEL_FROM_FRIENDSHIP_REQUEST", plrName));
 					}
 					return true;
 				}
@@ -246,17 +246,17 @@ public class CommandFriends implements TabExecutor {
 					initiator.getRequestsGot().remove( targetPlayerId );
 					initiator.setDirty();
 
-					msg( plr, module.getPrefix() + "Du hast die Freundschaftsanfrage von §6" + targetProfile.getName() + "§7 abgelehnt." );
+					msg( plr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_REJECT_FRIENDSHIP_REQUEST", targetProfile.getName()));
 					Player targetPlr = server.getPlayer( targetProfile.getUuid() );
 					if ( targetPlr != null ) {
-						return msg( targetPlr, module.getPrefix() + "§6" + plrName + "§7 hat deine Freundschaftsanfrage abgelehnt." );
+						return msg( targetPlr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_REJECT_FROM_FRIENDSHIP_REQUEST", plrName));
 					} else {
 						targetInfo.getNotifyRequestDenied().add( initiator.getPlayerId() );
 						targetInfo.setDirty();
 					}
 					return true;
 				}
-				return msg( plr, module.getPrefix() + " §cDu bist mit §6" + targetProfile.getName() + " §cnicht befreundet und weder er noch du haben eine Freundschaftsanfrage geschickt." );
+				return msg( plr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_FRIENDSHIP_REQUEST_NOT", targetProfile.getName()));
 			}
 			case "accept":
 			case "annehmen": {
@@ -267,22 +267,22 @@ public class CommandFriends implements TabExecutor {
 				if ( args[ 1 ].equalsIgnoreCase( plrName )
 					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
 					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
-					return msg( plr, module.getPrefix() + "§cDu bist bereits mit deinem Alter Ego befreundet." );
+					return msg( plr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_ARE_FRIENDS") );
 				}
 				FriendInfo initiatorInfo = manager.get( initiatorUuid );
 				UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
 				if ( targetProfile == null ) {
-					return msg( plr, module.getPrefix() + "§cDer Spieler §6" + args[ 1 ] + "§c wurde nicht gefunden." );
+					return msg( plr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ]));
 				}
 
 				int targetPlayerId = targetProfile.getPlayerId();
 				FriendInfo targetInfo = manager.get( targetPlayerId );
 
 				if ( PlayerFriendRelation.areFriends( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
-					return msg( plr, "Du bist bereits mit §6" + targetProfile.getName() + "§7 befreundet." );
+					return msg( plr, TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_FRIENDSHIP", targetProfile.getName()) );
 				}
 				if ( !PlayerFriendRelation.isRequestRecieved( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
-					return msg( plr, "Du hast keine Freundschaftsanfrage von §6" + targetProfile.getName() + "§7 bekommen." );
+					return msg( plr, TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_FRIENDSHIP_REQUEST_NOT_EXIST", targetProfile.getName()));
 				}
 
 				initiatorInfo.getRequestsSent().remove( targetPlayerId );
@@ -292,11 +292,11 @@ public class CommandFriends implements TabExecutor {
 				targetInfo.getFriendWith().add( initiatorInfo.getPlayerId() );
 				targetInfo.setDirty();
 
-				msg( plr, module.getPrefix() + "Du hast die Freundschaftsanfrage von §6" + targetProfile.getName() + "§7 angenommen." );
+				msg( plr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_ACCEPT_FRIENDSHIP", targetProfile.getName()));
 
 				Player targetPlr = targetInfo.getPlayer();
 				if ( targetPlr != null ) {
-					msg( targetPlr, module.getPrefix() + "§6" + plrName + "§7 hat deine Freundschaftsanfrage angenommen." );
+					msg( targetPlr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_ACCEPT_FROM_FRIENDSHIP", plrName));
 				} else {
 					targetInfo.getNotifyRequestAccepted().add( initiatorInfo.getPlayerId() );
 					targetInfo.setDirty();
@@ -312,22 +312,22 @@ public class CommandFriends implements TabExecutor {
 				if ( args[ 1 ].equalsIgnoreCase( plrName )
 					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
 					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
-					return msg( plr, module.getPrefix() + "§cDir selbst brauchst du keine Freundschaftsanfrage schicken. Hoffe ich zumindest..." );
+					return msg( plr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_SEND_SELF_FRIENDSHIP") );
 				}
 				FriendInfo initiatorInfo = manager.get( initiatorUuid );
 				UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
 				if ( targetProfile == null ) {
-					return msg( plr, module.getPrefix() + "§cDer Spieler §6" + args[ 1 ] + "§c wurde nicht gefunden." );
+					return msg( plr, module.getPrefix() + TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ]) );
 				}
 
 				if ( PlayerFriendRelation.areFriends( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
-					return msg( plr, "Du bist bereits mit §6" + targetProfile.getName() + "§7 befreundet." );
+					return msg( plr, TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_FRIENDSHIP", targetProfile.getName()) );
 				}
 				if ( PlayerFriendRelation.isRequestSent( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
-					return msg( plr, "Du hast bereits eine Freundschaftsanfrage an §6" + targetProfile.getName() + "§7 gesendet." );
+					return msg( plr, TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_HAVE_SENT_FRIENDSHIP", targetProfile.getName()) );
 				}
 				if ( PlayerFriendRelation.isRequestRecieved( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
-					return msg( plr, "Du hast bereits eine Freundschaftsanfrage von §6" + targetProfile.getName() + "§7 bekommen. Nehme sie jetzt mit §c/" + alias + " annehmen§7 an." );
+					return msg( plr, TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_HAVE_GOT_FRIENDSHIP", targetProfile.getName(),alias) );
 				}
 
 				int targetPlayerId = targetProfile.getPlayerId();
@@ -337,16 +337,16 @@ public class CommandFriends implements TabExecutor {
 				targetInfo.getRequestsGot().add( initiatorInfo.getPlayerId() );
 				targetInfo.setDirty();
 
-				msg( plr, module.getPrefix() + "Du hast §6" + targetProfile.getName() + "§7 eine Freundschaftsanfrage geschickt." );
+				msg( plr, TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_RECEIVE_FRIENDSHIP", targetProfile.getName()) );
 
 				Player targetPlr = targetInfo.getPlayer();
 				if ( targetPlr != null ) {
-					msg( targetPlr, module.getPrefix() + "§6" + plrName + "§7 hat dir eine Freundschaftsanfrage geschickt." );
+					msg( plr, TranslationHandler.getText(plr, "WARZ_CMD_FRIEND_RECEIVE_FRIENDSHIP", plrName) );
 				}
 				return true;
 			}
 			default: {
-				msg( plr, "§cUnbekannter Unterbefehl: §6" + args[ 0 ] );
+				msg( plr, TranslationHandler.getText(plr, "WARZ_CMD_UNKNOWN", args[ 0 ]));
 				return sendHelp( plr );
 			}
 		}
@@ -507,10 +507,10 @@ public class CommandFriends implements TabExecutor {
 			toSend += " > " + getPlayerStringColoredByOnlineState( uuidsList.get( i ) ) + "\n";
 		}
 		if ( toSend.isEmpty() ) {
-			sender.sendMessage( "§cDiese Seite ist leer" );
+			msg(sender, TranslationHandler.getText(sender, "WARZ_CMD_FRIEND_PAGE_EMPTY"));
 		}
 		if ( max <= uuids.size() ) {
-			sender.sendMessage( "§6Zur nächsten Seite" );//TODO better message
+			msg(sender, TranslationHandler.getText(sender, "WARZ_CMD_FRIEND_PAGE_NEXT"));
 		}
 		return msg( sender, toSend );
 	}

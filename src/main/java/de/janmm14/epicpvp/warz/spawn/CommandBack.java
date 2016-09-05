@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import eu.epicpvp.kcore.Translation.TranslationHandler;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class CommandBack implements CommandExecutor {
 		}
 		Player plr = ( Player ) sender;
 		if ( plr.getWorld().equals( module.getSpawn().getWorld() ) ) {
-			sender.sendMessage( "$aDu befindest dich bereits im Kampfareal." );
+			sender.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_CMD_BACK_WARZONE") );
 			return true;
 		}
 		Location lastMapPos = module.getUserConfig( plr ).getLocation( "lastMapPos" );

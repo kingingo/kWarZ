@@ -25,7 +25,7 @@ import com.google.common.collect.ImmutableList;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.random.RandomThingGroupHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomThingHolder;
-
+import eu.epicpvp.kcore.Translation.TranslationHandler;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -94,41 +94,39 @@ public class ChestOpenListener implements Listener {
 			event.setCancelled( true );
 			Zone zone = module.getZone( plr.getLocation() );
 			if ( zone == null ) {
-				plr.sendMessage( "Keine Zone definiert" );
+				plr.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_ZONE_NOT") );
 			} else {
-				plr.sendMessage( "Du bist in der Zone " + zone.getZoneName() + " (" + zone.getWorldguardName() + ")" );
+				plr.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_ZONE_IS",zone.getZoneName(),zone.getWorldguardName()) );
 			}
-		}
-		if ( event.getMessage().equalsIgnoreCase( "zone more" ) ) {
+		}else if ( event.getMessage().equalsIgnoreCase( "zone more" ) && plr.isOp() ) {
 			event.setCancelled( true );
 			Zone zone = module.getZone( plr.getLocation() );
 			if ( zone == null ) {
-				plr.sendMessage( "Keine Zone definiert" );
+				plr.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_ZONE_NOT") );
 			} else {
-				plr.sendMessage( "Du bist in der Zone " + zone.getZoneName() + " (" + zone.getWorldguardName() + ")" );
+				plr.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_ZONE_IS",zone.getZoneName(),zone.getWorldguardName()) );
 				Vector middle = zone.calculateMiddle();
-				plr.sendMessage( "Errechnete Mitte: x: " + middle.getX() + " z:" + middle.getZ() );
+				plr.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_ZONE_CALCULATE",middle.getX(),middle.getZ()) );
 				List<RandomThingGroupHolder<ItemStack>> itemGroups = zone.getItemGroups();
-				plr.sendMessage( "ItemGruppen: min: " + zone.getMinItemGroups() + " max: " + zone.getMaxItemGroups() + " Anzahl: " + itemGroups.size() );
+				plr.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_ZONE_ITEMS_CALCULATE",zone.getMinItemGroups(),zone.getMaxItemGroups(),itemGroups.size()) );
 				for ( int i = 0; i < itemGroups.size(); i++ ) {
 					RandomThingGroupHolder<ItemStack> itemGroup = itemGroups.get( i );
-					plr.sendMessage( "ItemGruppe " + i + " Wahrscheinlichkeit: " + itemGroup.getProbability() * 100.0 + "%" );
+					plr.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_ZONE_ITEMS_CALCULATE_LIKELIHOOD",i,itemGroup.getProbability()* 100.0) );
 					List<RandomThingHolder<ItemStack>> items = itemGroup.getItem();
-					plr.sendMessage( "  Items min: " + itemGroup.getMinAmount() + " max: " + itemGroup.getMaxAmount() + " Anzahl: " + items.size() );
+					plr.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_ZONE_ITEM_CALCULATE",itemGroup.getMinAmount(),itemGroup.getMaxAmount(),items.size()) );
 					for ( int j = 0; j < items.size(); j++ ) {
 						RandomThingHolder<ItemStack> item = items.get( j );
 						plr.sendMessage( "  #" + j + " " + item.getProbability() * 100.0 + "%: " + item.getItem() );
 					}
 				}
 			}
-		}
-		if ( event.getMessage().equalsIgnoreCase( "zones" ) ) {
+		}else if ( event.getMessage().equalsIgnoreCase( "zones" ) && plr.isOp()) {
 			event.setCancelled( true );
 			Map<String, Collection<Zone>> zoneMap = module.getZoneMap();
 			for ( Map.Entry<String, Collection<Zone>> entry : zoneMap.entrySet() ) {
 				String name = entry.getKey();
 				Collection<Zone> zones = entry.getValue();
-				plr.sendMessage( "zone: " + name );
+				plr.sendMessage( "Zone: " + name );
 				for ( Zone zone : zones ) {
 					if ( zone == null ) {
 						plr.sendMessage( "  null" );
