@@ -80,13 +80,14 @@ public class WarZ extends JavaPlugin {
 	}
 
 	private void setupKStuff() {
+		UtilServer.setPluginInstance(this);
 		userDataConfig = new UserDataConfig( this );
 
 		getConfig().addDefault( "mysql.host", "localhost" );
 		getConfig().addDefault( "mysql.user", "user" );
 		getConfig().addDefault( "mysql.database", "database" );
 		getConfig().addDefault( "mysql.password", "password" );
-		new MySQL( getConfig().getString( "mysql.user" ), getConfig().getString( "mysql.password" ), getConfig().getString( "mysql.host" ), getConfig().getString( "mysql.database" ), this );
+		UtilServer.createMySQL( getConfig().getString( "mysql.user" ), getConfig().getString( "mysql.password" ), getConfig().getString( "mysql.host" ), getConfig().getString( "mysql.database" ));
 
 		getConfig().addDefault( "dataserver.host", "localhost" );
 		getConfig().addDefault( "dataserver.port", "9052" );
