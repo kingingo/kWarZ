@@ -11,7 +11,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+
 import eu.epicpvp.kcore.Translation.TranslationHandler;
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 public class CommandSpawn implements CommandExecutor {
 
@@ -29,22 +32,32 @@ public class CommandSpawn implements CommandExecutor {
 		}
 		Player plr = ( Player ) sender;
 		if ( args.length == 0 || !sender.isOp() ) {
-			Collection<Entity> nearbyEntities = plr.getWorld().getNearbyEntities( plr.getLocation(), 25, 25, 25 );
-			for ( Entity e : nearbyEntities ) {
-				if ( e instanceof Player ) {
-					sender.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_CMD_SPAWN_NEAR_TO_PLAYER") );
-					return true;
+			if(!UtilWorldGuard.RegionFlag(plr, DefaultFlag.PVP)){
+				Collection<Entity> nearbyEntities = plr.getWorld().getNearbyEntities( plr.getLocation(), 25, 25, 25 );
+				for ( Entity e : nearbyEntities ) {
+					if ( e instanceof Player ) {
+						sender.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_CMD_SPAWN_NEAR_TO_PLAYER") );
+						return true;
+					}
 				}
+				module.saveLastMapPos( plr, plr.getLocation() );
+				plr.teleport( module.getSpawn() );
+				sender.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_CMD_SPAWN_TELEPORT") );
 			}
-			module.saveLastMapPos( plr, plr.getLocation() );
-			plr.teleport( module.getSpawn() );
-			sender.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_CMD_SPAWN_TELEPORT") );
 		} else {
-			if ( args[ 0 ].equalsIgnoreCase( "setsave" ) ) {
+			if ( args[ 0 ].equalsIgnoreCase( "setspawn" ) ) {
 				sender.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_CMD_SPAWN_SAVE") );
 				module.setSpawn( plr.getLocation() );
-			}
-			if ( args[ 0 ].equalsIgnoreCase( "setmap" ) ) {
+			} else if ( args[ 0 ].equalsIgnoreCase( "removemapspawn" ) ) {
+				if(module.removeNearestMapSpawn(plr, 2)){
+					sender.sendMessage( "§aDer Map Spawn Punkt wurde entfernt!" );
+				}else{
+					sender.sendMessage( "§cEs wurde kein Map Spawn Punkt in deiner Nähe gefunden (min Nähe 2 Blöcke)" );
+				}
+			} else if ( args[ 0 ].equalsIgnoreCase( "setmapspawn" ) ) {
+				module.addMapSpawn(plr.getLocation());
+				sender.sendMessage( "§aEs wurde ein Map spawn punkt gesetzt!" );
+			} else if ( args[ 0 ].equalsIgnoreCase( "setmap" ) ) {
 				sender.sendMessage( TranslationHandler.getPrefixAndText(plr, "WARZ_CMD_SPAWN_SET") );
 				Location loc = plr.getLocation();
 				Bukkit.getWorlds().get( 0 ).setSpawnLocation( loc.getBlockX(), loc.getBlockY(), loc.getBlockZ() );
