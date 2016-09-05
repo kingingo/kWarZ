@@ -15,6 +15,7 @@ import dev.wolveringer.client.connection.ClientType;
 import dev.wolveringer.client.debug.Debugger;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.AACHack.AACHack;
+import eu.epicpvp.kcore.Addons.AddonSun;
 import eu.epicpvp.kcore.ChunkGenerator.CleanroomChunkGenerator;
 import eu.epicpvp.kcore.Listener.AntiCrashListener.AntiCrashListener;
 import eu.epicpvp.kcore.Listener.Chat.ChatListener;
@@ -74,6 +75,8 @@ public class WarZ extends JavaPlugin {
 			moduleManager.discoverAndLoadModules();
 			saveConfig();
 		} );
+		
+		new AddonSun(this);
 	}
 
 	private void setupKStuff() {
