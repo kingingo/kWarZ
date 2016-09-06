@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -64,7 +65,9 @@ public class ShopChestDeliveryHandler implements Listener {
 
 	private Inventory loadInventory(UserDataConverter.Profile profile) {
 		kConfig config = userDataConfig.getConfig( profile.getPlayerId() );
-		Inventory inv = module.getPlugin().getServer().createInventory( null, 6 * 9, "§6Shop delivery" );
+		ShopInventoryHolder owner = new ShopInventoryHolder();
+		Inventory inv = module.getPlugin().getServer().createInventory( owner, 6 * 9, "§6Shop delivery" );
+		owner.setInventory( inv );
 		if ( config.contains( "shop.delivery.chestcontent" ) ) {
 			ItemStack[] items = config.getItemStackArray( "shop.delivery.chestcontent" );
 			for ( ItemStack item : items ) {
@@ -117,6 +120,37 @@ public class ShopChestDeliveryHandler implements Listener {
 				event.setCancelled( true );
 				openInvetory( plr );
 			}
+		}
+	}
+
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event) {
+		switch ( event.getAction() ) {
+			case HOTBAR_MOVE_AND_READD:
+			case COLLECT_TO_CURSOR:
+			case CLONE_STACK:
+			case HOTBAR_SWAP:
+			case DROP_ONE_SLOT:
+			case DROP_ALL_SLOT:
+				event.setCancelled( true );
+				break;
+			case MOVE_TO_OTHER_INVENTORY:
+				if (!(event.getClickedInventory() instanceof ShopInventoryHolder)) {
+					event.setCancelled(true);
+				}
+				break;
+			case PLACE_ALL:
+			case PLACE_ONE:
+			case PLACE_SOME:
+				if (event.getClickedInventory().getHolder() instanceof ShopInventoryHolder) {
+					event.setCancelled(true);
+				}
+				break;
+			case SWAP_WITH_CURSOR:
+				if (event.getClickedInventory().getHolder() instanceof ShopInventoryHolder && (event.getCursor() != null && event.getCursor().getType() != Material.AIR)) {
+					event.setCancelled(true);
+				}
+				break;
 		}
 	}
 
