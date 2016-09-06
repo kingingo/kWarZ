@@ -10,6 +10,7 @@ import lombok.Getter;
 public class FriendModule extends Module<FriendModule> {
 
 	@SuppressWarnings("FieldCanBeLocal")
+	@Getter
 	private String prefix = "§7";
 	@Getter
 	private final FriendInfoManager friendInfoManager;
@@ -23,11 +24,8 @@ public class FriendModule extends Module<FriendModule> {
 		cmd.setTabCompleter( handler );
 	}
 
-	public String getPrefix() {
-		return prefix;
-	}
-
 	@Override
 	public void reloadConfig() {
+		friendInfoManager.flushAll();
 	}
 }

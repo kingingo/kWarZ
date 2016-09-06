@@ -164,7 +164,7 @@ public class FriendInfoManager {
 	}
 
 	/**
-	 * Clears the {@link FriendInfo} cache and saves it asynchroniously to the database
+	 * Clears the {@link FriendInfo} cache and saves it asynchroniously
 	 */
 	public void flushAll() {
 		friendInfoCache.invalidateAll(); //also saves if needed
