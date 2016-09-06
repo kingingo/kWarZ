@@ -1,6 +1,7 @@
 package de.janmm14.epicpvp.warz.command;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,7 @@ public class CommandWarZ implements TabExecutor {
 				boolean newState = !WarZ.DEBUG;
 				WarZ.DEBUG = newState;
 				plugin.getConfig().set( "debug", WarZ.DEBUG );
+				plugin.saveConfig();
 				if ( newState ) {
 					sender.sendMessage( "§6Der Debug-Modus ist nun§a angeschaltet§6." );
 				} else {
@@ -73,7 +75,7 @@ public class CommandWarZ implements TabExecutor {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
 		if ( args.length != 1 ) {
-			return null;
+			return Collections.emptyList();
 		}
 		String arg0 = args[ 0 ].toLowerCase();
 		if ( arg0.isEmpty() ) {
