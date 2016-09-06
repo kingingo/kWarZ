@@ -26,7 +26,7 @@ public class FriendHurtListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onDamage(EntityDamageByEntityEvent event) {
-		if ( event.getEntityType() != EntityType.PLAYER || event.getDamager() instanceof Player ) {
+		if ( (!(event.getEntity() instanceof Player)) || (!(event.getDamager() instanceof Player)) ) {
 			return;
 		}
 		if ( WarZ.DEBUG ) {
