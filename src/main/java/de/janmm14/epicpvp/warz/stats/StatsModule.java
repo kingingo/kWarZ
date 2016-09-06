@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -45,6 +46,11 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 	@Override
 	public void reloadConfig() {
 
+	}
+
+	@EventHandler
+	public void onJoin(PlayerJoinEvent event) {
+		manager.loadPlayer( event.getPlayer() );
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)

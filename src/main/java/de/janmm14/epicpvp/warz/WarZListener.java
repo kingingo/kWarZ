@@ -12,24 +12,22 @@ import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.MapInitializeEvent;
 import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
-import de.janmm14.epicpvp.warz.util.MiscUtil;
 import dev.wolveringer.client.ClientWrapper;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
 import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
-import eu.epicpvp.kcore.Util.UtilWorld;
+
+import de.janmm14.epicpvp.warz.util.MiscUtil;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -49,23 +47,23 @@ public class WarZListener implements Listener {
 	public void loadWorld(WorldLoadEvent ev){
 		ev.getWorld().setAutoSave(false);
 	}
-	
+
 	@EventHandler
 	public void rendermap(MapInitializeEvent ev){
 		MapView view = ev.getMap();
-		
+
 		view.setCenterX(0);
 		view.setCenterZ(0);
 		view.setScale(MapView.Scale.FARTHEST);
-		
+
 		MapView t = Bukkit.getMap((short) 25);
 		for(MapRenderer render : t.getRenderers())view.addRenderer(render);
-				
+
 		if(WarZ.DEBUG){
 			System.out.println("[DEBUG] MapInitializeEvent: create new Map ID -> "+view.getId());
 		}
 	}
-	
+
 	@EventHandler
 	public void onBlockBurn(BlockBurnEvent ev) {
 		ev.setCancelled( true );
