@@ -1,7 +1,6 @@
 package de.janmm14.epicpvp.warz;
 
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
@@ -24,7 +23,7 @@ import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
 import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
-import eu.epicpvp.kcore.Util.UtilWorld;
+
 import de.janmm14.epicpvp.warz.command.CommandWarZ;
 import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
@@ -56,12 +55,6 @@ public class WarZ extends JavaPlugin {
 		}
 
 		registerTabExecutor( "warz", new CommandWarZ( this ) );
-
-		World world = Bukkit.getWorld( "world" );
-		if ( world != null ) {
-			getLogger().info( "Disabled automatic saving of world 'world', please do not use /save-all /save-on or any plugin to save worlds." );
-			world.setAutoSave( false );
-		}
 
 		setupKStuff();
 
