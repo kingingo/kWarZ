@@ -32,12 +32,6 @@ public class SpawnModule extends Module<SpawnModule> implements Listener{
 	public SpawnModule(WarZ plugin) {
 		super( plugin, module -> module );
 		plugin.getCommand( "spawn" ).setExecutor( new CommandSpawn( this ) );
-		config=new ConfigLocation(getConfig());
-		spawn = config.getLocation("spawnLocation");
-		spawn.getWorld().setSpawnLocation(spawn.getBlockX(), spawn.getBlockY(), spawn.getBlockZ());
-		
-		this.map_spawns=new ArrayList<>();
-		loadMapSpawns();
 	}
 	
 	public boolean removeNearestMapSpawn(Player player, double minDistance){
@@ -61,7 +55,10 @@ public class SpawnModule extends Module<SpawnModule> implements Listener{
 
 	@Override
 	public void reloadConfig() {
+		config=new ConfigLocation(getConfig());
 		spawn = config.getLocation("spawnLocation");
+		spawn.getWorld().setSpawnLocation(spawn.getBlockX(), spawn.getBlockY(), spawn.getBlockZ());
+		loadMapSpawns();
 	}
 
 	public void setSpawn(Location spawn) {
