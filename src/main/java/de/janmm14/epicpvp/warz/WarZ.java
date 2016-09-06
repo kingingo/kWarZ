@@ -61,7 +61,6 @@ public class WarZ extends JavaPlugin {
 		if ( world != null ) {
 			getLogger().info( "Disabled automatic saving of world 'world', please do not use /save-all /save-on or any plugin to save worlds." );
 			world.setAutoSave( false );
-			world.setSpawnLocation( 0, 90, 0 );
 		}
 
 		setupKStuff();
