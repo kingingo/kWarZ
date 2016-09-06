@@ -27,6 +27,10 @@
         </resources>
         <plugins>
             <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>2.4.1</version>
@@ -165,28 +169,12 @@
             <artifactId>core-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>eu.epicpvp</groupId>
-                    <artifactId>core-karcade</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>eu.epicpvp</groupId>
-                    <artifactId>core-skyblock</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>eu.epicpvp</groupId>
-                    <artifactId>core-kSkyBlock</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sk89q</groupId>
-                    <artifactId>worldedit</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.vexsoftware</groupId>
-                    <artifactId>votifier</artifactId>
-                </exclusion>
-            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>dev.wolveringer</groupId>
+            <artifactId>DatenClient</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>
@@ -212,15 +200,15 @@
             <systemPath>${project.basedir}/lib/CrackShot.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.8</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>13.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.8</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
