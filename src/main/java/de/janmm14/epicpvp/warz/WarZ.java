@@ -75,8 +75,6 @@ public class WarZ extends JavaPlugin {
 			moduleManager.discoverAndLoadModules();
 			saveConfig();
 		} );
-		
-		new AddonSun(this);
 	}
 
 	private void setupKStuff() {
@@ -99,7 +97,7 @@ public class WarZ extends JavaPlugin {
 
 		new ChatListener( this, UtilServer.getPermissionManager() );
 		new AntiCrashListener( UtilServer.getClient(), UtilServer.getMysql() );
-		
+		new AddonSun(this);
 		
 		//lets try to support reloades to some extend
 		for ( Player plr : Bukkit.getOnlinePlayers() ) {

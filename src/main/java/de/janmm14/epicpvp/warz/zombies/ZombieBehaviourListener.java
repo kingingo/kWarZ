@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustByBlockEvent;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,5 +23,12 @@ public class ZombieBehaviourListener implements Listener {
 		}
 	}
 
+	@EventHandler
+	public void onDrop(EntityDeathEvent ev){
+		if(ev.getEntityType() == EntityType.ZOMBIE){
+			ev.setDroppedExp(0);
+			ev.getDrops().clear();
+		}
+	}
 	//TODO implement more zombie behaviour
 }
