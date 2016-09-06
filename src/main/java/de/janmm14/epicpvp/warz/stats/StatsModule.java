@@ -22,12 +22,15 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+import dev.wolveringer.client.Callback;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import dev.wolveringer.dataserver.gamestats.StatsKey;
 import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsChangedEvent;
 import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsLoadedEvent;
+import eu.epicpvp.kcore.Scoreboard.Events.PlayerSetScoreboardEvent;
 import eu.epicpvp.kcore.StatsManager.StatsManager;
 import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
+import eu.epicpvp.kcore.Util.UtilScoreboard;
 import eu.epicpvp.kcore.Util.UtilServer;
 
 import de.janmm14.epicpvp.warz.Module;
@@ -53,31 +56,73 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 		manager.loadPlayer( event.getPlayer() );
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onJoin(PlayerStatsLoadedEvent event) {
-		if ( event.getManager().getType() != GameType.WARZ ) {
-			return;
-		}
-		getPlugin().getServer().getScheduler().runTask( getPlugin(), () -> {
-			Scoreboard scoreboard = getPlugin().getServer().getScoreboardManager().getNewScoreboard();
-			Objective sidebar = scoreboard.registerNewObjective( "clashmc_warz", "dummy" );
-			Player plr = Bukkit.getPlayer( UtilServer.getClient().getPlayer( event.getPlayerId() ).getUUID() );
-			ScoreboardAdapter adapter = new ScoreboardAdapter( sidebar );
-			scoreboardAdapters.put( plr.getUniqueId(), adapter );
+	@EventHandler
+	public void setsco(PlayerSetScoreboardEvent ev){
+			Scoreboard scoreboard = ev.getPlayer().getScoreboard();
+			Player plr = ev.getPlayer();
+			UtilScoreboard.addBoard(scoreboard, DisplaySlot.SIDEBAR, "§b§lWarZ§7 - §6§lClashMC.eu");
+			
+			UtilScoreboard.setScore(scoreboard, "§7Kills", DisplaySlot.SIDEBAR, 9);
+			UtilScoreboard.setScore(scoreboard, "§0§fLoading...", DisplaySlot.SIDEBAR, 8);
+			UtilScoreboard.setScore(scoreboard, "§7Deaths", DisplaySlot.SIDEBAR, 7);
+			UtilScoreboard.setScore(scoreboard, "§1§fLoading...", DisplaySlot.SIDEBAR, 6);
+			UtilScoreboard.setScore(scoreboard, "§7Ratio", DisplaySlot.SIDEBAR, 5);
+			UtilScoreboard.setScore(scoreboard, "§2§fLoading...", DisplaySlot.SIDEBAR, 4);
+			
+			manager.getAsync(plr, StatsKey.ANIMAL_KILLS, new Callback<Object>() {
+				@Override
+				public void call(Object obj, Throwable exception) {
+					Bukkit.getScheduler().runTask(manager.getInstance(), new Runnable() {
+						public void run() {
+							UtilScoreboard.resetScore(plr.getScoreboard(), 8, DisplaySlot.SIDEBAR);
+							UtilScoreboard.setScore(plr.getScoreboard(), "§0§f" + ((int) obj), DisplaySlot.SIDEBAR, 8);
+						}
+					});
+					
+					manager.getAsync(plr, StatsKey.DEATHS, new Callback<Object>() {
+						@Override
+						public void call(Object obj1, Throwable exception) {
+							Bukkit.getScheduler().runTask(manager.getInstance(), new Runnable() {
+								public void run() {
+									UtilScoreboard.resetScore(plr.getScoreboard(), 6, DisplaySlot.SIDEBAR);
+									UtilScoreboard.setScore(plr.getScoreboard(), "§1§f" + ((int) obj1), DisplaySlot.SIDEBAR, 6);
 
-			sidebar.setDisplaySlot( DisplaySlot.SIDEBAR );
-			sidebar.setDisplayName( "§b§lWarZ§7 - §6§lClashMC.eu" );
-			sidebar.getScore( "§7Kills" ).setScore( 9 );
-			int kills = event.getManager().getInt( event.getPlayerId(), StatsKey.ANIMAL_KILLS );
-			sidebar.getScore( "§0§f" + kills ).setScore( 8 );
-			sidebar.getScore( "§7Deaths" ).setScore( 7 );
-			int deaths = event.getManager().getInt( event.getPlayerId(), StatsKey.DEATHS );
-			sidebar.getScore( "§1§f" + deaths ).setScore( 6 );
-			sidebar.getScore( "§7Ratio" ).setScore( 5 );
-			sidebar.getScore( "§2§f" + ( kills / ( deaths + 1 ) ) ).setScore( 4 );
+									UtilScoreboard.resetScore(plr.getScoreboard(), 4, DisplaySlot.SIDEBAR);
+									UtilScoreboard.setScore(plr.getScoreboard(), "§2§f" + (((int) obj)/ (((int) obj1)+1) ), DisplaySlot.SIDEBAR, 4);
+								}
+							});
+						}
+					});
+				}
+			});
 			plr.setScoreboard( scoreboard );
-		} );
 	}
+	
+//	@EventHandler(priority = EventPriority.MONITOR)
+//	public void onStatsLoad(PlayerStatsLoadedEvent event) {
+//		if ( event.getManager().getType() != GameType.WARZ ) {
+//			return;
+//		}
+//		getPlugin().getServer().getScheduler().runTask( getPlugin(), () -> {
+//			Scoreboard scoreboard = getPlugin().getServer().getScoreboardManager().getNewScoreboard();
+//			Objective sidebar = scoreboard.registerNewObjective( "clashmc_warz", "dummy" );
+//			Player plr = Bukkit.getPlayer( UtilServer.getClient().getPlayer( event.getPlayerId() ).getUUID() );
+//			ScoreboardAdapter adapter = new ScoreboardAdapter( sidebar );
+//			scoreboardAdapters.put( plr.getUniqueId(), adapter );
+//
+//			sidebar.setDisplaySlot( DisplaySlot.SIDEBAR );
+//			sidebar.setDisplayName( "§b§lWarZ§7 - §6§lClashMC.eu" );
+//			sidebar.getScore( "§7Kills" ).setScore( 9 );
+//			int kills = event.getManager().getInt( event.getPlayerId(), StatsKey.ANIMAL_KILLS );
+//			sidebar.getScore( "§0§f" + kills ).setScore( 8 );
+//			sidebar.getScore( "§7Deaths" ).setScore( 7 );
+//			int deaths = event.getManager().getInt( event.getPlayerId(), StatsKey.DEATHS );
+//			sidebar.getScore( "§1§f" + deaths ).setScore( 6 );
+//			sidebar.getScore( "§7Ratio" ).setScore( 5 );
+//			sidebar.getScore( "§2§f" + ( kills / ( deaths + 1 ) ) ).setScore( 4 );
+//			plr.setScoreboard( scoreboard );
+//		} );
+//	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onStatsChanged(PlayerStatsChangedEvent event) {
