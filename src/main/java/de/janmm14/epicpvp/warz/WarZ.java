@@ -76,7 +76,6 @@ public class WarZ extends JavaPlugin {
 	}
 
 	private void setupKStuff() {
-		UtilWorld.setSave(false);
 		UtilServer.setPluginInstance( this );
 		userDataConfig = new UserDataConfig( this );
 

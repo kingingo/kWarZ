@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.MapInitializeEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapRenderer;
@@ -28,6 +29,7 @@ import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
 import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
+import eu.epicpvp.kcore.Util.UtilWorld;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -43,6 +45,11 @@ public class WarZListener implements Listener {
 		}
 	}
 
+	@EventHandler
+	public void loadWorld(WorldLoadEvent ev){
+		ev.getWorld().setAutoSave(false);
+	}
+	
 	@EventHandler
 	public void rendermap(MapInitializeEvent ev){
 		MapView view = ev.getMap();
