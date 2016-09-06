@@ -38,6 +38,7 @@ public class CommandSpawn implements CommandExecutor {
 					}
 				}
 				module.saveLastMapPos( plr, plr.getLocation() );
+				module.resetBorder(plr);
 				plr.teleport( module.getSpawn() );
 				sender.sendMessage( TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_SPAWN_TELEPORT" ) );
 			}

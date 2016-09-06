@@ -31,6 +31,7 @@ public class CommandBack implements CommandExecutor {
 			lastMapPos = module.getRandomMapSpawn();
 		}
 		plr.teleport( lastMapPos );
+		module.sendBorder(plr);
 		return true;
 	}
 }
