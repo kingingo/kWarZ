@@ -23,6 +23,8 @@ import org.bukkit.map.MapView;
 import dev.wolveringer.client.ClientWrapper;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
+import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutMap;
+import eu.epicpvp.kcore.PacketAPI.packetlistener.event.PacketListenerReceiveEvent;
 import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
@@ -30,6 +32,7 @@ import eu.epicpvp.kcore.Util.UtilServer;
 import de.janmm14.epicpvp.warz.util.MiscUtil;
 
 import lombok.RequiredArgsConstructor;
+import net.minecraft.server.v1_8_R3.PacketPlayOutMap;
 
 @RequiredArgsConstructor
 public class WarZListener implements Listener {
@@ -48,7 +51,7 @@ public class WarZListener implements Listener {
 	public void loadWorld(WorldLoadEvent ev){
 		ev.getWorld().setAutoSave(false);
 	}
-
+	
 	@EventHandler
 	public void rendermap(MapInitializeEvent ev){
 		MapView view = ev.getMap();
