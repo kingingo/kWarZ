@@ -67,8 +67,8 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 			sidebar.getScore( "§7Deaths" ).setScore( 7 );
 			int deaths = event.getManager().getInt( event.getPlayerId(), StatsKey.DEATHS );
 			sidebar.getScore( "§1§f" + deaths ).setScore( 6 );
-			sidebar.getScore( "§7Ratio" + ( kills / ( deaths + 1 ) ) ).setScore( 5 );
-			sidebar.getScore( "§2§f" ).setScore( 4 );
+			sidebar.getScore( "§7Ratio" ).setScore( 5 );
+			sidebar.getScore( "§2§f" + ( kills / ( deaths + 1 ) ) ).setScore( 4 );
 			plr.setScoreboard( scoreboard );
 		} );
 	}
@@ -94,7 +94,7 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 		}
 		int kills = event.getManager().getInt( event.getPlayerId(), StatsKey.ANIMAL_KILLS );
 		int deaths = event.getManager().getInt( event.getPlayerId(), StatsKey.DEATHS );
-		adapter.setEntryKeyWithValue( 5, "§7Ratio" + ( kills / ( deaths + 1 ) ) );
+		adapter.setEntryKeyWithValue( 4, "§2§f" + ( kills / ( deaths + 1 ) ) );
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
