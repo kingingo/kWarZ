@@ -24,7 +24,7 @@ import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
 import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
-
+import eu.epicpvp.kcore.Util.UtilWorld;
 import de.janmm14.epicpvp.warz.command.CommandWarZ;
 import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
@@ -76,6 +76,7 @@ public class WarZ extends JavaPlugin {
 	}
 
 	private void setupKStuff() {
+		UtilWorld.setSave(false);
 		UtilServer.setPluginInstance( this );
 		userDataConfig = new UserDataConfig( this );
 
