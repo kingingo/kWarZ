@@ -152,6 +152,7 @@ public class ShopChestDeliveryHandler implements Listener {
 				}
 				break;
 		}
+		module.getPlugin().getServer().getScheduler().runTask(module.getPlugin(), () -> ((Player) event.getWhoClicked()).updateInventory());
 	}
 
 	public void openInventory(Player plr) {
