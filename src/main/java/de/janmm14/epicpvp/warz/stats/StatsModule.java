@@ -40,7 +40,6 @@ import de.janmm14.epicpvp.warz.util.ScoreboardAdapter;
 public class StatsModule extends Module<StatsModule> implements Listener { //TODO /stats <name> | scoreboard
 
 	private final StatsManager manager = StatsManagerRepository.getStatsManager( GameType.WARZ );
-	private final Map<UUID, ScoreboardAdapter> scoreboardAdapters = new HashMap<>();
 
 	public StatsModule(WarZ plugin) {
 		super( plugin, module -> module );
@@ -97,32 +96,6 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 			});
 			plr.setScoreboard( scoreboard );
 	}
-	
-//	@EventHandler(priority = EventPriority.MONITOR)
-//	public void onStatsLoad(PlayerStatsLoadedEvent event) {
-//		if ( event.getManager().getType() != GameType.WARZ ) {
-//			return;
-//		}
-//		getPlugin().getServer().getScheduler().runTask( getPlugin(), () -> {
-//			Scoreboard scoreboard = getPlugin().getServer().getScoreboardManager().getNewScoreboard();
-//			Objective sidebar = scoreboard.registerNewObjective( "clashmc_warz", "dummy" );
-//			Player plr = Bukkit.getPlayer( UtilServer.getClient().getPlayer( event.getPlayerId() ).getUUID() );
-//			ScoreboardAdapter adapter = new ScoreboardAdapter( sidebar );
-//			scoreboardAdapters.put( plr.getUniqueId(), adapter );
-//
-//			sidebar.setDisplaySlot( DisplaySlot.SIDEBAR );
-//			sidebar.setDisplayName( "§b§lWarZ§7 - §6§lClashMC.eu" );
-//			sidebar.getScore( "§7Kills" ).setScore( 9 );
-//			int kills = event.getManager().getInt( event.getPlayerId(), StatsKey.ANIMAL_KILLS );
-//			sidebar.getScore( "§0§f" + kills ).setScore( 8 );
-//			sidebar.getScore( "§7Deaths" ).setScore( 7 );
-//			int deaths = event.getManager().getInt( event.getPlayerId(), StatsKey.DEATHS );
-//			sidebar.getScore( "§1§f" + deaths ).setScore( 6 );
-//			sidebar.getScore( "§7Ratio" ).setScore( 5 );
-//			sidebar.getScore( "§2§f" + ( kills / ( deaths + 1 ) ) ).setScore( 4 );
-//			plr.setScoreboard( scoreboard );
-//		} );
-//	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onStatsChanged(PlayerStatsChangedEvent event) {
@@ -131,26 +104,23 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 		}
 		Player plr = Bukkit.getPlayer( UtilServer.getClient().getPlayer( event.getPlayerId() ).getUUID() );
 		plr.getScoreboard().getObjective( DisplaySlot.SIDEBAR );
-		ScoreboardAdapter adapter = scoreboardAdapters.get( plr.getUniqueId() );
 		int newVal = event.getManager().getInt( event.getPlayerId(), event.getStats() );
 		switch ( event.getStats() ) {
 			case ANIMAL_KILLS:
-				adapter.setEntryKeyWithValue( 8, "§0§f" + newVal );
+				UtilScoreboard.resetScore(plr.getScoreboard(), 8, DisplaySlot.SIDEBAR);
+				UtilScoreboard.setScore(plr.getScoreboard(), "§0§f" + ((int) newVal), DisplaySlot.SIDEBAR, 8);
 				break;
 			case DEATHS:
-				adapter.setEntryKeyWithValue( 6, "§1§f" + newVal );
+				UtilScoreboard.resetScore(plr.getScoreboard(), 6, DisplaySlot.SIDEBAR);
+				UtilScoreboard.setScore(plr.getScoreboard(), "§1§f" + ((int) newVal), DisplaySlot.SIDEBAR, 6);
 				break;
 			default:
 				return;
 		}
 		int kills = event.getManager().getInt( event.getPlayerId(), StatsKey.ANIMAL_KILLS );
 		int deaths = event.getManager().getInt( event.getPlayerId(), StatsKey.DEATHS );
-		adapter.setEntryKeyWithValue( 4, "§2§f" + ( kills / ( deaths + 1 ) ) );
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onLeave(PlayerQuitEvent event) {
-		scoreboardAdapters.remove( event.getPlayer().getUniqueId() );
+		UtilScoreboard.resetScore(plr.getScoreboard(), 4, DisplaySlot.SIDEBAR);
+		UtilScoreboard.setScore(plr.getScoreboard(), "§2§f" + ( kills / ( deaths + 1 ) ), DisplaySlot.SIDEBAR, 4);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
