@@ -46,7 +46,7 @@ public class CommandWarZ implements TabExecutor {
 			case "debug":
 				boolean newState = !WarZ.DEBUG;
 				WarZ.DEBUG = newState;
-				plugin.getConfig().set("debug", WarZ.DEBUG);
+				plugin.getConfig().set( "debug", WarZ.DEBUG );
 				if ( newState ) {
 					sender.sendMessage( "§6Der Debug-Modus ist nun§a angeschaltet§6." );
 				} else {

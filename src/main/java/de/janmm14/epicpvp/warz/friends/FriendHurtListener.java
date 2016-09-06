@@ -2,7 +2,6 @@ package de.janmm14.epicpvp.warz.friends;
 
 import java.util.UUID;
 
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,7 +25,7 @@ public class FriendHurtListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onDamage(EntityDamageByEntityEvent event) {
-		if ( (!(event.getEntity() instanceof Player)) || (!(event.getDamager() instanceof Player)) ) {
+		if ( !( event.getEntity() instanceof Player ) || !( event.getDamager() instanceof Player ) ) {
 			return;
 		}
 		if ( WarZ.DEBUG ) {

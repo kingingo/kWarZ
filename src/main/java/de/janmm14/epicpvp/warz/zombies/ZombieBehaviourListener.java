@@ -24,9 +24,9 @@ public class ZombieBehaviourListener implements Listener {
 	}
 
 	@EventHandler
-	public void onDrop(EntityDeathEvent ev){
-		if(ev.getEntityType() == EntityType.ZOMBIE){
-			ev.setDroppedExp(0);
+	public void onDrop(EntityDeathEvent ev) {
+		if ( ev.getEntityType() == EntityType.ZOMBIE ) {
+			ev.setDroppedExp( 0 );
 			ev.getDrops().clear();
 		}
 	}

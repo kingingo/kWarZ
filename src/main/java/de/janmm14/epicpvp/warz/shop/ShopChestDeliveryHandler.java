@@ -32,10 +32,10 @@ public class ShopChestDeliveryHandler implements Listener {
 	private static final net.md_5.bungee.api.chat.BaseComponent[] NO_ITEMS_TO_DELIVER_MSG = new ComponentBuilder( "" )
 		.append( "Es warten aktuell keine Items auf dich.\n" ).color( ChatColor.RED )
 		.append( "Klicke " ).color( ChatColor.GOLD )
-		.append( "hier" )
+		.append( "hier" ) //@formatter:off
 			.underlined( true )
 			.event( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( "" ).append( "Klicke, um den Shop zu öffnen." ).color( ChatColor.GOLD ).create() ) )
-			.event( new ClickEvent( ClickEvent.Action.RUN_COMMAND, "/shop" ) )
+			.event( new ClickEvent( ClickEvent.Action.RUN_COMMAND, "/shop" ) ) //@formatter:on
 		.append( " oder gebe /shop ein, um dir ein Item zu kaufen.", ComponentBuilder.FormatRetention.FORMATTING ).underlined( false )
 		.create();
 	private final ShopModule module;

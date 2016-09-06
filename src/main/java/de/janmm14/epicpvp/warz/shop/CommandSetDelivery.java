@@ -29,7 +29,7 @@ public class CommandSetDelivery implements CommandExecutor {
 		Player plr = ( Player ) sender;
 		List<Block> blocks = plr.getLineOfSight( ( Set<Material> ) null, 6 );
 		for ( Block block : blocks ) {
-			if (block == null || block.getType() == Material.AIR) {
+			if ( block == null || block.getType() == Material.AIR ) {
 				continue;
 			}
 			if ( block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST ) {

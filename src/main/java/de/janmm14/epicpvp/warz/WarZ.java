@@ -19,17 +19,15 @@ import eu.epicpvp.kcore.Addons.AddonSun;
 import eu.epicpvp.kcore.ChunkGenerator.CleanroomChunkGenerator;
 import eu.epicpvp.kcore.Listener.AntiCrashListener.AntiCrashListener;
 import eu.epicpvp.kcore.Listener.Chat.ChatListener;
-import eu.epicpvp.kcore.MySQL.MySQL;
 import eu.epicpvp.kcore.Permission.PermissionManager;
 import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
 import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
-import eu.epicpvp.kcore.Util.UtilWorldGuard;
+
 import de.janmm14.epicpvp.warz.command.CommandWarZ;
 import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
-import de.janmm14.epicpvp.warz.spawn.CommandSpawn;
 
 import lombok.Getter;
 
@@ -78,14 +76,14 @@ public class WarZ extends JavaPlugin {
 	}
 
 	private void setupKStuff() {
-		UtilServer.setPluginInstance(this);
+		UtilServer.setPluginInstance( this );
 		userDataConfig = new UserDataConfig( this );
 
 		getConfig().addDefault( "mysql.host", "localhost" );
 		getConfig().addDefault( "mysql.user", "user" );
 		getConfig().addDefault( "mysql.database", "database" );
 		getConfig().addDefault( "mysql.password", "password" );
-		UtilServer.createMySQL( getConfig().getString( "mysql.user" ), getConfig().getString( "mysql.password" ), getConfig().getString( "mysql.host" ), getConfig().getString( "mysql.database" ));
+		UtilServer.createMySQL( getConfig().getString( "mysql.user" ), getConfig().getString( "mysql.password" ), getConfig().getString( "mysql.host" ), getConfig().getString( "mysql.database" ) );
 
 		getConfig().addDefault( "dataserver.host", "localhost" );
 		getConfig().addDefault( "dataserver.port", "9052" );
@@ -97,8 +95,7 @@ public class WarZ extends JavaPlugin {
 
 		new ChatListener( this, UtilServer.getPermissionManager() );
 		new AntiCrashListener( UtilServer.getClient(), UtilServer.getMysql() );
-		new AddonSun(this);
-		
+		new AddonSun( this );
 		//lets try to support reloades to some extend
 		for ( Player plr : Bukkit.getOnlinePlayers() ) {
 			StatsManagerRepository.getStatsManager( GameType.WARZ ).join( new PlayerJoinEvent( plr, "" ) );
