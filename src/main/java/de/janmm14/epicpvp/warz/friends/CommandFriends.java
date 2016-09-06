@@ -212,7 +212,7 @@ public class CommandFriends implements TabExecutor {
 						initiator.getFriendWith().remove( targetPlayerId );
 						initiator.setDirty();
 
-						msg( plr, module.getPrefix() + TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_DISSOLVE_FRIENDSHIP", targetPlr_.getName() ) );
+						msg( plr, module.getPrefix() + TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_DISSOLVE_FRIENDSHIP", targetProfile.getName() ) );
 						Player targetPlr = targetInfo.getPlayer();
 						if ( targetPlr != null ) {
 							msg( targetPlr, module.getPrefix() + TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_DISSOLVE_FROM_FRIENDSHIP", plrName ) );
