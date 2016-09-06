@@ -118,7 +118,7 @@ public class ShopChestDeliveryHandler implements Listener {
 		if ( event.hasBlock() && ( block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST ) ) {
 			if ( chestLoc.equals( block.getLocation().toVector().toBlockVector() ) ) {
 				event.setCancelled( true );
-				openInvetory( plr );
+				openInventory( plr );
 			}
 		}
 	}
@@ -154,7 +154,7 @@ public class ShopChestDeliveryHandler implements Listener {
 		}
 	}
 
-	public void openInvetory(Player plr) {
+	public void openInventory(Player plr) {
 		Inventory inv = inventories.get( module.getPlugin().getUserDataConverter().getProfile( plr ).getPlayerId() );
 		if ( inv == null || isEmpty( inv ) ) {
 			plr.spigot().sendMessage( NO_ITEMS_TO_DELIVER_MSG );
