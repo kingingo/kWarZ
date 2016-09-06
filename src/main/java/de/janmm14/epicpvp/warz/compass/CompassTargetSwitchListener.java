@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 import eu.epicpvp.kcore.Inventory.Inventory.InventoryCopy;
@@ -17,8 +18,10 @@ import eu.epicpvp.kcore.Util.UtilItem;
 public class CompassTargetSwitchListener implements Listener {
 
 	private InventoryCopy selectionInventory;
+	private CompassTargetModule module;
 
 	public CompassTargetSwitchListener(CompassTargetModule module) {
+		this.module=module;
 		this.selectionInventory = new InventoryCopy( InventorySize._9, "Set your Compass target" );
 		this.selectionInventory.addButton( 1, new CompassButton( module, CompassTarget.ENEMY, 1, UtilItem.Item( new ItemStack( Material.STAINED_CLAY, 1, ( short ) 14 ), new String[]{}, "§cEnemies" ), this.selectionInventory ) );
 		this.selectionInventory.addButton( 4, new CompassButton( module, CompassTarget.FRIEND, 4, UtilItem.Item( new ItemStack( Material.STAINED_CLAY, 1, ( short ) 5 ), new String[]{}, "§aFriends" ), this.selectionInventory ) );
@@ -26,6 +29,11 @@ public class CompassTargetSwitchListener implements Listener {
 		this.selectionInventory.fill( Material.STAINED_GLASS_PANE, 7 );
 		this.selectionInventory.setCreate_new_inv( true );
 		UtilInv.getBase().addPage( this.selectionInventory );
+	}
+	
+	@EventHandler
+	public void quit(PlayerQuitEvent ev){
+		module.remove(ev.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.LOW)

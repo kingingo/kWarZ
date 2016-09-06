@@ -9,10 +9,12 @@ import org.bukkit.entity.Player;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
+import eu.epicpvp.kcore.Util.UtilDirection;
 
 public class CompassTargetModule extends Module<CompassTargetModule> implements Runnable {
 
 	private final Map<UUID, CompassTarget> selectedTargets = new HashMap<>();
+	private final Map<UUID, UtilDirection> lastDirection = new HashMap<>();
 
 	public CompassTargetModule(WarZ plugin) {
 		super( plugin, CompassTargetSwitchListener::new );
@@ -35,6 +37,11 @@ public class CompassTargetModule extends Module<CompassTargetModule> implements 
 	@Override
 	public void reloadConfig() {
 	}
+	
+	public void remove(Player plr){
+		selectedTargets.remove(plr.getUniqueId());
+		lastDirection.remove(plr.getUniqueId());
+	}
 
 	@Override
 	public void run() {
@@ -42,7 +49,12 @@ public class CompassTargetModule extends Module<CompassTargetModule> implements 
 			CompassTarget target = getCompassTarget( plr );
 			Location targetLoc = target.getTarget( this, plr );
 			if ( targetLoc == null ) {
-				targetLoc = plr.getLocation().subtract( plr.getLocation().getDirection().setY( 0 ).normalize().multiply( -3 ) );
+
+				UtilDirection dire = lastDirection.get(plr.getUniqueId());
+				if(dire==null)dire=UtilDirection.NORTH;
+				dire=dire.nextDirection();
+				lastDirection.put(plr.getUniqueId(), dire);
+				targetLoc=dire.get(plr.getLocation());
 			}
 			plr.setCompassTarget( targetLoc );
 		}
