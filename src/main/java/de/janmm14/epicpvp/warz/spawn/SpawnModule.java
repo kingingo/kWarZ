@@ -41,7 +41,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 		config = new ConfigLocationAdapter( getConfig() );
 		spawn = config.getLocation( "spawnLocation" );
 		spawn.getWorld().setSpawnLocation( spawn.getBlockX(), spawn.getBlockY(), spawn.getBlockZ() );
-		this.mapSpawns = ( ArrayList<Location> ) config.getLocationList( "Mapspawns" );
+		mapSpawns = ( ArrayList<Location> ) config.getLocationList( "Mapspawns" );
 	}
 
 	public boolean removeNearestMapSpawn(Player player, double minDistance) {
@@ -55,8 +55,15 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	}
 
 	public void addMapSpawn(Location loc) {
-		this.mapSpawns.add( loc );
-		config.setLocationList( "Mapspawns", this.mapSpawns );
+		mapSpawns.add( loc );
+		config.setLocationList( "Mapspawns", mapSpawns );
+	}
+
+	public Location getRandomMapSpawn() {
+		if (mapSpawns.isEmpty()) {
+			return null;
+		}
+		return mapSpawns.get( UtilMath.randomInteger( mapSpawns.size() ) );
 	}
 
 	public void setSpawn(Location spawn) {

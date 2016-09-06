@@ -1,6 +1,5 @@
 package de.janmm14.epicpvp.warz.spawn;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,7 +28,7 @@ public class CommandBack implements CommandExecutor {
 		}
 		Location lastMapPos = module.getUserConfig( plr ).getLocation( "lastMapPos" );
 		if ( lastMapPos == null ) {
-			lastMapPos = Bukkit.getWorlds().get( 0 ).getSpawnLocation();
+			lastMapPos = module.getRandomMapSpawn();
 		}
 		plr.teleport( lastMapPos );
 		return true;
