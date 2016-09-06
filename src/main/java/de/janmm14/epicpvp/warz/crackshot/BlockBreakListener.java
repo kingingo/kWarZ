@@ -9,6 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.util.BlockVector;
 
 import com.shampaggon.crackshot.events.WeaponHitBlockEvent;
@@ -16,12 +17,12 @@ import com.shampaggon.crackshot.events.WeaponHitBlockEvent;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.Tuple;
 
-public class WeaponBlockHitListener implements Listener, Runnable {
+public class BlockBreakListener implements Listener, Runnable {
 
 	private static final Map<BlockVector, Tuple<BlockState, Long>> blockStates = new HashMap<>( 32 );
 	private final CrackShotTweakModule module;
 
-	public WeaponBlockHitListener(CrackShotTweakModule module) {
+	public BlockBreakListener(CrackShotTweakModule module) {
 		this.module = module;
 		WarZ plugin = module.getPlugin();
 		plugin.getServer().getScheduler().runTaskTimer( plugin, this, 25 * 20, 5 );
@@ -53,6 +54,27 @@ public class WeaponBlockHitListener implements Listener, Runnable {
 				BlockState oldBlockState = block.getState();
 				block.setType( Material.AIR, false );
 				blockStates.put( oldBlockState.getLocation().toVector().toBlockVector(), new Tuple<>( oldBlockState, System.currentTimeMillis() ) );
+			}
+		}
+	}
+
+	@EventHandler
+	public void onBlockBreak(BlockBreakEvent event) {
+		Block block = event.getBlock();
+		switch ( block.getType() ) {
+			case GLASS:
+			case STAINED_GLASS:
+			case STAINED_GLASS_PANE:
+			case THIN_GLASS: {
+				BlockState oldBlockState = block.getState();
+				block.setType( Material.AIR, false );
+				blockStates.put( oldBlockState.getLocation().toVector().toBlockVector(), new Tuple<>( oldBlockState, System.currentTimeMillis() ) );
+				break;
+			}
+			default: {
+				if (!event.getPlayer().isOp()) {
+					event.setCancelled( true );
+				}
 			}
 		}
 	}

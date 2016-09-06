@@ -16,7 +16,7 @@ public class CrackShotTweakModule extends Module<CrackShotTweakModule> {
 	private boolean headShotOnlyHelmet;
 
 	public CrackShotTweakModule(WarZ plugin) {
-		super( plugin, WeaponDamageArmorListener::new, WeaponBlockHitListener::new );
+		super( plugin, WeaponDamageArmorListener::new, BlockBreakListener::new );
 	}
 
 	public boolean isHeadOnlyHelmetReduction() {
