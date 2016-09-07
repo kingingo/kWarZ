@@ -13,16 +13,17 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-
-import de.janmm14.epicpvp.warz.Module;
-import de.janmm14.epicpvp.warz.WarZ;
-import de.janmm14.epicpvp.warz.util.ConfigLocationAdapter;
 import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutWorldBorder;
 import eu.epicpvp.kcore.Util.UtilMath;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilWorld;
 import eu.epicpvp.kcore.Util.UtilWorldGuard;
 import eu.epicpvp.kcore.kConfig.kConfig;
+
+import de.janmm14.epicpvp.warz.Module;
+import de.janmm14.epicpvp.warz.WarZ;
+import de.janmm14.epicpvp.warz.util.ConfigLocationAdapter;
+
 import lombok.Getter;
 
 public class SpawnModule extends Module<SpawnModule> implements Listener {
@@ -45,7 +46,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 		spawn = config.getLocation( "spawnLocation" );
 		spawn.getWorld().setSpawnLocation( spawn.getBlockX(), spawn.getBlockY(), spawn.getBlockZ() );
 		mapSpawns = ( ArrayList<Location> ) config.getLocationList( "Mapspawns" );
-		border=UtilWorld.createWorldBorder(new Location(spawn.getWorld(),0,90,0), 2050, 10, 10);
+		border = UtilWorld.createWorldBorder( new Location( spawn.getWorld(), 0, 90, 0 ), 2050, 10, 10 );
 	}
 
 	public boolean removeNearestMapSpawn(Player player, double minDistance) {
@@ -57,7 +58,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 				changed = true;
 			}
 		}
-		if (changed) {
+		if ( changed ) {
 			getPlugin().saveConfig();
 		}
 		return changed;
@@ -70,20 +71,20 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	}
 
 	public Location getRandomMapSpawn() {
-		if (mapSpawns.isEmpty()) {
+		if ( mapSpawns.isEmpty() ) {
 			return null;
 		}
 		return mapSpawns.get( UtilMath.randomInteger( mapSpawns.size() ) );
 	}
 
-	public void resetBorder(Player player){
-		UtilWorld.resetWorldBoarder(player);
+	public void resetBorder(Player player) {
+		UtilWorld.resetWorldBoarder( player );
 	}
-	
-	public void sendBorder(Player player){
-		UtilPlayer.sendPacket(player, border);
+
+	public void sendBorder(Player player) {
+		UtilPlayer.sendPacket( player, border );
 	}
-	
+
 	public void setSpawn(Location spawn) {
 		this.spawn = spawn;
 		config.setLocation( "spawnLocation", spawn );
@@ -125,7 +126,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	public void move(PlayerMoveEvent ev) {
 		if ( ev.getPlayer().getEyeLocation().getBlock().getType() == Material.PORTAL ) {
 			if ( !UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) ) {
-				sendBorder(ev.getPlayer());
+				sendBorder( ev.getPlayer() );
 				if ( getUserConfig( ev.getPlayer() ).contains( "lastMapPos" ) ) {
 					ev.getPlayer().teleport( getUserConfig( ev.getPlayer() ).getLocation( "lastMapPos" ) );
 				} else {

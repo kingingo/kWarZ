@@ -91,8 +91,8 @@ public class WarZ extends JavaPlugin {
 		new ChatListener( this, UtilServer.getPermissionManager() );
 		new AntiCrashListener( UtilServer.getClient(), UtilServer.getMysql() );
 		new AddonSun( this );
-		new EnderChestListener(getUserDataConfig());
-		new TeleportManager(new CommandHandler(this), UtilServer.getPermissionManager(), 10);
+		new EnderChestListener( getUserDataConfig() );
+		new TeleportManager( new CommandHandler( this ), UtilServer.getPermissionManager(), 10 );
 		//lets try to support reloades to some extend
 		for ( Player plr : Bukkit.getOnlinePlayers() ) {
 			StatsManagerRepository.getStatsManager( GameType.WARZ ).join( new PlayerJoinEvent( plr, "" ) );

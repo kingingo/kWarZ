@@ -132,27 +132,34 @@ public class ShopChestDeliveryHandler implements Listener {
 			case HOTBAR_SWAP:
 			case DROP_ONE_SLOT:
 			case DROP_ALL_SLOT:
+			case DROP_ALL_CURSOR:
+			case DROP_ONE_CURSOR:
+			case NOTHING:
+			case UNKNOWN:
 				event.setCancelled( true );
 				break;
 			case MOVE_TO_OTHER_INVENTORY:
-				if (!(event.getClickedInventory() instanceof ShopInventoryHolder)) {
-					event.setCancelled(true);
+				if ( !( event.getClickedInventory() instanceof ShopInventoryHolder ) ) {
+					event.setCancelled( true );
 				}
 				break;
 			case PLACE_ALL:
 			case PLACE_ONE:
 			case PLACE_SOME:
-				if (event.getClickedInventory().getHolder() instanceof ShopInventoryHolder) {
-					event.setCancelled(true);
+				//that is a xor operation, exactly one of both has to be true, the other one false
+				if ( event.isShiftClick() ^ event.getClickedInventory().getHolder() instanceof ShopInventoryHolder ) {
+					event.setCancelled( true );
 				}
 				break;
 			case SWAP_WITH_CURSOR:
-				if (event.getClickedInventory().getHolder() instanceof ShopInventoryHolder && (event.getCursor() != null && event.getCursor().getType() != Material.AIR)) {
-					event.setCancelled(true);
+				if ( event.getClickedInventory().getHolder() instanceof ShopInventoryHolder && ( event.getCursor() != null && event.getCursor().getType() != Material.AIR ) ) {
+					event.setCancelled( true );
 				}
 				break;
 		}
-		module.getPlugin().getServer().getScheduler().runTask(module.getPlugin(), () -> ((Player) event.getWhoClicked()).updateInventory());
+		if ( event.isCancelled() ) {
+			module.getPlugin().getServer().getScheduler().runTask( module.getPlugin(), () -> ( ( Player ) event.getWhoClicked() ).updateInventory() );
+		}
 	}
 
 	public void openInventory(Player plr) {

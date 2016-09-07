@@ -45,7 +45,6 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 
 	@Override
 	public void reloadConfig() {
-
 	}
 
 	@EventHandler
@@ -54,7 +53,7 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 	}
 
 	@EventHandler
-	public void setsco(PlayerSetScoreboardEvent event) {
+	public void onScoreboardSet(PlayerSetScoreboardEvent event) {
 		Player plr = event.getPlayer();
 		Scoreboard scoreboard = plr.getScoreboard();
 		Objective sidebar = scoreboard.registerNewObjective( "clashmc_warz", "dummy" );
@@ -94,7 +93,7 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 		}
 		Player plr = Bukkit.getPlayer( UtilServer.getClient().getPlayer( event.getPlayerId() ).getUUID() );
 		ScoreboardAdapter adapter = scoreboardAdapters.get( plr.getUniqueId() );
-		if (adapter == null) {
+		if ( adapter == null ) {
 			return;
 		}
 		int newVal = event.getManager().getInt( event.getPlayerId(), event.getStats() );

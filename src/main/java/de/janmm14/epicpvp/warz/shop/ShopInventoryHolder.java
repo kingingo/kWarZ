@@ -11,5 +11,4 @@ public class ShopInventoryHolder implements InventoryHolder {
 	@Getter
 	@Setter
 	private Inventory inventory;
-
 }

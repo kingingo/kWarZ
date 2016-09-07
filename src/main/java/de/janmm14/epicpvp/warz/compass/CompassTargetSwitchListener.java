@@ -21,7 +21,7 @@ public class CompassTargetSwitchListener implements Listener {
 	private CompassTargetModule module;
 
 	public CompassTargetSwitchListener(CompassTargetModule module) {
-		this.module=module;
+		this.module = module;
 		this.selectionInventory = new InventoryCopy( InventorySize._9, "Set your Compass target" );
 		this.selectionInventory.addButton( 1, new CompassButton( module, CompassTarget.ENEMY, 1, UtilItem.Item( new ItemStack( Material.STAINED_CLAY, 1, ( short ) 14 ), new String[]{}, "§cEnemies" ), this.selectionInventory ) );
 		this.selectionInventory.addButton( 4, new CompassButton( module, CompassTarget.FRIEND, 4, UtilItem.Item( new ItemStack( Material.STAINED_CLAY, 1, ( short ) 5 ), new String[]{}, "§aFriends" ), this.selectionInventory ) );
@@ -30,10 +30,10 @@ public class CompassTargetSwitchListener implements Listener {
 		this.selectionInventory.setCreate_new_inv( true );
 		UtilInv.getBase().addPage( this.selectionInventory );
 	}
-	
+
 	@EventHandler
-	public void quit(PlayerQuitEvent ev){
-		module.remove(ev.getPlayer());
+	public void onQuit(PlayerQuitEvent ev) {
+		module.remove( ev.getPlayer() );
 	}
 
 	@EventHandler(priority = EventPriority.LOW)

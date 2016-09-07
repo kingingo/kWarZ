@@ -72,7 +72,7 @@ public class BlockBreakListener implements Listener, Runnable {
 				break;
 			}
 			default: {
-				if (!event.getPlayer().isOp()) {
+				if ( !event.getPlayer().isOp() ) {
 					event.setCancelled( true );
 				}
 			}

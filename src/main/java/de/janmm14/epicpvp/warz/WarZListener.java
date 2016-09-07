@@ -22,8 +22,6 @@ import org.bukkit.map.MapView;
 import dev.wolveringer.client.ClientWrapper;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
-import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutMap;
-import eu.epicpvp.kcore.PacketAPI.packetlistener.event.PacketListenerReceiveEvent;
 import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
@@ -31,7 +29,6 @@ import eu.epicpvp.kcore.Util.UtilServer;
 import de.janmm14.epicpvp.warz.util.MiscUtil;
 
 import lombok.RequiredArgsConstructor;
-import net.minecraft.server.v1_8_R3.PacketPlayOutMap;
 
 @RequiredArgsConstructor
 public class WarZListener implements Listener {
@@ -47,23 +44,23 @@ public class WarZListener implements Listener {
 	}
 
 	@EventHandler
-	public void loadWorld(WorldLoadEvent ev){
-		ev.getWorld().setAutoSave(false);
+	public void loadWorld(WorldLoadEvent ev) {
+		ev.getWorld().setAutoSave( false );
 	}
-	
+
 	@EventHandler
-	public void rendermap(MapInitializeEvent ev){
+	public void rendermap(MapInitializeEvent ev) {
 		MapView view = ev.getMap();
 
-		view.setCenterX(0);
-		view.setCenterZ(0);
-		view.setScale(MapView.Scale.FARTHEST);
+		view.setCenterX( 0 );
+		view.setCenterZ( 0 );
+		view.setScale( MapView.Scale.FARTHEST );
 
-		MapView t = Bukkit.getMap((short) 25);
-		for(MapRenderer render : t.getRenderers())view.addRenderer(render);
+		MapView t = Bukkit.getMap( ( short ) 25 );
+		for ( MapRenderer render : t.getRenderers() ) view.addRenderer( render );
 
-		if(WarZ.DEBUG){
-			System.out.println("[DEBUG] MapInitializeEvent: create new Map ID -> "+view.getId());
+		if ( WarZ.DEBUG ) {
+			System.out.println( "[DEBUG] MapInitializeEvent: create new Map ID -> " + view.getId() );
 		}
 	}
 
