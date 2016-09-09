@@ -6,10 +6,12 @@ import java.util.List;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.random.RandomThingHolder;
+import de.janmm14.epicpvp.warz.util.random.RandomUtil;
 
 public class ZombieModule extends Module<ZombieModule> {
 
@@ -29,6 +31,11 @@ public class ZombieModule extends Module<ZombieModule> {
 
 	public void setupZombie(Zombie zombie) {
 		zombie.setFireTicks( 0 );
+		zombie.setBaby( false );
+		zombie.setVillager( false );
+		if ( RandomUtil.getRandomInt( 1, 15 ) == 1 ) {
+			zombie.addPotionEffect( new PotionEffect( PotionEffectType.SPEED, RandomUtil.getRandomInt( 20 * 20, 60 * 20 ), 0, true ) );
+		}
 		//TODO setup zombie further - behaviour
 	}
 

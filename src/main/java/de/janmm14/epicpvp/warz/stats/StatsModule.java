@@ -64,11 +64,11 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 		sidebar.setDisplayName( "§b§lWarZ§7 - §6§lClashMC.eu" );
 
 		sidebar.getScore( "§7Kills" ).setScore( 9 );
-		sidebar.getScore( "§0§fLoading..." ).setScore( 8 );
+		adapter.setEntryKeyWithValue( 8, "§0§fLoading..." );
 		sidebar.getScore( "§7Deaths" ).setScore( 7 );
-		sidebar.getScore( "§1§fLoading..." ).setScore( 6 );
+		adapter.setEntryKeyWithValue( 6, "§1§fLoading..." );
 		sidebar.getScore( "§7Ratio" ).setScore( 5 );
-		sidebar.getScore( "§2§fLoading..." ).setScore( 4 );
+		adapter.setEntryKeyWithValue( 4, "§2§fLoading..." );
 		plr.setScoreboard( scoreboard );
 
 		manager.getAsync( plr, StatsKey.ANIMAL_KILLS, (killsObj, exception) -> {

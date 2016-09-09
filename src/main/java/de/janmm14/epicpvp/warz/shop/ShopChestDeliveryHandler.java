@@ -125,6 +125,9 @@ public class ShopChestDeliveryHandler implements Listener {
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
+		if ( !( event.getView().getTopInventory().getHolder() instanceof ShopInventoryHolder ) ) {
+			return;
+		}
 		switch ( event.getAction() ) {
 			case HOTBAR_MOVE_AND_READD:
 			case COLLECT_TO_CURSOR:

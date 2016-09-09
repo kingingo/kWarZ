@@ -337,7 +337,7 @@ public class CommandFriends implements TabExecutor {
 				targetInfo.getRequestsGot().add( initiatorInfo.getPlayerId() );
 				targetInfo.setDirty();
 
-				msg( plr, TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_RECEIVE_FRIENDSHIP", targetProfile.getName() ) );
+				msg( plr, TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_SEND_FRIENDSHIP", targetProfile.getName() ) );
 
 				Player targetPlr = targetInfo.getPlayer();
 				if ( targetPlr != null ) {

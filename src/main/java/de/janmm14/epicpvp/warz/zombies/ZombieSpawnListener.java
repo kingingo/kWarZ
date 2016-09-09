@@ -2,7 +2,6 @@ package de.janmm14.epicpvp.warz.zombies;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
@@ -32,18 +31,23 @@ public class ZombieSpawnListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onEntitySpawn(CreatureSpawnEvent event) {
-		if ( event.getEntityType() == EntityType.ZOMBIE ) {
-			if ( event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM ) {
-				module.setupZombie( ( Zombie ) event.getEntity() );
-			}
-		} else {
-			switch ( event.getEntityType() ) {
-				case WITHER_SKULL:
-					break;
-				default:
-					event.setCancelled( true );
-					break;
-			}
+		switch ( event.getEntityType() ) {
+			case WITHER_SKULL:
+				break;
+			case ZOMBIE:
+				if ( event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM ) {
+					module.setupZombie( ( Zombie ) event.getEntity() );
+				}
+				break;
+			case SHEEP:
+				event.setCancelled( true );
+				Location loc = event.getLocation();
+				Zombie zombie = loc.getWorld().spawn( loc, Zombie.class );
+				module.setupZombie( zombie );
+				break;
+			default:
+				event.setCancelled( true );
+				break;
 		}
 	}
 }

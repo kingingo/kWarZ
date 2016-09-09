@@ -38,6 +38,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	public SpawnModule(WarZ plugin) {
 		super( plugin, module -> module );
 		plugin.getCommand( "spawn" ).setExecutor( new CommandSpawn( this ) );
+		plugin.getCommand( "back" ).setExecutor( new CommandBack( this ) );
 	}
 
 	@Override
