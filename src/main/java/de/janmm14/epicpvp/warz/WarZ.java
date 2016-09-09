@@ -5,10 +5,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.janmm14.epicpvp.warz.command.CommandWarZ;
+import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
+import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 import dev.wolveringer.bukkit.permissions.GroupTyp;
 import dev.wolveringer.client.connection.ClientType;
 import dev.wolveringer.client.debug.Debugger;
@@ -17,6 +21,12 @@ import eu.epicpvp.kcore.AACHack.AACHack;
 import eu.epicpvp.kcore.Addons.AddonSun;
 import eu.epicpvp.kcore.ChunkGenerator.CleanroomChunkGenerator;
 import eu.epicpvp.kcore.Command.CommandHandler;
+import eu.epicpvp.kcore.Kit.Perk;
+import eu.epicpvp.kcore.Kit.PerkManager;
+import eu.epicpvp.kcore.Kit.Perks.PerkHat;
+import eu.epicpvp.kcore.Kit.Perks.PerkKillZombie;
+import eu.epicpvp.kcore.Kit.Perks.PerkLessDamageCause;
+import eu.epicpvp.kcore.Kit.Perks.PerkNoWaterdamage;
 import eu.epicpvp.kcore.Listener.AntiCrashListener.AntiCrashListener;
 import eu.epicpvp.kcore.Listener.Chat.ChatListener;
 import eu.epicpvp.kcore.Listener.EnderChest.EnderChestListener;
@@ -28,10 +38,6 @@ import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilTime;
-import de.janmm14.epicpvp.warz.command.CommandWarZ;
-import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
-import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
-
 import lombok.Getter;
 
 @Getter
@@ -90,6 +96,13 @@ public class WarZ extends JavaPlugin {
 		UtilTime.setTimeManager(UtilServer.getPermissionManager());
 		new AACHack( "WARZ" );
 
+		new PerkManager(this, new Perk[]{
+				new PerkNoWaterdamage(),
+				new PerkLessDamageCause(50, DamageCause.FALL),
+				new PerkHat(),
+				new PerkKillZombie()
+		});
+		
 		new ChatListener( this, UtilServer.getPermissionManager() );
 		new AntiCrashListener( UtilServer.getClient(), UtilServer.getMysql() );
 		new AddonSun( this );
