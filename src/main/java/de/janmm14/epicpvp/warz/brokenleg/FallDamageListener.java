@@ -8,6 +8,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import eu.epicpvp.kcore.Translation.TranslationHandler;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class FallDamageListener implements Listener {
 
 			String notificationMessage = module.getNotificationMessage();
 			if ( !notificationMessage.trim().isEmpty() ) {
-				plr.sendMessage( notificationMessage );
+				plr.sendMessage( TranslationHandler.getText(plr,"PREFIX") + notificationMessage );
 			}
 		}
 	}
