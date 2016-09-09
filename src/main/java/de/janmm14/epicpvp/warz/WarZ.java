@@ -22,6 +22,7 @@ import eu.epicpvp.kcore.Listener.Chat.ChatListener;
 import eu.epicpvp.kcore.Listener.EnderChest.EnderChestListener;
 import eu.epicpvp.kcore.Permission.PermissionManager;
 import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
+import eu.epicpvp.kcore.TeleportManager.TeleportCheck;
 import eu.epicpvp.kcore.TeleportManager.TeleportManager;
 import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.Util.UtilPlayer;
@@ -92,7 +93,7 @@ public class WarZ extends JavaPlugin {
 		new AntiCrashListener( UtilServer.getClient(), UtilServer.getMysql() );
 		new AddonSun( this );
 		new EnderChestListener( getUserDataConfig() );
-		new TeleportManager( new CommandHandler( this ), UtilServer.getPermissionManager(), 10 );
+		new TeleportManager( new CommandHandler( this ), UtilServer.getPermissionManager(), TeleportCheck.NEAR);
 		//lets try to support reloades to some extend
 		for ( Player plr : Bukkit.getOnlinePlayers() ) {
 			StatsManagerRepository.getStatsManager( GameType.WARZ ).join( new PlayerJoinEvent( plr, "" ) );
