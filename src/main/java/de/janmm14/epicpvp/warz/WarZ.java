@@ -27,7 +27,7 @@ import eu.epicpvp.kcore.TeleportManager.TeleportManager;
 import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
-
+import eu.epicpvp.kcore.Util.UtilTime;
 import de.janmm14.epicpvp.warz.command.CommandWarZ;
 import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
@@ -87,6 +87,7 @@ public class WarZ extends JavaPlugin {
 
 		new PermissionManager( this, GroupTyp.WARZ );
 		StatsManagerRepository.getStatsManager( GameType.WARZ );
+		UtilTime.setTimeManager(UtilServer.getPermissionManager());
 		new AACHack( "WARZ" );
 
 		new ChatListener( this, UtilServer.getPermissionManager() );
