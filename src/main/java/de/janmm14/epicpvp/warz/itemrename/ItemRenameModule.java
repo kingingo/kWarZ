@@ -33,7 +33,7 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 	private static final String PATH_PREFIX = "itemrename.";
 	private static final String ITEM_PATH_PREFIX = PATH_PREFIX + "items";
 
-	private Multimap<String, String> itemNamesAndLores = HashMultimap.create();//have some default that will never occurr in the iterable
+	private final Multimap<String, String> itemNamesAndLores = HashMultimap.create();//have some default that will never occurr in the iterable
 	@SuppressWarnings("RedundantStringConstructorCall")
 	private static final String NOT_PRESENT_VALUE = new String( "notPresentValue" );
 
@@ -43,6 +43,7 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 
 	@Override
 	public void reloadConfig() {
+		itemNamesAndLores.clear();
 		FileConfiguration cfg = getConfig();
 
 		cfg.addDefault( ITEM_PATH_PREFIX + ".7:0", "&c&lBedrock" );
