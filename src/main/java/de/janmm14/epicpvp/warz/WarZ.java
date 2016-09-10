@@ -100,12 +100,12 @@ public class WarZ extends JavaPlugin {
 		UtilTime.setTimeManager(UtilServer.getPermissionManager());
 		new AACHack( "WARZ" );
 
-		new PerkManager(this, new Perk[]{
+		new PerkListener(new PerkManager(this, new Perk[]{
 				new PerkNoWaterdamage(),
 				new PerkLessDamageCause(50, DamageCause.FALL),
 				new PerkHat(),
 				new PerkKillZombie()
-		});
+		}));
 		UtilServer.getCommandHandler().register(CommandPerk.class, new CommandPerk(UtilServer.getPerkManager()));
 		
 		new ListenerCMD(this);
