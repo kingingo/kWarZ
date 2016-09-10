@@ -49,7 +49,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 	public void send(PacketListenerSendEvent ev){
 		if(ev.getPacket() instanceof PacketPlayOutMap){
 			WrapperPacketPlayOutMap wrapper = new WrapperPacketPlayOutMap( ((PacketPlayOutMap) ev.getPacket()) );
-			wrapper.setMapIcons(null);
+			wrapper.setMapIcons(new MapIcon[]{});
 			
 //			wrapper.setMapIcons(new MapIcon[]{new MapIcon(MapCursor.Type.BLUE_POINTER.getValue(),
 //					(byte) (Bukkit.getPlayer("kingingo").getLocation().getBlockX()/8),
