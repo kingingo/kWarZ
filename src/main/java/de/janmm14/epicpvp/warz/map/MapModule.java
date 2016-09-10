@@ -10,39 +10,46 @@ import org.bukkit.event.server.MapInitializeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
-
-import com.comphenix.packetwrapper.WrapperPlayServerMap;
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
-
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
+import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutMap;
+import eu.epicpvp.kcore.PacketAPI.packetlistener.NettyPacketListener;
+import eu.epicpvp.kcore.PacketAPI.packetlistener.event.PacketListenerSendEvent;
+import net.minecraft.server.v1_8_R3.PacketPlayOutMap;
 
 public class MapModule extends Module<MapModule> implements Listener {
 
 	public MapModule(WarZ plugin) {
 		super( plugin, module -> module );
-		ProtocolLibrary.getProtocolManager().addPacketListener( new PacketAdapter( new PacketAdapter.AdapterParameteters()
-			.plugin( plugin )
-			.serverSide()
-			.types( PacketType.Play.Server.MAP ) ) {
-			@Override
-			public void onPacketSending(PacketEvent event) {
-				if ( event.getPacketType() != PacketType.Play.Server.MAP ) {
-					return;
-				}
-				WrapperPlayServerMap packet = new WrapperPlayServerMap( event.getPacket() );
-				packet.setMapIcons( null );
-			}
-
-			@Override
-			public void onPacketReceiving(PacketEvent event) {
-			}
-		} );
+//		ProtocolLibrary.getProtocolManager().addPacketListener( new PacketAdapter( new PacketAdapter.AdapterParameteters()
+//			.plugin( plugin )
+//			.serverSide()
+//			.types( PacketType.Play.Server.MAP ) ) {
+//			@Override
+//			public void onPacketSending(PacketEvent event) {
+//				if ( event.getPacketType() != PacketType.Play.Server.MAP ) {
+//					return;
+//				}
+//				WrapperPlayServerMap packet = new WrapperPlayServerMap( event.getPacket() );
+//				packet.setMapIcons( null );
+//			}
+//
+//			@Override
+//			public void onPacketReceiving(PacketEvent event) {
+//			}
+//		} );
+		new NettyPacketListener(plugin);
 	}
 
+	@EventHandler
+	public void send(PacketListenerSendEvent ev){
+		if(ev.getPacket() instanceof WrapperPacketPlayOutMap){
+			WrapperPacketPlayOutMap wrapper = new WrapperPacketPlayOutMap( ((PacketPlayOutMap) ev.getPacket()) );
+			wrapper.setMapIcons(null);
+			ev.setPacket(wrapper.getPacket());
+		}
+	}
+	
 	@Override
 	public void reloadConfig() {
 	}
