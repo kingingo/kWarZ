@@ -67,7 +67,7 @@ public class NPC {
 		UtilEnt.setNoAI(npc, true);
 		UtilEnt.setSilent(npc, true);
 		dbase = new DisguisePlayer(npc, playername);
-		dbase.loadSkin(playername);
+		dbase.loadSkin(playername); //TODO Skin load fix
 		UtilServer.getDisguiseManager().disguise(dbase);
 		module.getNpcs().put(npc.getEntityId(), this);
 	}
