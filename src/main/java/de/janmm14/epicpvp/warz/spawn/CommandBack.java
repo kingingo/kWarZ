@@ -6,7 +6,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +24,7 @@ public class CommandBack implements CommandExecutor {
 			return true;
 		}
 		Player plr = ( Player ) sender;
-		if ( plr.getWorld().equals( module.getSpawn().getWorld() ) ) {
+		if ( !UtilWorldGuard.RegionFlag( plr, DefaultFlag.PVP ) ) {
 			sender.sendMessage( TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_BACK_WARZONE" ) );
 			return true;
 		}
