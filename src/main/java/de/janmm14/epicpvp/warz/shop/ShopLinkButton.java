@@ -11,7 +11,7 @@ public class ShopLinkButton extends ButtonCopy {
 		super( (player, type, object) -> {
 			},
 			(player, type, object) -> {
-				player.sendMessage(TranslationHandler.getPrefixAndText( player, "WARZ_DELIVERY_LINK", "https://shop.clashmc.eu/checkout/packages?action=add&package=" + buycraftId + "&ign=" + player.getName() ) );
+				player.sendMessage( TranslationHandler.getPrefixAndText( player, "WARZ_DELIVERY_LINK", "https://shop.clashmc.eu/checkout/packages?action=add&package=" + buycraftId + "&ign=" + player.getName() ) );
 			}, item );
 	}
 }

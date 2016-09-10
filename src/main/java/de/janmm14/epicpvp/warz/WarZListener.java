@@ -1,9 +1,7 @@
 package de.janmm14.epicpvp.warz;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBurnEvent;
@@ -13,14 +11,9 @@ import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.server.MapInitializeEvent;
 import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.map.MapRenderer;
-import org.bukkit.map.MapView;
 
 import dev.wolveringer.client.ClientWrapper;
 import dev.wolveringer.dataserver.gamestats.GameType;
