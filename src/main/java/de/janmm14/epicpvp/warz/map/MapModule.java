@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.server.MapInitializeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.map.MapCursor;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import de.janmm14.epicpvp.warz.Module;
@@ -15,6 +16,8 @@ import de.janmm14.epicpvp.warz.WarZ;
 import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutMap;
 import eu.epicpvp.kcore.PacketAPI.packetlistener.NettyPacketListener;
 import eu.epicpvp.kcore.PacketAPI.packetlistener.event.PacketListenerSendEvent;
+import eu.epicpvp.kcore.Util.UtilMath;
+import net.minecraft.server.v1_8_R3.MapIcon;
 import net.minecraft.server.v1_8_R3.PacketPlayOutMap;
 
 public class MapModule extends Module<MapModule> implements Listener {
@@ -40,12 +43,18 @@ public class MapModule extends Module<MapModule> implements Listener {
 //		} );
 		new NettyPacketListener(plugin);
 	}
+	
 
 	@EventHandler
 	public void send(PacketListenerSendEvent ev){
-		if(ev.getPacket() instanceof WrapperPacketPlayOutMap){
+		if(ev.getPacket() instanceof PacketPlayOutMap){
 			WrapperPacketPlayOutMap wrapper = new WrapperPacketPlayOutMap( ((PacketPlayOutMap) ev.getPacket()) );
 			wrapper.setMapIcons(null);
+			
+//			wrapper.setMapIcons(new MapIcon[]{new MapIcon(MapCursor.Type.BLUE_POINTER.getValue(),
+//					(byte) (Bukkit.getPlayer("kingingo").getLocation().getBlockX()/8),
+//					(byte) (Bukkit.getPlayer("kingingo").getLocation().getBlockZ()/8),
+//					(byte) (Bukkit.getPlayer("kingingo").getLocation().getYaw()))});
 			ev.setPacket(wrapper.getPacket());
 		}
 	}
