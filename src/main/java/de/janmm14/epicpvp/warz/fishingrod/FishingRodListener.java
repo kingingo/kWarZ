@@ -36,7 +36,7 @@ public class FishingRodListener implements Listener {
 	@EventHandler
 	public void onFishingRod(PlayerFishEvent event) {
 		if ( (event.getState() == PlayerFishEvent.State.IN_GROUND || event.getState() == PlayerFishEvent.State.FAILED_ATTEMPT) 
-				&& !UtilWorldGuard.RegionFlag(event.getPlayer(), DefaultFlag.PVP)) {
+				&& UtilWorldGuard.RegionFlag(event.getPlayer(), DefaultFlag.PVP)) {
 			Location location = event.getHook().getLocation();
 			boolean cancel = true;
 			for ( BlockFace face : BlockFace.values() ) {
