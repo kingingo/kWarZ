@@ -1,10 +1,8 @@
 package de.janmm14.epicpvp.warz.friends;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
@@ -72,6 +70,7 @@ public class CommandFriends implements TabExecutor {
 		builder.put( "zurückrufen", "revoke" );
 
 		builder.put( "anfragen", "request" );
+		builder.put( "anfragen", "add" );
 		builder.put( "hilfe", "help" );
 		subCommands = builder.build();
 
@@ -83,23 +82,23 @@ public class CommandFriends implements TabExecutor {
 		return true;
 	}
 
-	private static boolean sendHelp(@NonNull Player plr) {
+	private static boolean sendHelp(@NonNull Player plr, String alias) {
 		if ( TranslationHandler.getLanguage( plr ) == LanguageType.GERMAN ) {
-			msg( plr, "§a/friend list" );
-			msg( plr, "§a/friend status" );
-			msg( plr, "§a/friend beenden" );
-			msg( plr, "§a/friend annehmen" );
-			msg( plr, "§a/friend ablehnen" );
-			msg( plr, "§a/friend zurückrufen" );
-			msg( plr, "§a/friend anfragen" );
+			msg( plr, "§a/" + alias + " list" );
+			msg( plr, "§a/" + alias + " status" );
+			msg( plr, "§a/" + alias + " anfragen" );
+			msg( plr, "§a/" + alias + " annehmen" );
+			msg( plr, "§a/" + alias + " ablehnen" );
+			msg( plr, "§a/" + alias + " zurückrufen" );
+			msg( plr, "§a/" + alias + " beenden" );
 		} else {
-			msg( plr, "§a/friend list" );
-			msg( plr, "§a/friend status" );
-			msg( plr, "§a/friend remove" );
-			msg( plr, "§a/friend accept" );
-			msg( plr, "§a/friend deny" );
-			msg( plr, "§a/friend revoke" );
-			msg( plr, "§a/friend request" );
+			msg( plr, "§a/" + alias + " list" );
+			msg( plr, "§a/" + alias + " status" );
+			msg( plr, "§a/" + alias + " request" );
+			msg( plr, "§a/" + alias + " accept" );
+			msg( plr, "§a/" + alias + " deny" );
+			msg( plr, "§a/" + alias + " revoke" );
+			msg( plr, "§a/" + alias + " remove" );
 		}
 		return true;
 	}
@@ -111,7 +110,7 @@ public class CommandFriends implements TabExecutor {
 		}
 		Player plr = ( Player ) sender;
 		if ( args.length == 0 ) {
-			return sendHelp( plr );
+			return sendHelp( plr, alias );
 		}
 		String plrName = plr.getName();
 		UUID initiatorUuid = plr.getUniqueId();
@@ -166,7 +165,7 @@ public class CommandFriends implements TabExecutor {
 			}
 			case "hilfe":
 			case "help": {
-				return sendHelp( plr );
+				return sendHelp( plr, alias );
 			}
 			case "beenden":
 			case "entfernen":
@@ -317,6 +316,7 @@ public class CommandFriends implements TabExecutor {
 				}
 				return true;
 			}
+			case "add":
 			case "anfragen":
 			case "request": {
 				if ( args.length < 2 ) {
@@ -360,7 +360,7 @@ public class CommandFriends implements TabExecutor {
 			}
 			default: {
 				msg( plr, TranslationHandler.getText( plr, "WARZ_CMD_UNKNOWN", args[ 0 ] ) );
-				return sendHelp( plr );
+				return sendHelp( plr, alias );
 			}
 		}
 	}
@@ -428,15 +428,14 @@ public class CommandFriends implements TabExecutor {
 					String startedSubCmd = args[ 0 ].toLowerCase();
 
 					//look for base subcommand matches; if there is no match for a base subcommand, checking its aliases
-					Map<String, Collection<String>> entries = subCommands.asMap();
 					List<String> result = new ArrayList<>();
 
-					for ( Map.Entry<String, Collection<String>> entry : entries.entrySet() ) {
-						if ( entry.getKey().startsWith( startedSubCmd ) ) { // base subcommand match first
-							result.add( entry.getKey() );
+					for ( String baseSubCommand : subCommandKeys ) {
+						if ( baseSubCommand.startsWith( startedSubCmd ) ) { // base subcommand match first
+							result.add( baseSubCommand );
 						} else {
 							//find first matching alias
-							Optional<String> first = entry.getValue().stream()
+							Optional<String> first = subCommands.get( baseSubCommand ).stream()
 								.filter( subCmdAlias -> subCmdAlias.startsWith( startedSubCmd ) )
 								.findFirst();
 							if ( first.isPresent() ) {
