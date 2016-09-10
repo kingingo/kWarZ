@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBurnEvent;
@@ -68,11 +69,22 @@ public class WarZListener implements Listener {
 		ev.setDeathMessage( null );
 		UtilPlayer.RespawnNow( ev.getEntity(), plugin );
 	}
+	
+	long time=0;
+	@EventHandler
+	public void time(UpdateEvent ev){
+		if(ev.getType()==UpdateType.TICK){
+			if(time==24000)time=-1;
+			time+=1;
+			
+			for(Player player : Bukkit.getOnlinePlayers())player.setPlayerTime(time, false);
+		}
+	}
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
 		ev.setJoinMessage( null );
-		ev.getPlayer().setPlayerTime(6000, false);
+		ev.getPlayer().setPlayerTime(time, false);
 		UtilPlayer.setTab( ev.getPlayer(), "WarZ" );
 	}
 

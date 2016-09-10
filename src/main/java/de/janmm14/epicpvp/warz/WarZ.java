@@ -22,6 +22,7 @@ import eu.epicpvp.kcore.Addons.AddonNight;
 import eu.epicpvp.kcore.Addons.AddonSun;
 import eu.epicpvp.kcore.ChunkGenerator.CleanroomChunkGenerator;
 import eu.epicpvp.kcore.Command.CommandHandler;
+import eu.epicpvp.kcore.Disguise.DisguiseManager;
 import eu.epicpvp.kcore.Kit.Perk;
 import eu.epicpvp.kcore.Kit.PerkManager;
 import eu.epicpvp.kcore.Kit.Command.CommandPerk;
@@ -107,7 +108,8 @@ public class WarZ extends JavaPlugin {
 				new PerkKillZombie()
 		}));
 		UtilServer.getCommandHandler().register(CommandPerk.class, new CommandPerk(UtilServer.getPerkManager()));
-		
+
+		new DisguiseManager(this);
 		new ListenerCMD(this);
 		new ChatListener( this, UtilServer.getPermissionManager() );
 		new AntiCrashListener( UtilServer.getClient(), UtilServer.getMysql() );

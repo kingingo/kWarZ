@@ -31,13 +31,12 @@ public class ZombieSpawnListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onEntitySpawn(CreatureSpawnEvent event) {
-		switch ( event.getEntityType() ) {
+		if ( event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM ) {
+			switch ( event.getEntityType() ) {
 			case WITHER_SKULL:
 				break;
 			case ZOMBIE:
-				if ( event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM ) {
-					module.setupZombie( ( Zombie ) event.getEntity() );
-				}
+				module.setupZombie( ( Zombie ) event.getEntity() );
 				break;
 			case SHEEP:
 				event.setCancelled( true );
@@ -48,6 +47,7 @@ public class ZombieSpawnListener implements Listener {
 			default:
 				event.setCancelled( true );
 				break;
+			}
 		}
 	}
 }
