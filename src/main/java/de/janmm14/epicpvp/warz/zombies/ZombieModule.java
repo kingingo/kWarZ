@@ -32,6 +32,7 @@ public class ZombieModule extends Module<ZombieModule> {
 	public void setupZombie(Zombie zombie) {
 		zombie.setFireTicks( 0 );
 		zombie.setBaby( false );
+		zombie.setHealth(10);
 		zombie.setVillager( false );
 		if ( RandomUtil.getRandomInt( 1, 15 ) == 1 ) {
 			zombie.addPotionEffect( new PotionEffect( PotionEffectType.SPEED, RandomUtil.getRandomInt( 20 * 20, 60 * 20 ), 0, true ) );

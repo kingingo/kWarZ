@@ -45,22 +45,6 @@ public class WarZListener implements Listener {
 	public void loadWorld(WorldLoadEvent ev) {
 		ev.getWorld().setAutoSave( false );
 	}
-
-	@EventHandler
-	public void Night(UpdateEvent ev) {
-		if (ev.getType() != UpdateType.FASTEST)
-			return;
-
-		for (World world : Bukkit.getWorlds()){
-			if (world.isThundering()) {
-				world.setStorm(false);
-			}
-			if (world.getTime() >= 0 && world.getTime() <= 13000) {
-				world.setStorm(false);
-				world.setTime(13000);
-			}
-		}
-	}
 	
 	@EventHandler
 	public void onBlockBurn(BlockBurnEvent ev) {
@@ -88,7 +72,7 @@ public class WarZListener implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
 		ev.setJoinMessage( null );
-		ev.getPlayer().setPlayerTime(6000, true);
+		ev.getPlayer().setPlayerTime(6000, false);
 		UtilPlayer.setTab( ev.getPlayer(), "WarZ" );
 	}
 
