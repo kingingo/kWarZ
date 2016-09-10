@@ -30,6 +30,7 @@ import eu.epicpvp.kcore.Kit.Perks.PerkLessDamageCause;
 import eu.epicpvp.kcore.Kit.Perks.PerkNoWaterdamage;
 import eu.epicpvp.kcore.Listener.AntiCrashListener.AntiCrashListener;
 import eu.epicpvp.kcore.Listener.Chat.ChatListener;
+import eu.epicpvp.kcore.Listener.Command.ListenerCMD;
 import eu.epicpvp.kcore.Listener.EnderChest.EnderChestListener;
 import eu.epicpvp.kcore.Permission.PermissionManager;
 import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
@@ -105,6 +106,7 @@ public class WarZ extends JavaPlugin {
 		});
 		UtilServer.getCommandHandler().register(CommandPerk.class, new CommandPerk(UtilServer.getPerkManager()));
 		
+		new ListenerCMD(this);
 		new ChatListener( this, UtilServer.getPermissionManager() );
 		new AntiCrashListener( UtilServer.getClient(), UtilServer.getMysql() );
 		new AddonSun( this );
