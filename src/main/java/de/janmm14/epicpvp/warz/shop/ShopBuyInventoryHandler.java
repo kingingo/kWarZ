@@ -33,16 +33,16 @@ public class ShopBuyInventoryHandler {
 		addItem( 5 - 1, 0, Material.NETHER_STAR, "§cWar§lZ§7 - §aShop" );
 		UtilItem.addEnchantmentGlow( inventory.getItem( 5 - 1 ) );
 
-		addItem( 9 * 2 + 2 - 1, 1, Material.DIAMOND_AXE, "§eBarret 50cal §7[§bEinzelitem§7]" );
-		addItem( 9 * 2 + 3 - 1, 1, Material.DIAMOND_CHESTPLATE, "§eDiamantrüstung §7[§bEinzelitems§7]" );
-		addItem( 9 * 2 + 4 - 1, 1, Material.IRON_INGOT, "§eFight-Pack §7[§bPaket§7]", "§7> §eMit diesem Paket erhälst du ein komplettes \"Fight\"-Kit,", "  bestehend aus einer §6Diamantrüstung§e, einer §6Barrett 50cal", "  und einer §6Ak 47§e inkl. dazugehöriger §6Munition§e und §6Essen§e." );
-		addItem( 9 * 2 + 5 - 1, 1, Material.GOLD_INGOT, "§eWeapon-Pack §7[§bPaket§7]", "§7> §eMit diesem Paket erhälst du §6jede Tier-IV-Waffe§e in WarZ.", "  §7[§eAk47§7, §eDesert Eagle§7, §eBarret 50cal§7, §eSpas-12§7]" );
-		addItem( 9 * 2 + 6 - 1, 1, Material.IRON_BOOTS, "§eHalf-Fall-Damage §7[§bPerk§7]", "§7> §eDein Fallschaden §6halbiert§e sich automatisch." );
-		addItem( 9 * 3 + 2 - 1, 1, Material.SKULL_ITEM, 3, "§eHead-Dropper §7[§bPerk§7]", "§7> §eDer Kopfdeiner Gegner dropt, sobald du sie tötest." );
-		addItem( 9 * 3 + 3 - 1, 1, Material.POTION, "§eNo-Water-Damage §7[§bPerk§7]", "§7> §eDu erhälst im Wasser §6keinen §eSchaden." );
-		addItem( 9 * 3 + 4 - 1, 1, Material.DIAMOND_SWORD, "§eOne-Hit §7[§bPerk§7]", "§7> §eDu kannst jeden Zombie mit §6einem §eSchlag töten.", "  Mit jedem Schwert." );
-		addItem( 9 * 3 + 4 - 1, 1, Material.ANVIL, "§e/Repair §7[§bRechte§7]" ); //TODO maybe remove?
-		addItem( 9 * 3 + 4 - 1, 1, Material.COMPASS, "§e/Near §7[§bRechte§7]" );
+		addItem( 9 * 2 + 2 - 1, 2034877, Material.DIAMOND_AXE, "§eBarret 50cal §7[§bEinzelitem§7]" );
+		addItem( 9 * 2 + 3 - 1, 2034886, Material.DIAMOND_CHESTPLATE, "§eDiamantrüstung §7[§bEinzelitems§7]" );
+		addItem( 9 * 2 + 4 - 1, 2034953, Material.IRON_INGOT, "§eFight-Pack §7[§bPaket§7]", "§7> §eMit diesem Paket erhälst du ein komplettes \"Fight\"-Kit,", "  §ebestehend aus einer §6Diamantrüstung§e, einer §6Barrett 50cal", "  §eund einer §6Ak 47§e inkl. dazugehöriger §6Munition§e und §6Essen§e." );
+		addItem( 9 * 2 + 5 - 1, 2034964, Material.GOLD_INGOT, "§eWeapon-Pack §7[§bPaket§7]", "§7> §eMit diesem Paket erhälst du §6jede Tier-IV-Waffe§e in WarZ.", "  §7[§eAk47§7, §eDesert Eagle§7, §eBarret 50cal§7, §eSpas-12§7]" );
+		addItem( 9 * 2 + 6 - 1, 2034891, Material.IRON_BOOTS, "§eHalf-Fall-Damage §7[§bPerk§7]", "§7> §eDein Fallschaden §6halbiert§e sich automatisch." );
+		addItem( 9 * 3 + 2 - 1, 2034899, Material.SKULL_ITEM, 3, "§eHead-Dropper §7[§bPerk§7]", "§7> §eDer Kopfdeiner Gegner dropt, sobald du sie tötest." );
+		addItem( 9 * 3 + 3 - 1, 2034901, Material.POTION, "§eNo-Water-Damage §7[§bPerk§7]", "§7> §eDu erhälst im Wasser §6keinen §eSchaden." );
+		addItem( 9 * 3 + 4 - 1, 2034912, Material.DIAMOND_SWORD, "§eOne-Hit §7[§bPerk§7]", "§7> §eDu kannst jeden Zombie mit §6einem §eSchlag töten.", "  Mit jedem Schwert." );
+		addItem( 9 * 3 + 4 - 1, 2034925, Material.ANVIL, "§e/Repair §7[§bRechte§7]" ); //TODO maybe remove?
+		addItem( 9 * 3 + 4 - 1, 2034889, Material.COMPASS, "§e/Near §7[§bRechte§7]" );
 		UtilInv.getBase().addPage( inventory );
 	}
 
@@ -56,6 +56,7 @@ public class ShopBuyInventoryHandler {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName( displayName );
 		meta.setLore( Arrays.asList( lore ) );
+		item.setItemMeta(meta);
 		if ( buycraftId > 0 ) {
 			inventory.addButton( pos, new ShopLinkButton( item, buycraftId ) );
 		} else {
