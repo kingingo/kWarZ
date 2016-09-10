@@ -15,11 +15,11 @@ import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 
 public class FriendHurtListener implements Listener {
 
-	private final FriendInfoManager manager;
 	private final UserDataConverter userDataConverter;
+	private final FriendModule module;
 
 	public FriendHurtListener(FriendModule module) {
-		this.manager = module.getFriendInfoManager();
+		this.module = module;
 		this.userDataConverter = module.getPlugin().getUserDataConverter();
 	}
 
@@ -31,6 +31,7 @@ public class FriendHurtListener implements Listener {
 		if ( WarZ.DEBUG ) {
 			System.out.println( "friend on dmg " + event.getEntity() );
 		}
+		FriendInfoManager manager = module.getFriendInfoManager();
 		FriendInfo victimInfo = manager.get( event.getEntity().getUniqueId() );
 		UserDataConverter.Profile damagerProfile = userDataConverter.getProfile( event.getDamager().getUniqueId() );
 		if ( PlayerFriendRelation.areFriends( manager, victimInfo, damagerProfile.getPlayerId() ) ) {
@@ -44,6 +45,7 @@ public class FriendHurtListener implements Listener {
 			UUID victimUuid = event.getVictim().getUniqueId();
 			UUID damagerUuid = event.getDamager().getUniqueId();
 			UserDataConverter.Profile damagerProfile = userDataConverter.getProfile( damagerUuid );
+			FriendInfoManager manager = module.getFriendInfoManager();
 			if ( PlayerFriendRelation.areFriends( manager, manager.get( victimUuid ), damagerProfile.getPlayerId() ) ) {
 				event.setCancelled( true );
 			}
