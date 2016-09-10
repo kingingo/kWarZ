@@ -17,7 +17,7 @@ public class ScoreboardAdapter {
 
 	public void setEntryKeyWithValue(int value, String newKey) {
 		String oldKey = entryKeys.put( value, newKey );
-		if ( oldKey != null ) {
+		if (oldKey != null) {
 			objective.getScoreboard().resetScores( oldKey );
 		}
 		objective.getScore( newKey ).setScore( value );

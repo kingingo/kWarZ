@@ -10,17 +10,21 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.janmm14.epicpvp.warz.command.CommandWarZ;
+import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
+import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 import dev.wolveringer.bukkit.permissions.GroupTyp;
 import dev.wolveringer.client.connection.ClientType;
 import dev.wolveringer.client.debug.Debugger;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.AACHack.AACHack;
+import eu.epicpvp.kcore.Addons.AddonNight;
 import eu.epicpvp.kcore.Addons.AddonSun;
 import eu.epicpvp.kcore.ChunkGenerator.CleanroomChunkGenerator;
 import eu.epicpvp.kcore.Command.CommandHandler;
-import eu.epicpvp.kcore.Kit.Command.CommandPerk;
 import eu.epicpvp.kcore.Kit.Perk;
 import eu.epicpvp.kcore.Kit.PerkManager;
+import eu.epicpvp.kcore.Kit.Command.CommandPerk;
 import eu.epicpvp.kcore.Kit.Perks.PerkHat;
 import eu.epicpvp.kcore.Kit.Perks.PerkKillZombie;
 import eu.epicpvp.kcore.Kit.Perks.PerkLessDamageCause;
@@ -38,11 +42,6 @@ import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilTime;
-
-import de.janmm14.epicpvp.warz.command.CommandWarZ;
-import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
-import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
-
 import lombok.Getter;
 
 @Getter
@@ -98,23 +97,22 @@ public class WarZ extends JavaPlugin {
 
 		new PermissionManager( this, GroupTyp.WARZ );
 		StatsManagerRepository.getStatsManager( GameType.WARZ );
-		UtilTime.setTimeManager( UtilServer.getPermissionManager() );
+		UtilTime.setTimeManager(UtilServer.getPermissionManager());
 		new AACHack( "WARZ" );
 
-		new PerkManager( this, new Perk[]{
-			new PerkNoWaterdamage(),
-			new PerkLessDamageCause( 50, DamageCause.FALL ),
-			new PerkHat(),
-			new PerkKillZombie()
-		} );
-		UtilServer.getCommandHandler().register( CommandPerk.class, new CommandPerk( UtilServer.getPerkManager() ) );
-
-		new ListenerCMD( this );
+		new PerkManager(this, new Perk[]{
+				new PerkNoWaterdamage(),
+				new PerkLessDamageCause(50, DamageCause.FALL),
+				new PerkHat(),
+				new PerkKillZombie()
+		});
+		UtilServer.getCommandHandler().register(CommandPerk.class, new CommandPerk(UtilServer.getPerkManager()));
+		
+		new ListenerCMD(this);
 		new ChatListener( this, UtilServer.getPermissionManager() );
 		new AntiCrashListener( UtilServer.getClient(), UtilServer.getMysql() );
-		new AddonSun( this );
 		new EnderChestListener( getUserDataConfig() );
-		new TeleportManager( new CommandHandler( this ), UtilServer.getPermissionManager(), TeleportCheck.NEAR );
+		new TeleportManager( new CommandHandler( this ), UtilServer.getPermissionManager(), TeleportCheck.NEAR);
 		//lets try to support reloades to some extend
 		for ( Player plr : Bukkit.getOnlinePlayers() ) {
 			StatsManagerRepository.getStatsManager( GameType.WARZ ).join( new PlayerJoinEvent( plr, "" ) );

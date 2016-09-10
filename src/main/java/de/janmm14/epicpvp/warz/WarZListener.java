@@ -1,6 +1,8 @@
 package de.janmm14.epicpvp.warz;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,15 +17,15 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
+import de.janmm14.epicpvp.warz.util.MiscUtil;
 import dev.wolveringer.client.ClientWrapper;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
 import eu.epicpvp.kcore.Permission.PermissionType;
+import eu.epicpvp.kcore.Update.UpdateType;
+import eu.epicpvp.kcore.Update.Event.UpdateEvent;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
-
-import de.janmm14.epicpvp.warz.util.MiscUtil;
-
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -44,6 +46,22 @@ public class WarZListener implements Listener {
 		ev.getWorld().setAutoSave( false );
 	}
 
+	@EventHandler
+	public void Night(UpdateEvent ev) {
+		if (ev.getType() != UpdateType.FASTEST)
+			return;
+
+		for (World world : Bukkit.getWorlds()){
+			if (world.isThundering()) {
+				world.setStorm(false);
+			}
+			if (world.getTime() >= 0 && world.getTime() <= 13000) {
+				world.setStorm(false);
+				world.setTime(13000);
+			}
+		}
+	}
+	
 	@EventHandler
 	public void onBlockBurn(BlockBurnEvent ev) {
 		ev.setCancelled( true );
@@ -70,6 +88,7 @@ public class WarZListener implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
 		ev.setJoinMessage( null );
+		ev.getPlayer().setPlayerTime(6000, true);
 		UtilPlayer.setTab( ev.getPlayer(), "WarZ" );
 	}
 

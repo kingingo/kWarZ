@@ -17,8 +17,9 @@ import org.bukkit.util.Vector;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import eu.epicpvp.kcore.Util.UtilWorldGuard;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -34,8 +35,8 @@ public class FishingRodListener implements Listener {
 
 	@EventHandler
 	public void onFishingRod(PlayerFishEvent event) {
-		if ( ( event.getState() == PlayerFishEvent.State.IN_GROUND || event.getState() == PlayerFishEvent.State.FAILED_ATTEMPT )
-			&& UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ) {
+		if ( (event.getState() == PlayerFishEvent.State.IN_GROUND || event.getState() == PlayerFishEvent.State.FAILED_ATTEMPT) 
+				&& UtilWorldGuard.RegionFlag(event.getPlayer(), DefaultFlag.PVP)) {
 			Location location = event.getHook().getLocation();
 			boolean cancel = true;
 			for ( BlockFace face : BlockFace.values() ) {
