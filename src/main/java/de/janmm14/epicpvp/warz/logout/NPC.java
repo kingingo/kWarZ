@@ -24,7 +24,7 @@ public class NPC {
 	private LivingEntity npc;
 	@Getter
 	private int entityId;
-	private DisguiseBase dbase;
+	private DisguisePlayer dbase;
 	@Getter
 	private ItemStack[] amor;
 	@Getter
@@ -61,11 +61,13 @@ public class NPC {
 	public void setup(LogoutModule module){
 		time=System.currentTimeMillis();
 		LivingEntity npc = (LivingEntity) location.getWorld().spawnEntity(location, EntityType.SKELETON);
+		npc.getEquipment().clear();
+		npc.getEquipment().setItemInHand(null);
 		entityId=npc.getEntityId();
 		UtilEnt.setNoAI(npc, true);
 		UtilEnt.setSilent(npc, true);
-		dbase = DisguiseType.newDisguise(npc, DisguiseType.PLAYER, new Object[] { getPlayername() });
-		((DisguisePlayer) dbase).loadSkin(playername);
+		dbase = new DisguisePlayer(npc, playername);
+		dbase.loadSkin(playername);
 		UtilServer.getDisguiseManager().disguise(dbase);
 		module.getNpcs().put(npc.getEntityId(), this);
 	}

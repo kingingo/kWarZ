@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,6 +16,7 @@ import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import eu.epicpvp.kcore.Update.UpdateType;
 import eu.epicpvp.kcore.Update.Event.UpdateEvent;
+import eu.epicpvp.kcore.UserDataConfig.Events.UserDataConfigLoadEvent;
 import eu.epicpvp.kcore.Util.TimeSpan;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
@@ -36,15 +38,24 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 			NPC npc = this.npcs.get(ev.getEntity().getEntityId());
 			npc.drop();
 			
-			Player player = UtilPlayer.loadPlayer(npc.getPlayername());
-			player.getInventory().clear();
-			player.getInventory().setArmorContents(new ItemStack[]{});
-			
 			kConfig config = UtilServer.getUserData().loadConfig(npc.getPlayerId());
 			config.set( "lastMapPos", null );
+			config.set( "Death", true );
 			config.save();
 			
 			npcs.remove(ev.getEntity().getEntityId());
+		}
+	}
+	
+	@EventHandler
+	public void load(UserDataConfigLoadEvent ev){
+		if(ev.getConfig().contains("Death")){
+			if(ev.getConfig().getBoolean("Death")){
+				ev.getPlayer().getInventory().clear();
+				ev.getPlayer().getInventory().setContents(new ItemStack[]{});
+				ev.getConfig().set("Death", null);
+				ev.getConfig().save();
+			}
 		}
 	}
 	
@@ -62,7 +73,7 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 			for(int i = 0; i<npcs.size(); i++){
 				npc=(NPC)npcs.values().toArray()[i];
 				
-				if((System.currentTimeMillis() - npc.getTime()) > TimeSpan.SECOND*25){
+				if(UtilPlayer.isOnline(npc.getPlayername()) || (System.currentTimeMillis() - npc.getTime()) > TimeSpan.SECOND*25){
 					npc.remove();
 					npcs.remove(npc.getEntityId());
 				}
