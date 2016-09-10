@@ -51,6 +51,7 @@
                             <include>org.reflections:reflections</include>
                             <include>org.javassist:javassist</include>
                             <include>com.lmax:disruptor</include>
+                            <include>com.comphenix.packetwrapper:PacketWrapper</include>
                         </includes>
                     </artifactSet>
                     <relocations>

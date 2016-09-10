@@ -11,54 +11,44 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapCursor;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
+
+import com.comphenix.packetwrapper.WrapperPlayServerMap;
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
+import net.minecraft.server.v1_8_R3.MapIcon;
+
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
-import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutMap;
-import eu.epicpvp.kcore.PacketAPI.packetlistener.NettyPacketListener;
-import eu.epicpvp.kcore.PacketAPI.packetlistener.event.PacketListenerSendEvent;
-import eu.epicpvp.kcore.Util.UtilMath;
-import net.minecraft.server.v1_8_R3.MapIcon;
-import net.minecraft.server.v1_8_R3.PacketPlayOutMap;
 
 public class MapModule extends Module<MapModule> implements Listener {
 
 	public MapModule(WarZ plugin) {
 		super( plugin, module -> module );
-//		ProtocolLibrary.getProtocolManager().addPacketListener( new PacketAdapter( new PacketAdapter.AdapterParameteters()
-//			.plugin( plugin )
-//			.serverSide()
-//			.types( PacketType.Play.Server.MAP ) ) {
-//			@Override
-//			public void onPacketSending(PacketEvent event) {
-//				if ( event.getPacketType() != PacketType.Play.Server.MAP ) {
-//					return;
-//				}
-//				WrapperPlayServerMap packet = new WrapperPlayServerMap( event.getPacket() );
-//				packet.setMapIcons( null );
-//			}
-//
-//			@Override
-//			public void onPacketReceiving(PacketEvent event) {
-//			}
-//		} );
-		new NettyPacketListener(plugin);
-	}
-	
+		ProtocolLibrary.getProtocolManager().addPacketListener( new PacketAdapter( new PacketAdapter.AdapterParameteters()
+			.plugin( plugin )
+			.serverSide()
+			.types( PacketType.Play.Server.MAP ) ) {
+			@Override
+			public void onPacketSending(PacketEvent event) {
+				if ( event.getPacketType() != PacketType.Play.Server.MAP ) {
+					return;
+				}
+				WrapperPlayServerMap packet = new WrapperPlayServerMap( event.getPacket() );
+				packet.setMapIcons( new MapIcon[]{ new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
+					( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
+					( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
+					( byte ) ( event.getPlayer().getLocation().getYaw() ) ) } );
+			}
 
-	@EventHandler
-	public void send(PacketListenerSendEvent ev){
-		if(ev.getPacket() instanceof PacketPlayOutMap){
-			WrapperPacketPlayOutMap wrapper = new WrapperPacketPlayOutMap( ((PacketPlayOutMap) ev.getPacket()) );
-			wrapper.setMapIcons(new MapIcon[]{});
-			
-//			wrapper.setMapIcons(new MapIcon[]{new MapIcon(MapCursor.Type.BLUE_POINTER.getValue(),
-//					(byte) (Bukkit.getPlayer("kingingo").getLocation().getBlockX()/8),
-//					(byte) (Bukkit.getPlayer("kingingo").getLocation().getBlockZ()/8),
-//					(byte) (Bukkit.getPlayer("kingingo").getLocation().getYaw()))});
-			ev.setPacket(wrapper.getPacket());
-		}
+			@Override
+			public void onPacketReceiving(PacketEvent event) {
+				//has to be here due to a protocollib error
+			}
+		} );
 	}
-	
+
 	@Override
 	public void reloadConfig() {
 	}
@@ -79,7 +69,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 	}
 
 	@EventHandler
-	public void rendermap(MapInitializeEvent ev) {
+	public void onMapInitialize(MapInitializeEvent ev) {
 		MapView view = ev.getMap();
 
 		view.setCenterX( 0 );
