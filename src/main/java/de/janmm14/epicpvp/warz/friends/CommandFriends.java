@@ -176,8 +176,7 @@ public class CommandFriends implements TabExecutor {
 			case "zurückrufen":
 			case "revoke": {
 				if ( args.length < 2 ) {
-					//TODO send help
-					return msg( plr, "halp" );
+					return msg( plr, "§a/friend "+args[0]+" [Player]" );
 				}
 				if ( args[ 1 ].equalsIgnoreCase( plrName )
 					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
@@ -276,8 +275,7 @@ public class CommandFriends implements TabExecutor {
 			case "accept":
 			case "annehmen": {
 				if ( args.length < 2 ) {
-					//TODO send help
-					return msg( plr, "halp" );
+					return msg( plr, "§a/friend "+args[0]+" [Player]" );
 				}
 				if ( args[ 1 ].equalsIgnoreCase( plrName )
 					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
@@ -321,8 +319,7 @@ public class CommandFriends implements TabExecutor {
 			case "anfragen":
 			case "request": {
 				if ( args.length < 2 ) {
-					//TODO send help
-					return msg( plr, "halp" );
+					return msg( plr, "§a/friend "+args[0]+" [Player]");
 				}
 				if ( args[ 1 ].equalsIgnoreCase( plrName )
 					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
