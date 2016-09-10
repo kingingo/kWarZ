@@ -25,7 +25,7 @@ public class ResourcePackModule extends Module<ResourcePackModule> {
 	private int resourcePackDelay;
 
 	public ResourcePackModule(WarZ plugin) {
-		super( plugin, ResourcePackListener::new );
+		super( plugin/*, ResourcePackListener::new*/ );
 		plugin.getCommand( "resourcepack" ).setExecutor( new CommandResourcePack( this ) );
 	}
 
