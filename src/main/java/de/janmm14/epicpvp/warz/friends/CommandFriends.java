@@ -31,7 +31,7 @@ import gnu.trove.set.TIntSet;
 import org.apache.commons.lang.StringUtils;
 
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
-
+import dev.wolveringer.dataserver.player.LanguageType;
 import lombok.NonNull;
 
 import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.stream;
@@ -83,8 +83,23 @@ public class CommandFriends implements TabExecutor {
 	}
 
 	private static boolean sendHelp(@NonNull Player plr) {
-		//TODO send help message
-		msg( plr, "halp" );
+		if(TranslationHandler.getLanguage(plr)==LanguageType.GERMAN){
+			msg(plr,"§a/friend list");
+			msg(plr,"§a/friend status");
+			msg(plr,"§a/friend beenden");
+			msg(plr,"§a/friend annehmen");
+			msg(plr,"§a/friend ablehnen");
+			msg(plr,"§a/friend zurückrufen");
+			msg(plr,"§a/friend anfragen");
+		}else{
+			msg(plr,"§a/friend list");
+			msg(plr,"§a/friend status");
+			msg(plr,"§a/friend remove");
+			msg(plr,"§a/friend accept");
+			msg(plr,"§a/friend deny");
+			msg(plr,"§a/friend revoke");
+			msg(plr,"§a/friend request");
+		}
 		return true;
 	}
 
