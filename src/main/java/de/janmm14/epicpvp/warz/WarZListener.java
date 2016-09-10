@@ -3,6 +3,7 @@ package de.janmm14.epicpvp.warz;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBurnEvent;
@@ -12,10 +13,12 @@ import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.MapInitializeEvent;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
@@ -46,6 +49,21 @@ public class WarZListener implements Listener {
 	@EventHandler
 	public void loadWorld(WorldLoadEvent ev) {
 		ev.getWorld().setAutoSave( false );
+	}
+
+	@EventHandler
+	public void onInteract(PlayerInteractEvent event) {
+		Player plr = event.getPlayer();
+		ItemStack item = plr.getItemInHand();
+		if ( item != null && item.getType() == Material.EMPTY_MAP ) {
+			ItemStack map = new ItemStack( Material.MAP );
+			map.setDurability( ( short ) 25 ); //map id
+			plr.setItemInHand( map );
+			event.setCancelled( true );
+			if ( WarZ.DEBUG ) {
+				System.out.println( "[DEBUG] PlayerInteractEvent: swap empty map with map 25 " );
+			}
+		}
 	}
 
 	@EventHandler
