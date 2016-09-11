@@ -12,6 +12,7 @@ import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.random.RandomThingHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomUtil;
+import eu.epicpvp.kcore.Util.UtilPlayer;
 
 public class ZombieModule extends Module<ZombieModule> {
 
@@ -35,7 +36,7 @@ public class ZombieModule extends Module<ZombieModule> {
 		zombie.setHealth(10);
 		zombie.setVillager( false );
 		if ( RandomUtil.getRandomInt( 1, 15 ) == 1 ) {
-			zombie.addPotionEffect( new PotionEffect( PotionEffectType.SPEED, RandomUtil.getRandomInt( 20 * 20, 60 * 20 ), 0, true ) );
+			zombie.addPotionEffect( new PotionEffect( PotionEffectType.SPEED, RandomUtil.getRandomInt( 20 * 20, 60 * 20 ), 1, true ) );
 		}
 		//TODO setup zombie further - behaviour
 	}
