@@ -140,10 +140,11 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 						ev.getPlayer().getInventory().setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
 						ev.getPlayer().getInventory().setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
 						ev.getPlayer().getInventory().setBoots(new ItemStack(Material.LEATHER_BOOTS));
-						ev.getPlayer().setItemInHand(Zone.crackshotRename(new ItemStack(Material.STONE_SPADE)));
+						ev.getPlayer().getInventory().addItem(Zone.crackshotRename(new ItemStack(Material.STONE_SPADE)));
 						ev.getPlayer().getInventory().addItem(new ItemStack(Material.WOOD_SWORD));
 						ev.getPlayer().getInventory().addItem(new ItemStack(Material.EMPTY_MAP));
 						ev.getPlayer().getInventory().addItem(new ItemStack(351,16,(byte)13));
+						ev.getPlayer().getInventory().addItem(new ItemStack(351,16,(byte)6));
 						ev.getPlayer().getInventory().addItem(new ItemStack(351,16,(byte)3));
 						
 						this.getModuleManager().getModule( ItemRenameModule.class ).renameItemStackArray(ev.getPlayer().getInventory().getContents());
