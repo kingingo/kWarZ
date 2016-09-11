@@ -24,6 +24,7 @@ import eu.epicpvp.kcore.kConfig.kConfig;
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
+import de.janmm14.epicpvp.warz.thirst.ThirstModule;
 import de.janmm14.epicpvp.warz.util.ConfigLocationAdapter;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
 import lombok.Getter;
@@ -146,8 +147,12 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 						ev.getPlayer().getInventory().addItem(new ItemStack(351,16,(byte)13));
 						ev.getPlayer().getInventory().addItem(new ItemStack(351,16,(byte)6));
 						ev.getPlayer().getInventory().addItem(new ItemStack(351,16,(byte)3));
+						ev.getPlayer().setExp(1);
+						ev.getPlayer().setFoodLevel( 20 );
+						ev.getPlayer().setSaturation( Float.MAX_VALUE );
 						
 						this.getModuleManager().getModule( ItemRenameModule.class ).renameItemStackArray(ev.getPlayer().getInventory().getContents());
+						
 					}
 				}
 			}
