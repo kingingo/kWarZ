@@ -23,6 +23,7 @@ import org.bukkit.entity.Player;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import dev.wolveringer.dataserver.player.LanguageType;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
 import gnu.trove.TIntCollection;
 import gnu.trove.list.TIntList;
@@ -31,7 +32,7 @@ import gnu.trove.set.TIntSet;
 import org.apache.commons.lang.StringUtils;
 
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
-import dev.wolveringer.dataserver.player.LanguageType;
+
 import lombok.NonNull;
 
 import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.stream;
@@ -194,19 +195,19 @@ public class CommandFriends implements TabExecutor {
 
 					Player targetPlr_ = targetInfo.getPlayer();
 					if ( targetPlr_ != null ) {
-						msg( targetPlr_, module.getPrefix() + TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, "30" ) );
+						msg( targetPlr_, module.getPrefix() + TranslationHandler.getText( targetPlr_, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, "30" ) );
 					}
 
 					module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
 						Player targetPlr = targetInfo.getPlayer();
 						if ( targetPlr != null ) {
-							msg( targetPlr, module.getPrefix() + TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, "20" ) );
+							msg( targetPlr, module.getPrefix() + TranslationHandler.getText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, "20" ) );
 						}
 					}, ( 30 - 20 ) * 20 );
 					module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
 						Player targetPlr = targetInfo.getPlayer();
 						if ( targetPlr != null ) {
-							msg( targetPlr, module.getPrefix() + TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, "10" ) );
+							msg( targetPlr, module.getPrefix() + TranslationHandler.getText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, "10" ) );
 						}
 					}, ( 30 - 10 ) * 20 );
 
@@ -215,7 +216,7 @@ public class CommandFriends implements TabExecutor {
 						module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
 							Player targetPlr = targetInfo.getPlayer();
 							if ( targetPlr != null ) {
-								msg( targetPlr, module.getPrefix() + TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, iCopy ) );
+								msg( targetPlr, module.getPrefix() + TranslationHandler.getText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, iCopy ) );
 							}
 						}, ( 30 - i ) * 20 );
 					}
@@ -229,7 +230,7 @@ public class CommandFriends implements TabExecutor {
 						msg( plr, module.getPrefix() + TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_DISSOLVE_FRIENDSHIP", targetProfile.getName() ) );
 						Player targetPlr = targetInfo.getPlayer();
 						if ( targetPlr != null ) {
-							msg( targetPlr, module.getPrefix() + TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_DISSOLVE_FROM_FRIENDSHIP", plrName ) );
+							msg( targetPlr, module.getPrefix() + TranslationHandler.getText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_FROM_FRIENDSHIP", plrName ) );
 						} else {
 							targetInfo.getNotifyFriendshipEnded().add( initiator.getPlayerId() );
 							targetInfo.setDirty();
@@ -248,7 +249,7 @@ public class CommandFriends implements TabExecutor {
 					msg( plr, module.getPrefix() + TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_CANCEL_FRIENDSHIP_REQUEST", targetProfile.getName() ) );
 					Player targetPlr = server.getPlayer( targetProfile.getUuid() );
 					if ( targetPlr != null ) {
-						return msg( targetPlr, module.getPrefix() + TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_CANCEL_FROM_FRIENDSHIP_REQUEST", plrName ) );
+						return msg( targetPlr, module.getPrefix() + TranslationHandler.getText( targetPlr, "WARZ_CMD_FRIEND_CANCEL_FROM_FRIENDSHIP_REQUEST", plrName ) );
 					}
 					return true;
 				}
@@ -309,7 +310,7 @@ public class CommandFriends implements TabExecutor {
 
 				Player targetPlr = targetInfo.getPlayer();
 				if ( targetPlr != null ) {
-					msg( targetPlr, module.getPrefix() + TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_ACCEPT_FROM_FRIENDSHIP", plrName ) );
+					msg( targetPlr, module.getPrefix() + TranslationHandler.getText( targetPlr, "WARZ_CMD_FRIEND_ACCEPT_FROM_FRIENDSHIP", plrName ) );
 				} else {
 					targetInfo.getNotifyRequestAccepted().add( initiatorInfo.getPlayerId() );
 					targetInfo.setDirty();
@@ -353,7 +354,7 @@ public class CommandFriends implements TabExecutor {
 
 				Player targetPlr = targetInfo.getPlayer();
 				if ( targetPlr != null ) {
-					msg( plr, TranslationHandler.getText( plr, "WARZ_CMD_FRIEND_RECEIVE_FRIENDSHIP", plrName ) );
+					msg( targetPlr, TranslationHandler.getText( targetPlr, "WARZ_CMD_FRIEND_RECEIVE_FRIENDSHIP", plrName ) );
 				}
 				return true;
 			}
