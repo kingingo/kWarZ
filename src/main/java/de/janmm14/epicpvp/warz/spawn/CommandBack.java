@@ -24,16 +24,12 @@ public class CommandBack implements CommandExecutor {
 			return true;
 		}
 		Player plr = ( Player ) sender;
-		if ( !UtilWorldGuard.RegionFlag( plr, DefaultFlag.PVP ) ) {
+		if ( UtilWorldGuard.RegionFlag( plr, DefaultFlag.PVP ) ) {
 			sender.sendMessage( TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_BACK_WARZONE" ) );
 			return true;
 		}
-		Location lastMapPos = module.getUserConfig( plr ).getLocation( "lastMapPos" );
-		if ( lastMapPos == null ) {
-			lastMapPos = module.getRandomMapSpawn();
-		}
-		plr.teleport( lastMapPos );
-		module.sendBorder( plr );
+	
+		module.teleportWarz(plr);
 		return true;
 	}
 }
