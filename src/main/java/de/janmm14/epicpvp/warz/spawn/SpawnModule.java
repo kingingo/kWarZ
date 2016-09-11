@@ -11,6 +11,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutWorldBorder;
@@ -22,8 +23,9 @@ import eu.epicpvp.kcore.kConfig.kConfig;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
+import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
 import de.janmm14.epicpvp.warz.util.ConfigLocationAdapter;
-
+import de.janmm14.epicpvp.warz.zonechest.Zone;
 import lombok.Getter;
 
 public class SpawnModule extends Module<SpawnModule> implements Listener {
@@ -131,8 +133,21 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 				if ( getUserConfig( ev.getPlayer() ).contains( "lastMapPos" ) ) {
 					ev.getPlayer().teleport( getUserConfig( ev.getPlayer() ).getLocation( "lastMapPos" ) );
 				} else {
-					if ( !this.mapSpawns.isEmpty() )
+					if ( !this.mapSpawns.isEmpty() ){
 						ev.getPlayer().teleport( getRandomMapSpawn() );
+						
+						ev.getPlayer().getInventory().setHelmet(new ItemStack(Material.LEATHER_HELMET));
+						ev.getPlayer().getInventory().setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
+						ev.getPlayer().getInventory().setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
+						ev.getPlayer().getInventory().setBoots(new ItemStack(Material.LEATHER_BOOTS));
+						ev.getPlayer().setItemInHand(Zone.crackshotRename(new ItemStack(Material.STONE_SPADE)));
+						ev.getPlayer().getInventory().addItem(new ItemStack(Material.WOOD_SWORD));
+						ev.getPlayer().getInventory().addItem(new ItemStack(Material.EMPTY_MAP));
+						ev.getPlayer().getInventory().addItem(new ItemStack(351,16,(byte)13));
+						ev.getPlayer().getInventory().addItem(new ItemStack(351,16,(byte)3));
+						
+						this.getModuleManager().getModule( ItemRenameModule.class ).renameItemStackArray(ev.getPlayer().getInventory().getContents());
+					}
 				}
 			}
 		}

@@ -23,6 +23,7 @@ import dev.wolveringer.client.ClientWrapper;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
 import eu.epicpvp.kcore.Permission.PermissionType;
+import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsCreateEvent;
 import eu.epicpvp.kcore.Update.UpdateType;
 import eu.epicpvp.kcore.Update.Event.UpdateEvent;
 import eu.epicpvp.kcore.Util.UtilPlayer;
@@ -41,7 +42,7 @@ public class WarZListener implements Listener {
 			event.disallow( AsyncPlayerPreLoginEvent.Result.KICK_OTHER, "Server not fully started up." );
 		}
 	}
-
+	
 	@EventHandler
 	public void loadWorld(WorldLoadEvent ev) {
 		ev.getWorld().setAutoSave( false );
