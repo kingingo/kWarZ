@@ -26,6 +26,7 @@ import dev.wolveringer.dataserver.gamestats.GameType;
 import dev.wolveringer.dataserver.gamestats.StatsKey;
 import eu.epicpvp.kcore.Scoreboard.Events.PlayerSetScoreboardEvent;
 import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsChangedEvent;
+import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.StatsManager.StatsManager;
 import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
 import eu.epicpvp.kcore.Util.UtilServer;
@@ -117,6 +118,10 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 		Player victim = event.getEntity();
 		increaseStatistic( victim, StatsKey.DEATHS );
 		Player killer = victim.getKiller();
+		
+		killer.sendMessage(TranslationHandler.getPrefixAndText(killer, "GUNGAME_KILL",victim.getName()));
+		victim.sendMessage(TranslationHandler.getPrefixAndText(victim, "GUNGAME_KILLED_BY",killer.getName()));
+		
 		if ( killer == null ) {
 			EntityDamageEvent lastDmg = victim.getLastDamageCause();
 			if ( lastDmg == null ) {
