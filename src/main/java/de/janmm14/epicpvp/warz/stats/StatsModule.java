@@ -118,10 +118,6 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 		Player victim = event.getEntity();
 		increaseStatistic( victim, StatsKey.DEATHS );
 		Player killer = victim.getKiller();
-		
-		killer.sendMessage(TranslationHandler.getPrefixAndText(killer, "GUNGAME_KILL",victim.getName()));
-		victim.sendMessage(TranslationHandler.getPrefixAndText(victim, "GUNGAME_KILLED_BY",killer.getName()));
-		
 		if ( killer == null ) {
 			EntityDamageEvent lastDmg = victim.getLastDamageCause();
 			if ( lastDmg == null ) {
@@ -141,10 +137,11 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 					}
 				}
 			}
-		}
-		if ( killer == null ) {
+			victim.sendMessage(TranslationHandler.getPrefixAndText(victim, "DEATH"));
 			return;
 		}
+		victim.sendMessage(TranslationHandler.getPrefixAndText(victim, "GUNGAME_KILLED_BY",killer.getName()));
+		killer.sendMessage(TranslationHandler.getPrefixAndText(killer, "GUNGAME_KILL",victim.getName()));
 		increaseStatistic( killer, StatsKey.ANIMAL_KILLS );
 	}
 
