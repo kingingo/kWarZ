@@ -2,12 +2,13 @@ package de.janmm14.epicpvp.warz.logout;
 
 import java.util.HashMap;
 
-import org.bukkit.entity.Player;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
@@ -77,6 +78,15 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 					npc.remove();
 					npcs.remove(npc.getEntityId());
 				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void loadWorld(WorldLoadEvent ev){
+		for(Entity e : ev.getWorld().getEntities()){
+			if(e instanceof Skeleton){
+				e.remove();
 			}
 		}
 	}
