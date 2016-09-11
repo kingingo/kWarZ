@@ -63,7 +63,8 @@ public class FriendInfoManager {
 					case SIZE: {
 						FriendInfo value = notification.getValue();
 						if ( value != null && value.isDirty() ) {
-							asyncSaverThread.execute( new FlushRunnable( value ) );
+							new FlushRunnable( value ).run();
+//							asyncSaverThread.execute( new FlushRunnable( value ) );
 						}
 						break;
 					}
@@ -95,20 +96,20 @@ public class FriendInfoManager {
 	/**
 	 * If you are planning to use {@link #get(int)} after this method, consider using {@link #getIfCached(int)}, as its faster
 	 *
-	 * @param uuid the uuid to get the {@link FriendInfo} from.
-	 * @return whether the {@link FriendInfo} of the given uuid is cached currently
+	 * @param playerId the playerId to get the {@link FriendInfo} from.
+	 * @return whether the {@link FriendInfo} of the given playerId is cached currently
 	 */
-	public boolean isCached(int uuid) {
-		return friendInfoCache.getIfPresent( uuid ) != null;
+	public boolean isCached(int playerId) {
+		return friendInfoCache.getIfPresent( playerId ) != null;
 	}
 
 	/**
-	 * @param uuid the uuid to get the {@link FriendInfo} from.
+	 * @param playerId the playerId to get the {@link FriendInfo} from.
 	 * @return the cache {@link FriendInfo} or null if its not cached
 	 */
 	@Nullable
-	public FriendInfo getIfCached(int uuid) {
-		return friendInfoCache.getIfPresent( uuid );
+	public FriendInfo getIfCached(int playerId) {
+		return friendInfoCache.getIfPresent( playerId );
 	}
 
 	/**
@@ -134,32 +135,32 @@ public class FriendInfoManager {
 	/**
 	 * Gets either the cached value or performes a database lookup and then removes it from the cache.
 	 *
-	 * @param uuid the uuid to get the {@link FriendInfo} from.
+	 * @param playerId the playerId to get the {@link FriendInfo} from.
 	 * @return the FriendInfo
 	 */
-	public FriendInfo getAndFlush(int uuid) {
-		FriendInfo friendInfo = get( uuid );
-		flush( uuid );
+	public FriendInfo getAndFlush(int playerId) {
+		FriendInfo friendInfo = get( playerId );
+		flush( playerId );
 		return friendInfo;
 	}
 
 	/**
 	 * Removes the {@link FriendInfo} from the cache and saves it asynchroniously to the database
 	 *
-	 * @param uuid the uuid which {@link FriendInfo} should be removed
+	 * @param playerId the playerId which {@link FriendInfo} should be removed
 	 */
-	public void flush(int uuid) {
-		friendInfoCache.invalidate( uuid ); //this calls our custom removal listener which saves if the FriendInfo is modified
+	public void flush(int playerId) {
+		friendInfoCache.invalidate( playerId ); //this calls our custom removal listener which saves if the FriendInfo is modified
 	}
 
 	/**
 	 * Removes the {@link FriendInfo} from the cache and does not save it
 	 *
-	 * @param uuid the uuid which {@link FriendInfo} should be removed
+	 * @param playerId the playerId which {@link FriendInfo} should be removed
 	 */
-	public void discard(int uuid) {
+	public void discard(int playerId) {
 		disableFlush = true;
-		friendInfoCache.invalidate( uuid );
+		friendInfoCache.invalidate( playerId );
 		disableFlush = false;
 	}
 
