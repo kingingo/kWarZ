@@ -35,6 +35,9 @@ public class MapModule extends Module<MapModule> implements Listener {
 				if ( event.getPacketType() != PacketType.Play.Server.MAP ) {
 					return;
 				}
+				if ( WarZ.DEBUG) {
+					System.out.println("Rewriting map packet for " + event.getPlayer().getName());
+				}
 				WrapperPlayServerMap packet = new WrapperPlayServerMap( event.getPacket() );
 				packet.setMapIcons( new MapIcon[]{ new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
 					( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),

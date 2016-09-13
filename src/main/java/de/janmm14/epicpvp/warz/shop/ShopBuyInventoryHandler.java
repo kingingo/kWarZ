@@ -38,7 +38,7 @@ public class ShopBuyInventoryHandler {
 		addItem( 9 * 2 + 4 - 1, 2034953, Material.IRON_INGOT, "§eFight-Pack §7[§bPaket§7]", "§7> §eMit diesem Paket erhälst du ein komplettes \"Fight\"-Kit,", "  §ebestehend aus einer §6Diamantrüstung§e, einer §6Barrett 50cal", "  §eund einer §6Ak 47§e inkl. dazugehöriger §6Munition§e und §6Essen§e." );
 		addItem( 9 * 2 + 5 - 1, 2034964, Material.GOLD_INGOT, "§eWeapon-Pack §7[§bPaket§7]", "§7> §eMit diesem Paket erhälst du §6jede Tier-IV-Waffe§e in WarZ.", "  §7[§eAk47§7, §eDesert Eagle§7, §eBarret 50cal§7, §eSpas-12§7]" );
 		addItem( 9 * 2 + 6 - 1, 2034891, Material.IRON_BOOTS, "§eHalf-Fall-Damage §7[§bPerk§7]", "§7> §eDein Fallschaden §6halbiert§e sich automatisch." );
-		addItem( 9 * 3 + 2 - 1, 2034899, Material.SKULL_ITEM, 3, "§eHead-Dropper §7[§bPerk§7]", "§7> §eDer Kopfdeiner Gegner dropt, sobald du sie tötest." );
+		addItem( 9 * 3 + 2 - 1, 2034899, Material.SKULL_ITEM, 3, "§eHead-Dropper §7[§bPerk§7]", "§7> §eDer Kopf deiner Gegner dropt, sobald du sie tötest." );
 		addItem( 9 * 3 + 3 - 1, 2034901, Material.POTION, "§eNo-Water-Damage §7[§bPerk§7]", "§7> §eDu erhälst im Wasser §6keinen §eSchaden." );
 		addItem( 9 * 3 + 4 - 1, 2034912, Material.DIAMOND_SWORD, "§eOne-Hit §7[§bPerk§7]", "§7> §eDu kannst jeden Zombie mit §6einem §eSchlag töten.", "  Mit jedem Schwert." );
 		addItem( 9 * 3 + 4 - 1, 2034925, Material.ANVIL, "§e/Repair §7[§bRechte§7]" ); //TODO maybe remove?

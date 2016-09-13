@@ -7,6 +7,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
@@ -101,5 +102,41 @@ public class WeaponDamageArmorListener implements Listener {
 			}
 		}
 		return 0;
+	}
+
+	@EventHandler
+	public void onInteract(PlayerInteractEntityEvent event) {
+		if (isWeapon( event.getPlayer().getItemInHand().getType() )) {
+			event.setCancelled( true );
+		}
+	}
+
+	private boolean isWeapon(Material mat) {
+		switch ( mat ) {
+			case WOOD_HOE:
+			case WOOD_AXE:
+			case WOOD_SPADE:
+			case WOOD_PICKAXE:
+			case GOLD_HOE:
+			case GOLD_AXE:
+			case GOLD_SPADE:
+			case GOLD_PICKAXE:
+			case STONE_HOE:
+			case STONE_AXE:
+			case STONE_SPADE:
+			case STONE_PICKAXE:
+			case IRON_HOE:
+			case IRON_AXE:
+			case IRON_SPADE:
+			case IRON_PICKAXE:
+			case DIAMOND_HOE:
+			case DIAMOND_AXE:
+			case DIAMOND_SPADE:
+			case DIAMOND_PICKAXE:
+			case BLAZE_ROD:
+				return true;
+			default:
+				return false;
+		}
 	}
 }
