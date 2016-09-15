@@ -53,10 +53,10 @@ public class WarZListener implements Listener {
 		ev.setCancelled( true );
 	}
 
-	@EventHandler
-	public void onExplosion(ExplosionPrimeEvent ev) {
-		ev.setCancelled( true );
-	}
+//	@EventHandler
+//	public void onExplosion(ExplosionPrimeEvent ev) {
+//		ev.setCancelled( true );
+//	}
 
 	@EventHandler
 	public void soilChangeEntity(EntityInteractEvent event) {
