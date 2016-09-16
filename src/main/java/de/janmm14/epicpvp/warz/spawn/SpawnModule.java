@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -110,7 +111,6 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	}
 
 	public void teleportWarz(Player plr) {
-		sendBorder( plr );
 		if ( getUserConfig( plr ).contains( "lastMapPos" ) ) {
 			plr.teleport( getUserConfig( plr ).getLocation( "lastMapPos" ) );
 		} else {
@@ -152,7 +152,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority=EventPriority.MONITOR)
 	public void teleport(PlayerTeleportEvent ev){
 		if( UtilWorldGuard.RegionFlag( ev.getTo(), DefaultFlag.PVP ) ){
 			sendBorder(ev.getPlayer());

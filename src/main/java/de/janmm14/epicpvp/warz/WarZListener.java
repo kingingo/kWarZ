@@ -16,6 +16,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
+import com.shampaggon.crackshot.events.WeaponPreShootEvent;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+
 import dev.wolveringer.client.ClientWrapper;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
@@ -24,7 +27,7 @@ import eu.epicpvp.kcore.Update.Event.UpdateEvent;
 import eu.epicpvp.kcore.Update.UpdateType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
-
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
 import de.janmm14.epicpvp.warz.util.MiscUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -52,11 +55,6 @@ public class WarZListener implements Listener {
 		ev.setCancelled( true );
 	}
 
-//	@EventHandler
-//	public void onExplosion(ExplosionPrimeEvent ev) {
-//		ev.setCancelled( true );
-//	}
-
 	@EventHandler
 	public void soilChangeEntity(EntityInteractEvent event) {
 		if ( ( event.getEntityType() != EntityType.PLAYER ) && ( event.getBlock().getType() == Material.SOIL ) ) {
@@ -64,6 +62,13 @@ public class WarZListener implements Listener {
 		}
 	}
 
+	@EventHandler
+	public void block(WeaponPreShootEvent ev) {
+		if ( !UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) ){
+			ev.setCancelled(true);
+		}
+	}
+	
 	@EventHandler
 	public void onDeath(PlayerDeathEvent ev) {
 		ev.setDeathMessage( null );
