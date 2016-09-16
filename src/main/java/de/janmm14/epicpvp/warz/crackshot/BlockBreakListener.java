@@ -13,6 +13,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.util.BlockVector;
 
 import com.shampaggon.crackshot.events.WeaponHitBlockEvent;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.Tuple;
@@ -46,6 +48,9 @@ public class BlockBreakListener implements Listener, Runnable {
 	@EventHandler
 	public void onWeaponBlockHit(WeaponHitBlockEvent event) {
 		Block block = event.getBlock();
+		if ( !UtilWorldGuard.RegionFlag( event.getBlock().getLocation(), DefaultFlag.PVP ) ) {
+			return;
+		}
 		switch ( block.getType() ) {
 			case GLASS:
 			case STAINED_GLASS:
@@ -61,6 +66,9 @@ public class BlockBreakListener implements Listener, Runnable {
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		Block block = event.getBlock();
+		if ( !UtilWorldGuard.RegionFlag( block.getLocation(), DefaultFlag.PVP ) ) {
+			return;
+		}
 		switch ( block.getType() ) {
 			case GLASS:
 			case STAINED_GLASS:
