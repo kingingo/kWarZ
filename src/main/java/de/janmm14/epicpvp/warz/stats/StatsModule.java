@@ -22,18 +22,20 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+import de.janmm14.epicpvp.warz.Module;
+import de.janmm14.epicpvp.warz.WarZ;
+import de.janmm14.epicpvp.warz.friends.FriendInfo;
+import de.janmm14.epicpvp.warz.friends.FriendModule;
+import de.janmm14.epicpvp.warz.util.ScoreboardAdapter;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import dev.wolveringer.dataserver.gamestats.StatsKey;
 import eu.epicpvp.kcore.Scoreboard.Events.PlayerSetScoreboardEvent;
-import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsChangedEvent;
 import eu.epicpvp.kcore.StatsManager.StatsManager;
 import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
+import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsChangedEvent;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
+import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
-
-import de.janmm14.epicpvp.warz.Module;
-import de.janmm14.epicpvp.warz.WarZ;
-import de.janmm14.epicpvp.warz.util.ScoreboardAdapter;
 
 public class StatsModule extends Module<StatsModule> implements Listener { //TODO /stats <name> | scoreboard
 
@@ -137,12 +139,32 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 					}
 				}
 			}
+			msg(victim, "DEATH", victim.getName());
 			victim.sendMessage( TranslationHandler.getPrefixAndText( victim, "DEATH", victim.getName() ) );
 			return;
 		}
+		
+		msg(victim, "KILL_BY", victim.getName(), killer.getName());
+		msg(killer, "KILL_BY", victim.getName(), killer.getName());
+		
 		victim.sendMessage( TranslationHandler.getPrefixAndText( victim, "GUNGAME_KILLED_BY", killer.getName() ) );
 		killer.sendMessage( TranslationHandler.getPrefixAndText( killer, "GUNGAME_KILL", victim.getName() ) );
 		increaseStatistic( killer, StatsKey.ANIMAL_KILLS );
+	}
+	
+	public void msg(Player player, String tr, Object... input){
+		FriendModule module = getModuleManager().getModule(FriendModule.class );
+		FriendInfo info = module.getFriendInfoManager().get(UtilPlayer.getPlayerId(player));
+		
+		Player friend;
+		for(int friendId : info.getFriendWith().toArray()){
+			friend = UtilPlayer.searchExact(friendId);
+			
+			if(friend!=null){
+				friend.sendMessage( TranslationHandler.getPrefixAndText( friend, tr, input ) );
+			}
+			friend=null;
+		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
