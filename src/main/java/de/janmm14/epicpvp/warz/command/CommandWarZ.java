@@ -42,11 +42,15 @@ public class CommandWarZ implements TabExecutor {
 				break;
 			case "setslots":
 				WarZ.SLOTS = UtilNumber.toInt(args[ 1 ]);
+				plugin.getConfig().set( "slots", WarZ.SLOTS );
+				plugin.saveConfig();
 				sender.sendMessage( "§6Die Slots wurden auf §e"+WarZ.SLOTS+"§6 gesetzt!" );
 				break;
 			case "setslotspremium":
 				WarZ.SLOTS_PREMIUM = UtilNumber.toInt(args[ 1 ]);
-				sender.sendMessage( "§6Die §ePremium-Slots§6 wurden auf §e"+WarZ.SLOTS+"§6 gesetzt!" );
+				plugin.getConfig().set( "slots_premium", WarZ.SLOTS_PREMIUM );
+				plugin.saveConfig();
+				sender.sendMessage( "§6Die §ePremium-Slots§6 wurden auf §e"+WarZ.SLOTS_PREMIUM+"§6 gesetzt!" );
 				break;
 			case "refill":
 				plugin.getModuleManager().getModule( ZoneAndChestsModule.class ).getChestContentManager().reset();
