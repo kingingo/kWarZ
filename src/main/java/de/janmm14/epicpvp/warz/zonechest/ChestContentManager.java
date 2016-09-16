@@ -22,7 +22,7 @@ import com.google.common.cache.RemovalNotification;
 
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.random.RandomUtil;
-import eu.epicpvp.kcore.Util.UtilServer;
+
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -62,16 +62,19 @@ public class ChestContentManager implements Runnable {
 	}
 
 	public void reset() {
-		createdInventories.asMap()
-			.forEach( (blockVector, inventory) -> {
-				try{
-					inventory.getViewers().forEach( HumanEntity::closeInventory );
-				}catch(ConcurrentModificationException e){
-					
-				}
-				inventory.clear();
-			} );
-		createdInventories.invalidateAll();
+		module.getPlugin().getServer().getScheduler().runTask( module.getPlugin(), () -> {
+			createdInventories.asMap()
+				.forEach( (blockVector, inventory) -> {
+					try {
+						inventory.getViewers().forEach( HumanEntity::closeInventory );
+					}
+					catch ( ConcurrentModificationException ex ) {
+						ex.printStackTrace();
+					}
+					inventory.clear();
+				} );
+			createdInventories.invalidateAll();
+		} );
 	}
 
 	private void sendRefillTimer(int secsUntilReset) {
@@ -86,7 +89,7 @@ public class ChestContentManager implements Runnable {
 	public Inventory getInventory(World world, BlockVector blockVector, CustomChestInventoryHolder owner, BlockVector doubleChest) {
 		Inventory inv = createdInventories.getIfPresent( blockVector );
 		if ( inv == null ) {
-			if(WarZ.DEBUG) System.out.println( "Creating inventory for " + blockVector );
+			if ( WarZ.DEBUG ) System.out.println( "Creating inventory for " + blockVector );
 			inv = fillInventory( world, blockVector, Bukkit.createInventory( owner, doubleChest == null ? 3 * 9 : 6 * 9 ) );
 			if ( inv != null ) {
 				createdInventories.put( blockVector, inv );
