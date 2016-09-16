@@ -114,6 +114,7 @@ public class WarZ extends JavaPlugin {
 		new PermissionManager( this, GroupTyp.WARZ );
 		StatsManagerRepository.getStatsManager( GameType.WARZ );
 		UtilTime.setTimeManager( UtilServer.getPermissionManager() );
+		userDataConfig = new UserDataConfig( this );
 		new AACHack( "WARZ" );
 
 		new PerkListener( new PerkManager( this, new Perk[]{
@@ -137,7 +138,6 @@ public class WarZ extends JavaPlugin {
 		UtilServer.getCommandHandler().register( CommandTppos.class, new CommandTppos());
 		UtilServer.getCommandHandler().register( CommandEnderchest.class, new CommandEnderchest(UtilServer.getMysql()));
 
-		userDataConfig = new UserDataConfig( this );
 		UtilServer.getLagListener();
 		new DisguiseManager( this );
 		new ListenerCMD( this );
