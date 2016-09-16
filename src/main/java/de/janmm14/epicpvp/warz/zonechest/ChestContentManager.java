@@ -86,7 +86,7 @@ public class ChestContentManager implements Runnable {
 	public Inventory getInventory(World world, BlockVector blockVector, CustomChestInventoryHolder owner, BlockVector doubleChest) {
 		Inventory inv = createdInventories.getIfPresent( blockVector );
 		if ( inv == null ) {
-			System.out.println( "Creating inventory for " + blockVector );
+			if(WarZ.DEBUG) System.out.println( "Creating inventory for " + blockVector );
 			inv = fillInventory( world, blockVector, Bukkit.createInventory( owner, doubleChest == null ? 3 * 9 : 6 * 9 ) );
 			if ( inv != null ) {
 				createdInventories.put( blockVector, inv );
