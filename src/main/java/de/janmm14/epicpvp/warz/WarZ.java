@@ -126,7 +126,7 @@ public class WarZ extends JavaPlugin {
 		UtilServer.getCommandHandler().register( CommandTp.class, new CommandTp());
 		UtilServer.getCommandHandler().register( CommandTpHere.class, new CommandTpHere());
 		UtilServer.getCommandHandler().register( CommandClearInventory.class, new CommandClearInventory());
-		UtilServer.getCommandHandler().register( CommandInvsee.class, new CommandClearInventory());
+		UtilServer.getCommandHandler().register( CommandInvsee.class, new CommandInvsee(UtilServer.getMysql()));
 		UtilServer.getCommandHandler().register( CommandVanish.class, new CommandVanish(this));
 		UtilServer.getCommandHandler().register( CommandChatMute.class, new CommandChatMute(this));
 		UtilServer.getCommandHandler().register( CommandPvPMute.class, new CommandPvPMute(this));
