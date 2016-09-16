@@ -144,8 +144,7 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 			return;
 		}
 		
-		msg(victim, "KILL_BY", victim.getName(), killer.getName());
-		msg(killer, "KILL_BY", victim.getName(), killer.getName());
+		msg(victim,killer, "KILL_BY", victim.getName(), killer.getName());
 		
 		victim.sendMessage( TranslationHandler.getPrefixAndText( victim, "GUNGAME_KILLED_BY", killer.getName() ) );
 		killer.sendMessage( TranslationHandler.getPrefixAndText( killer, "GUNGAME_KILL", victim.getName() ) );
@@ -153,8 +152,12 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 	}
 	
 	public void msg(Player player, String tr, Object... input){
+		msg(player,null, tr, input);
+	}
+	
+	public void msg(Player victim, Player killer, String tr, Object... input){
 		FriendModule module = getModuleManager().getModule(FriendModule.class );
-		FriendInfo info = module.getFriendInfoManager().get(UtilPlayer.getPlayerId(player));
+		FriendInfo info = module.getFriendInfoManager().get(UtilPlayer.getPlayerId(victim));
 		
 		Player friend;
 		for(int friendId : info.getFriendWith().toArray()){
@@ -164,6 +167,20 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 				friend.sendMessage( TranslationHandler.getPrefixAndText( friend, tr, input ) );
 			}
 			friend=null;
+		}
+		
+		if(killer!=null){
+			FriendInfo k_info = module.getFriendInfoManager().get(UtilPlayer.getPlayerId(victim));
+			
+			for(int friendId : k_info.getFriendWith().toArray()){
+				friend=null;
+				if(info.getFriendWith().contains(friendId))continue;
+				friend = UtilPlayer.searchExact(friendId);
+				
+				if(friend!=null){
+					friend.sendMessage( TranslationHandler.getPrefixAndText( friend, tr, input ) );
+				}
+			}
 		}
 	}
 
