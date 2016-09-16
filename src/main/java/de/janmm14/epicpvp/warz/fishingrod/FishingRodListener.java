@@ -61,7 +61,7 @@ public class FishingRodListener implements Listener {
 				y = 2;
 			}
 			Vector normalize = diffVector.setY( 0 ).normalize();
-			event.getPlayer().setVelocity( normalize.setY( y / 5 ).multiply( 5 ) );
+			event.getPlayer().setVelocity( normalize.setY( y / 5 ).multiply( 3 ) );
 		}
 	}
 

@@ -18,6 +18,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
 
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
+
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.Tuple;
@@ -41,11 +44,13 @@ public class CobWebModule extends Module<CobWebModule> implements Listener, Runn
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if ( event.getBlockPlaced().getType() != Material.WEB ) {
+		if ( event.getBlockPlaced().getType() != Material.WEB || !UtilWorldGuard.RegionFlag( event.getBlockPlaced().getLocation(), DefaultFlag.PVP ) ) {
 			if ( !event.getPlayer().isOp() ) {
 				event.setCancelled( true );
 			}
 		} else {
+			event.setCancelled( false );
+			event.setBuild( true );
 			BlockState oldBlockState = event.getBlockReplacedState();
 			blockStates.put( oldBlockState.getLocation().toVector().toBlockVector(), new Tuple<>( oldBlockState, System.currentTimeMillis() ) );
 		}
