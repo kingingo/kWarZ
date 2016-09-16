@@ -21,7 +21,7 @@ import com.google.common.cache.RemovalNotification;
 
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.random.RandomUtil;
-
+import eu.epicpvp.kcore.Util.UtilServer;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -61,6 +61,10 @@ public class ChestContentManager implements Runnable {
 	}
 
 	public void reset() {
+		for(Player player : UtilServer.getPlayers())
+			player.closeInventory();
+		
+		
 		createdInventories.asMap()
 			.forEach( (blockVector, inventory) -> {
 				inventory.getViewers().forEach( HumanEntity::closeInventory );
