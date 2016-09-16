@@ -137,7 +137,7 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 					}
 				}
 			}
-			victim.sendMessage( TranslationHandler.getPrefixAndText( victim, "DEATH" ) );
+			victim.sendMessage( TranslationHandler.getPrefixAndText( victim, "DEATH", victim.getName() ) );
 			return;
 		}
 		victim.sendMessage( TranslationHandler.getPrefixAndText( victim, "GUNGAME_KILLED_BY", killer.getName() ) );
