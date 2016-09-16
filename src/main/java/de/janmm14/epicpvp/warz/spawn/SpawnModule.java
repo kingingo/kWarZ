@@ -51,7 +51,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 		spawn = config.getLocation( "spawnLocation" );
 		spawn.getWorld().setSpawnLocation( spawn.getBlockX(), spawn.getBlockY(), spawn.getBlockZ() );
 		mapSpawns = ( ArrayList<Location> ) config.getLocationList( "Mapspawns" );
-		border = UtilWorld.createWorldBorder( new Location( spawn.getWorld(), 0, 90, 0 ), 2050, 10, 10 );
+		border = UtilWorld.createWorldBorder( new Location( spawn.getWorld(), 0, 90, 0 ), 2048, 10, 10 );
 	}
 
 	public boolean removeNearestMapSpawn(Player player, double minDistance) {
