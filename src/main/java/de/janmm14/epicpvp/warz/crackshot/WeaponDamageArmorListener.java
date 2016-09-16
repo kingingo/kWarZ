@@ -97,7 +97,7 @@ public class WeaponDamageArmorListener implements Listener {
 		if ( armorItem != null && armorItem.getType() != Material.AIR ) {
 			String armorName = armorItem.getType().toString().toUpperCase();
 
-			String path = ARMOR_PREFIX + weaponTitle.toLowerCase() + "." + armorName;
+			String path = ARMOR_PREFIX + weaponTitle + "." + armorName;
 			if ( module.getConfig().get( path ) != null ) {
 				double percentage = module.getConfig().getDouble( path );
 				if ( WarZ.DEBUG ) {
