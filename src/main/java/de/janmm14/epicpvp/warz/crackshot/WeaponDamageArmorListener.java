@@ -84,12 +84,8 @@ public class WeaponDamageArmorListener implements Listener {
 
 	@Nullable
 	private ItemStack reduceDurability(ItemStack stack) {
-		short durability = ( short ) ( stack.getDurability() - 1 );
-		if ( durability > 0 ) {
-			stack.setDurability( durability );
-		} else {
-			stack = null;
-		}
+		short durability = ( short ) ( stack.getDurability() + 1 );
+		stack.setDurability( durability );
 		return stack;
 	}
 
