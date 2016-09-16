@@ -46,6 +46,9 @@ public class WeaponDamageArmorListener implements Listener {
 			damagePercentage = damagePercentage - getReductionPercentage( weaponTitle, helmet );
 			helmet = reduceDurability( helmet );
 			victim.getEquipment().setHelmet( helmet );
+			if ( WarZ.DEBUG ) {
+				Bukkit.broadcastMessage( "Headshot!" );
+			}
 		} else {
 			ItemStack[] armorContents = victim.getEquipment().getArmorContents();
 			for ( int i = 0; i < armorContents.length; i++ ) {
@@ -96,9 +99,17 @@ public class WeaponDamageArmorListener implements Listener {
 
 			String path = ARMOR_PREFIX + weaponTitle.toLowerCase() + "." + armorName;
 			if ( module.getConfig().get( path ) != null ) {
-				return module.getConfig().getDouble( path );
+				double percentage = module.getConfig().getDouble( path );
+				if ( WarZ.DEBUG ) {
+					System.out.println( "weaponTitle = [" + weaponTitle + "], armorName = [" + armorName + "] -> reductionPercentage: " + percentage );
+				}
+				return percentage;
 			} else {
-				return module.getConfig().getDouble( ARMOR_PREFIX + "default." + armorName );
+				double percentage = module.getConfig().getDouble( ARMOR_PREFIX + "default." + armorName );
+				if ( WarZ.DEBUG ) {
+					System.out.println( "weaponTitle = [" + weaponTitle + "], armorName = [" + armorName + "] -> reductionPercentage: " + percentage );
+				}
+				return percentage;
 			}
 		}
 		return 0;
@@ -106,7 +117,7 @@ public class WeaponDamageArmorListener implements Listener {
 
 	@EventHandler
 	public void onInteract(PlayerInteractEntityEvent event) {
-		if (isWeapon( event.getPlayer().getItemInHand().getType() )) {
+		if ( isWeapon( event.getPlayer().getItemInHand().getType() ) ) {
 			event.setCancelled( true );
 		}
 	}
