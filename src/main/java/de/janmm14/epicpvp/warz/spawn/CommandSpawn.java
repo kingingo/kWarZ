@@ -30,11 +30,13 @@ public class CommandSpawn implements CommandExecutor {
 		Player plr = ( Player ) sender;
 		if ( args.length == 0 || !sender.isOp() ) {
 			if ( UtilWorldGuard.RegionFlag( plr, DefaultFlag.PVP ) ) {
-				Collection<Entity> nearbyEntities = plr.getWorld().getNearbyEntities( plr.getLocation(), 25, 25, 25 );
-				for ( Entity e : nearbyEntities ) {
-					if ( e instanceof Player && e.getUniqueId() != plr.getUniqueId() ) {
-						sender.sendMessage( TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_SPAWN_NEAR_TO_PLAYER" ) );
-						return true;
+				if(!plr.isOp()){
+					Collection<Entity> nearbyEntities = plr.getWorld().getNearbyEntities( plr.getLocation(), 25, 25, 25 );
+					for ( Entity e : nearbyEntities ) {
+						if ( e instanceof Player && e.getUniqueId() != plr.getUniqueId() ) {
+							sender.sendMessage( TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_SPAWN_NEAR_TO_PLAYER" ) );
+							return true;
+						}
 					}
 				}
 				module.saveLastMapPos( plr, plr.getLocation() );
