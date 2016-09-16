@@ -26,9 +26,9 @@ import dev.wolveringer.dataserver.gamestats.GameType;
 import dev.wolveringer.dataserver.gamestats.StatsKey;
 import eu.epicpvp.kcore.Scoreboard.Events.PlayerSetScoreboardEvent;
 import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsChangedEvent;
-import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.StatsManager.StatsManager;
 import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
+import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.Util.UtilServer;
 
 import de.janmm14.epicpvp.warz.Module;
@@ -79,7 +79,7 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 				adapter.setEntryKeyWithValue( 6, "§1§f" + deathsObj );
 				int kills = ( int ) killsObj;
 				int deaths = ( int ) deathsObj;
-				adapter.setEntryKeyWithValue( 4, "§2§f" + ( kills / ( deaths + 1 ) ) );
+				adapter.setEntryKeyWithValue( 4, "§2§f" + ( ( ( double ) kills ) / ( ( ( double ) deaths + 1 ) ) ) );
 			} );
 		} );
 
@@ -110,7 +110,7 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 		}
 		int kills = event.getManager().getInt( event.getPlayerId(), StatsKey.ANIMAL_KILLS );
 		int deaths = event.getManager().getInt( event.getPlayerId(), StatsKey.DEATHS );
-		adapter.setEntryKeyWithValue( 4, "§2§f" + ( kills / ( deaths + 1 ) ) );
+		adapter.setEntryKeyWithValue( 4, "§2§f" + ( ( ( double ) kills ) / ( ( ( double ) deaths + 1 ) ) ) );
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -137,11 +137,11 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 					}
 				}
 			}
-			victim.sendMessage(TranslationHandler.getPrefixAndText(victim, "DEATH"));
+			victim.sendMessage( TranslationHandler.getPrefixAndText( victim, "DEATH" ) );
 			return;
 		}
-		victim.sendMessage(TranslationHandler.getPrefixAndText(victim, "GUNGAME_KILLED_BY",killer.getName()));
-		killer.sendMessage(TranslationHandler.getPrefixAndText(killer, "GUNGAME_KILL",victim.getName()));
+		victim.sendMessage( TranslationHandler.getPrefixAndText( victim, "GUNGAME_KILLED_BY", killer.getName() ) );
+		killer.sendMessage( TranslationHandler.getPrefixAndText( killer, "GUNGAME_KILL", victim.getName() ) );
 		increaseStatistic( killer, StatsKey.ANIMAL_KILLS );
 	}
 
