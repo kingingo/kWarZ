@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutWorldBorder;
@@ -24,9 +25,9 @@ import eu.epicpvp.kcore.kConfig.kConfig;
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
-import de.janmm14.epicpvp.warz.thirst.ThirstModule;
 import de.janmm14.epicpvp.warz.util.ConfigLocationAdapter;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
+
 import lombok.Getter;
 
 public class SpawnModule extends Module<SpawnModule> implements Listener {
@@ -106,30 +107,32 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	public kConfig getUserConfig(Player plr) {
 		return getPlugin().getUserDataConfig().getConfig( plr );
 	}
-	
-	public void teleportWarz(Player plr){
+
+	public void teleportWarz(Player plr) {
 		sendBorder( plr );
 		if ( getUserConfig( plr ).contains( "lastMapPos" ) ) {
 			plr.teleport( getUserConfig( plr ).getLocation( "lastMapPos" ) );
 		} else {
-			if ( !this.mapSpawns.isEmpty() ){
+			if ( !this.mapSpawns.isEmpty() ) {
 				plr.teleport( getRandomMapSpawn() );
-				
-				plr.getInventory().setHelmet(new ItemStack(Material.LEATHER_HELMET));
-				plr.getInventory().setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
-				plr.getInventory().setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
-				plr.getInventory().setBoots(new ItemStack(Material.LEATHER_BOOTS));
-				plr.getInventory().addItem(Zone.crackshotRename(new ItemStack(Material.STONE_SPADE)));
-				plr.getInventory().addItem(new ItemStack(Material.WOOD_SWORD));
-				plr.getInventory().addItem(new ItemStack(Material.EMPTY_MAP));
-				plr.getInventory().addItem(new ItemStack(351,16,(byte)13));
-				plr.getInventory().addItem(new ItemStack(351,16,(byte)6));
-				plr.getInventory().addItem(new ItemStack(351,16,(byte)3));
-				plr.setExp(1);
+
+				PlayerInventory inventory = plr.getInventory();
+				inventory.setHelmet( new ItemStack( Material.LEATHER_HELMET ) );
+				inventory.setChestplate( new ItemStack( Material.LEATHER_CHESTPLATE ) );
+				inventory.setLeggings( new ItemStack( Material.LEATHER_LEGGINGS ) );
+				inventory.setBoots( new ItemStack( Material.LEATHER_BOOTS ) );
+				inventory.addItem( Zone.crackshotRename( new ItemStack( Material.STONE_SPADE ) ) );
+				inventory.addItem( new ItemStack( Material.WOOD_SWORD ) );
+				inventory.addItem( new ItemStack( Material.MAP, 1, ( short ) 25 ));
+				inventory.addItem( new ItemStack( 351, 16, ( short ) 13 ) );
+				inventory.addItem( new ItemStack( 351, 16, ( short ) 6 ) );
+				inventory.addItem( new ItemStack( 351, 16, ( short ) 3 ) );
+				plr.setExp( 1 );
 				plr.setFoodLevel( 20 );
 				plr.setSaturation( Float.MAX_VALUE );
-				
-				this.getModuleManager().getModule( ItemRenameModule.class ).renameItemStackArray(plr.getInventory().getContents());
+
+				this.getModuleManager().getModule( ItemRenameModule.class ).renameItemStackArray( inventory.getContents() );
+				plr.updateInventory();
 			}
 		}
 	}
@@ -157,7 +160,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	public void move(PlayerMoveEvent ev) {
 		if ( ev.getPlayer().getEyeLocation().getBlock().getType() == Material.PORTAL ) {
 			if ( !UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) ) {
-				teleportWarz(ev.getPlayer());
+				teleportWarz( ev.getPlayer() );
 			}
 		}
 	}
