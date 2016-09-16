@@ -59,6 +59,8 @@ import lombok.Getter;
 public class WarZ extends JavaPlugin {
 
 	public static boolean DEBUG;
+	public static int SLOTS=0;
+	public static int SLOTS_PREMIUM=0;
 	@Getter
 	private static WarZ instance;
 	private ModuleManager moduleManager;
@@ -74,6 +76,8 @@ public class WarZ extends JavaPlugin {
 	public void onEnable() {
 		Debugger.setEnabled( false );
 		setConfigOptions();
+		SLOTS = getConfig().getInt( "slots" );
+		SLOTS_PREMIUM = getConfig().getInt( "slots_premium" );
 		DEBUG = getConfig().getBoolean( "debug" );
 		if ( DEBUG ) {
 			getLogger().info( "Debug mode activated!" );
@@ -157,6 +161,8 @@ public class WarZ extends JavaPlugin {
 	public void reloadCfg() {
 		reloadConfig();
 		setConfigOptions();
+		SLOTS = getConfig().getInt( "slots" );
+		SLOTS_PREMIUM = getConfig().getInt( "slots_premium" );
 		DEBUG = getConfig().getBoolean( "debug" );
 		if ( DEBUG ) {
 			getLogger().info( "Debug mode is activated!" );
@@ -173,6 +179,8 @@ public class WarZ extends JavaPlugin {
 			.copyHeader( true )
 			.header( "WarZ v" + getDescription().getVersion() );
 		getConfig().addDefault( "debug", false );
+		getConfig().addDefault( "slots", 128 );
+		getConfig().addDefault( "slots_premium", 160 );
 	}
 
 	public <T extends CommandExecutor & TabCompleter> void registerTabExecutor(String command, T tabExecutor) {

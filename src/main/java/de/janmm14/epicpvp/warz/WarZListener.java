@@ -13,6 +13,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
@@ -21,8 +22,12 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
 import dev.wolveringer.client.ClientWrapper;
 import dev.wolveringer.dataserver.gamestats.GameType;
+import dev.wolveringer.dataserver.player.LanguageType;
 import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
+import eu.epicpvp.kcore.Permission.Permission;
 import eu.epicpvp.kcore.Permission.PermissionType;
+import eu.epicpvp.kcore.Permission.Events.PlayerLoadPermissionEvent;
+import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.Update.Event.UpdateEvent;
 import eu.epicpvp.kcore.Update.UpdateType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
@@ -44,7 +49,22 @@ public class WarZListener implements Listener {
 			event.disallow( AsyncPlayerPreLoginEvent.Result.KICK_OTHER, "Server not fully started up." );
 		}
 	}
-
+	
+	@EventHandler
+	public void slots(PlayerLoadPermissionEvent ev){
+		if(Bukkit.getOnlinePlayers().size() >= WarZ.SLOTS ){
+			if(ev.getPlayer().isOp())return;
+			
+			if(!ev.getPlayer().hasPermission(PermissionType.JOIN_FULL_SERVER.getPermissionToString())){
+				ev.getPlayer().kickPlayer(TranslationHandler.getText(ev.getPlayer(), "SERVER_FULL"));
+			}else{
+				if(Bukkit.getOnlinePlayers().size() >= WarZ.SLOTS_PREMIUM ){
+					ev.getPlayer().kickPlayer(TranslationHandler.getText(ev.getPlayer(), "SERVER_FULL"));
+				}
+			}
+		}
+	}
+	
 	@EventHandler
 	public void loadWorld(WorldLoadEvent ev) {
 		ev.getWorld().setAutoSave( false );

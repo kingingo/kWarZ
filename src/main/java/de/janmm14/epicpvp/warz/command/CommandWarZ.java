@@ -12,7 +12,7 @@ import org.bukkit.command.TabExecutor;
 
 import com.google.common.collect.ImmutableList;
 import dev.wolveringer.client.debug.Debugger;
-
+import eu.epicpvp.kcore.Util.UtilNumber;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
 
@@ -39,6 +39,14 @@ public class CommandWarZ implements TabExecutor {
 				if ( !( sender instanceof ConsoleCommandSender ) ) {
 					plugin.getServer().getConsoleSender().sendMessage( "§6WarZ config reloaded by " + sender.getName() );
 				}
+				break;
+			case "setslots":
+				WarZ.SLOTS = UtilNumber.toInt(args[ 1 ]);
+				sender.sendMessage( "§6Die Slots wurden auf §e"+WarZ.SLOTS+"§6 gesetzt!" );
+				break;
+			case "setslotspremium":
+				WarZ.SLOTS_PREMIUM = UtilNumber.toInt(args[ 1 ]);
+				sender.sendMessage( "§6Die §ePremium-Slots§6 wurden auf §e"+WarZ.SLOTS+"§6 gesetzt!" );
 				break;
 			case "refill":
 				plugin.getModuleManager().getModule( ZoneAndChestsModule.class ).getChestContentManager().reset();
