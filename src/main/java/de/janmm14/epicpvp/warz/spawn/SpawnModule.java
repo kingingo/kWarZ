@@ -11,6 +11,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -151,6 +152,15 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 		}
 	}
 
+	@EventHandler
+	public void teleport(PlayerTeleportEvent ev){
+		if( UtilWorldGuard.RegionFlag( ev.getTo(), DefaultFlag.PVP ) ){
+			sendBorder(ev.getPlayer());
+		}else{
+			resetBorder(ev.getPlayer());
+		}
+	}
+	
 	@EventHandler
 	public void onDeath(PlayerDeathEvent ev) {
 		resetLastMapPos( ev.getEntity() );
