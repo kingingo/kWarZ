@@ -25,6 +25,7 @@ import eu.epicpvp.kcore.Command.Admin.CommandPvPMute;
 import eu.epicpvp.kcore.Command.Admin.CommandToggle;
 import eu.epicpvp.kcore.Command.Admin.CommandTp;
 import eu.epicpvp.kcore.Command.Admin.CommandTpHere;
+import eu.epicpvp.kcore.Command.Admin.CommandTppos;
 import eu.epicpvp.kcore.Command.Admin.CommandVanish;
 import eu.epicpvp.kcore.Command.Commands.CommandClearInventory;
 import eu.epicpvp.kcore.Command.Commands.CommandEnderchest;
@@ -133,6 +134,7 @@ public class WarZ extends JavaPlugin {
 		UtilServer.getCommandHandler().register( CommandPvPMute.class, new CommandPvPMute(this));
 		UtilServer.getCommandHandler().register( CommandCMDMute.class, new CommandCMDMute(this));
 		UtilServer.getCommandHandler().register( CommandToggle.class, new CommandToggle(this));
+		UtilServer.getCommandHandler().register( CommandTppos.class, new CommandTppos());
 		UtilServer.getCommandHandler().register( CommandEnderchest.class, new CommandEnderchest(UtilServer.getMysql()));
 
 		userDataConfig = new UserDataConfig( this );
