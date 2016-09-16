@@ -134,6 +134,7 @@ public class WarZ extends JavaPlugin {
 		UtilServer.getCommandHandler().register( CommandToggle.class, new CommandToggle(this));
 		UtilServer.getCommandHandler().register( CommandEnderchest.class, new CommandEnderchest(UtilServer.getMysql()));
 		
+		UtilServer.getLagListener();
 		new DisguiseManager( this );
 		new ListenerCMD( this );
 		new ChatListener( this, UtilServer.getPermissionManager() );
