@@ -1,6 +1,5 @@
 package de.janmm14.epicpvp.warz.spawn;
 
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,8 +27,8 @@ public class CommandBack implements CommandExecutor {
 			sender.sendMessage( TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_BACK_WARZONE" ) );
 			return true;
 		}
-	
-		module.teleportWarz(plr);
+
+		module.teleportWarz( plr );
 		return true;
 	}
 }

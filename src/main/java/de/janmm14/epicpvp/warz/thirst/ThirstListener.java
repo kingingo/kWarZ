@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsCreateEvent;
 import eu.epicpvp.kcore.Util.UtilPlayer;
-import eu.epicpvp.kcore.Util.UtilServer;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -77,15 +77,15 @@ public class ThirstListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerNew(PlayerStatsCreateEvent event) {
-		if(event.getManager().getType() == GameType.WARZ){
-			Player plr = UtilPlayer.searchExact(event.getPlayerId());
-			if(plr != null){
-				plr.setExp(1);
-				checkExpAbilities(plr);
+		if ( event.getManager().getType() == GameType.WARZ ) {
+			Player plr = UtilPlayer.searchExact( event.getPlayerId() );
+			if ( plr != null ) {
+				plr.setExp( 1 );
+				checkExpAbilities( plr );
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player plr = event.getPlayer();

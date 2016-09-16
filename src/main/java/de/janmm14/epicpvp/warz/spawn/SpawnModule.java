@@ -123,7 +123,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 				inventory.setBoots( new ItemStack( Material.LEATHER_BOOTS ) );
 				inventory.addItem( Zone.crackshotRename( new ItemStack( Material.STONE_SPADE ) ) );
 				inventory.addItem( new ItemStack( Material.WOOD_SWORD ) );
-				inventory.addItem( new ItemStack( Material.MAP, 1, ( short ) 25 ));
+				inventory.addItem( new ItemStack( Material.MAP, 1, ( short ) 25 ) );
 				inventory.addItem( new ItemStack( 351, 16, ( short ) 13 ) );
 				inventory.addItem( new ItemStack( 351, 16, ( short ) 6 ) );
 				inventory.addItem( new ItemStack( 351, 16, ( short ) 3 ) );

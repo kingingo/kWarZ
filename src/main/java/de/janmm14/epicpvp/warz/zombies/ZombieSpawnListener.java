@@ -33,20 +33,20 @@ public class ZombieSpawnListener implements Listener {
 	public void onEntitySpawn(CreatureSpawnEvent event) {
 		if ( event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM ) {
 			switch ( event.getEntityType() ) {
-			case WITHER_SKULL:
-				break;
-			case ZOMBIE:
-				module.setupZombie( ( Zombie ) event.getEntity() );
-				break;
-			case SHEEP:
-				event.setCancelled( true );
-				Location loc = event.getLocation();
-				Zombie zombie = loc.getWorld().spawn( loc, Zombie.class );
-				module.setupZombie( zombie );
-				break;
-			default:
-				event.setCancelled( true );
-				break;
+				case WITHER_SKULL:
+					break;
+				case ZOMBIE:
+					module.setupZombie( ( Zombie ) event.getEntity() );
+					break;
+				case SHEEP:
+					event.setCancelled( true );
+					Location loc = event.getLocation();
+					Zombie zombie = loc.getWorld().spawn( loc, Zombie.class );
+					module.setupZombie( zombie );
+					break;
+				default:
+					event.setCancelled( true );
+					break;
 			}
 		}
 	}

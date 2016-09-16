@@ -56,7 +56,7 @@ public class ShopBuyInventoryHandler {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName( displayName );
 		meta.setLore( Arrays.asList( lore ) );
-		item.setItemMeta(meta);
+		item.setItemMeta( meta );
 		if ( buycraftId > 0 ) {
 			inventory.addButton( pos, new ShopLinkButton( item, buycraftId ) );
 		} else {

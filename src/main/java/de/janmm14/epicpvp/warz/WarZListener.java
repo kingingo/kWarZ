@@ -2,7 +2,6 @@ package de.janmm14.epicpvp.warz;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,7 +9,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
-import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -18,16 +16,17 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
-import de.janmm14.epicpvp.warz.util.MiscUtil;
 import dev.wolveringer.client.ClientWrapper;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
 import eu.epicpvp.kcore.Permission.PermissionType;
-import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsCreateEvent;
-import eu.epicpvp.kcore.Update.UpdateType;
 import eu.epicpvp.kcore.Update.Event.UpdateEvent;
+import eu.epicpvp.kcore.Update.UpdateType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
+
+import de.janmm14.epicpvp.warz.util.MiscUtil;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -42,12 +41,12 @@ public class WarZListener implements Listener {
 			event.disallow( AsyncPlayerPreLoginEvent.Result.KICK_OTHER, "Server not fully started up." );
 		}
 	}
-	
+
 	@EventHandler
 	public void loadWorld(WorldLoadEvent ev) {
 		ev.getWorld().setAutoSave( false );
 	}
-	
+
 	@EventHandler
 	public void onBlockBurn(BlockBurnEvent ev) {
 		ev.setCancelled( true );
@@ -70,22 +69,23 @@ public class WarZListener implements Listener {
 		ev.setDeathMessage( null );
 		UtilPlayer.RespawnNow( ev.getEntity(), plugin );
 	}
-	
-	long time=0;
+
+	long time = 0;
+
 	@EventHandler
-	public void time(UpdateEvent ev){
-		if(ev.getType()==UpdateType.TICK){
-			if(time==24000)time=-1;
-			time+=1;
-			
-			for(Player player : Bukkit.getOnlinePlayers())player.setPlayerTime(time, false);
+	public void time(UpdateEvent ev) {
+		if ( ev.getType() == UpdateType.TICK ) {
+			if ( time == 24000 ) time = -1;
+			time += 1;
+
+			for ( Player player : Bukkit.getOnlinePlayers() ) player.setPlayerTime( time, false );
 		}
 	}
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
 		ev.setJoinMessage( null );
-		ev.getPlayer().setPlayerTime(time, false);
+		ev.getPlayer().setPlayerTime( time, false );
 		UtilPlayer.setTab( ev.getPlayer(), "WarZ" );
 	}
 

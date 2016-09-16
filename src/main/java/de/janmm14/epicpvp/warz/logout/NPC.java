@@ -4,16 +4,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Skeleton;
 import org.bukkit.inventory.ItemStack;
 
-import eu.epicpvp.kcore.Disguise.DisguiseType;
-import eu.epicpvp.kcore.Disguise.disguises.DisguiseBase;
 import eu.epicpvp.kcore.Disguise.disguises.livings.DisguisePlayer;
 import eu.epicpvp.kcore.Util.UtilEnt;
 import eu.epicpvp.kcore.Util.UtilServer;
+
 import lombok.Getter;
 
 public class NPC {
@@ -35,40 +32,44 @@ public class NPC {
 	private int playerId;
 	@Getter
 	private long time;
-	
-	public NPC(Player player,LogoutModule module){
-		this.location=player.getLocation();
-		this.amor=player.getInventory().getArmorContents();
-		this.items=player.getInventory().getContents();
-		this.playername=player.getName();
-		this.playerId=UtilServer.getClient().getPlayerAndLoad(playername).getPlayerId();
-		
-		setup(module);
+
+	public NPC(Player player, LogoutModule module) {
+		this.location = player.getLocation();
+		this.amor = player.getInventory().getArmorContents();
+		this.items = player.getInventory().getContents();
+		this.playername = player.getName();
+		this.playerId = UtilServer.getClient().getPlayerAndLoad( playername ).getPlayerId();
+
+		setup( module );
 	}
-	
-	public void drop(){
-		for(ItemStack item : items)if(item!=null&&item.getType()!=Material.AIR)location.getWorld().dropItemNaturally(location, item);
-		for(ItemStack item : amor)if(item!=null&&item.getType()!=Material.AIR)location.getWorld().dropItemNaturally(location, item);
-		
+
+	public void drop() {
+		for ( ItemStack item : items )
+			if ( item != null && item.getType() != Material.AIR )
+				location.getWorld().dropItemNaturally( location, item );
+		for ( ItemStack item : amor )
+			if ( item != null && item.getType() != Material.AIR )
+				location.getWorld().dropItemNaturally( location, item );
+
 		remove();
 	}
-	
-	public void remove(){
-		UtilServer.getDisguiseManager().undisguise(entityId);
-		if(npc!=null&&!npc.isDead())npc.remove();
+
+	public void remove() {
+		UtilServer.getDisguiseManager().undisguise( entityId );
+		if ( npc != null && !npc.isDead() ) npc.remove();
 	}
-	
-	public void setup(LogoutModule module){
-		time=System.currentTimeMillis();
-		LivingEntity npc = (LivingEntity) location.getWorld().spawnEntity(location, EntityType.SKELETON);
+
+	public void setup(LogoutModule module) {
+		time = System.currentTimeMillis();
+		LivingEntity npc = ( LivingEntity ) location.getWorld().spawnEntity( location, EntityType.SKELETON );
 		npc.getEquipment().clear();
-		npc.getEquipment().setItemInHand(null);
-		entityId=npc.getEntityId();
-		UtilEnt.setNoAI(npc, true);
-		UtilEnt.setSilent(npc, true);
-		dbase = new DisguisePlayer(npc, playername);
-		dbase.loadSkin(playername); //TODO Skin load fix
-		UtilServer.getDisguiseManager().disguise(dbase);
-		module.getNpcs().put(npc.getEntityId(), this);
+		npc.getEquipment().setItemInHand( null );
+		entityId = npc.getEntityId();
+		UtilEnt.setNoAI( npc, true );
+		UtilEnt.setSilent( npc, true );
+		dbase = new DisguisePlayer( npc, playername );
+		dbase.loadSkin( playername ); //TODO Skin load fix
+		UtilServer.getDisguiseManager().disguise( dbase );
+		module.getNpcs().put( npc.getEntityId(), this );
 	}
 }

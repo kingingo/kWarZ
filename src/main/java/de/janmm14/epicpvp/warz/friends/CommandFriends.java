@@ -84,22 +84,22 @@ public class CommandFriends implements TabExecutor {
 	}
 
 	private static boolean sendHelp(@NonNull Player plr) {
-		if(TranslationHandler.getLanguage(plr)==LanguageType.GERMAN){
-			msg(plr,"§a/friend list");
-			msg(plr,"§a/friend status");
-			msg(plr,"§a/friend beenden");
-			msg(plr,"§a/friend annehmen");
-			msg(plr,"§a/friend ablehnen");
-			msg(plr,"§a/friend zurückrufen");
-			msg(plr,"§a/friend anfragen");
-		}else{
-			msg(plr,"§a/friend list");
-			msg(plr,"§a/friend status");
-			msg(plr,"§a/friend remove");
-			msg(plr,"§a/friend accept");
-			msg(plr,"§a/friend deny");
-			msg(plr,"§a/friend revoke");
-			msg(plr,"§a/friend request");
+		if ( TranslationHandler.getLanguage( plr ) == LanguageType.GERMAN ) {
+			msg( plr, "§a/friend list" );
+			msg( plr, "§a/friend status" );
+			msg( plr, "§a/friend beenden" );
+			msg( plr, "§a/friend annehmen" );
+			msg( plr, "§a/friend ablehnen" );
+			msg( plr, "§a/friend zurückrufen" );
+			msg( plr, "§a/friend anfragen" );
+		} else {
+			msg( plr, "§a/friend list" );
+			msg( plr, "§a/friend status" );
+			msg( plr, "§a/friend remove" );
+			msg( plr, "§a/friend accept" );
+			msg( plr, "§a/friend deny" );
+			msg( plr, "§a/friend revoke" );
+			msg( plr, "§a/friend request" );
 		}
 		return true;
 	}
@@ -177,7 +177,7 @@ public class CommandFriends implements TabExecutor {
 			case "zurückrufen":
 			case "revoke": {
 				if ( args.length < 2 ) {
-					return msg( plr, "§a/friend "+args[0]+" [Player]" );
+					return msg( plr, "§a/friend " + args[ 0 ] + " [Player]" );
 				}
 				if ( args[ 1 ].equalsIgnoreCase( plrName )
 					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
@@ -276,7 +276,7 @@ public class CommandFriends implements TabExecutor {
 			case "accept":
 			case "annehmen": {
 				if ( args.length < 2 ) {
-					return msg( plr, "§a/friend "+args[0]+" [Player]" );
+					return msg( plr, "§a/friend " + args[ 0 ] + " [Player]" );
 				}
 				if ( args[ 1 ].equalsIgnoreCase( plrName )
 					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
@@ -320,7 +320,7 @@ public class CommandFriends implements TabExecutor {
 			case "anfragen":
 			case "request": {
 				if ( args.length < 2 ) {
-					return msg( plr, "§a/friend "+args[0]+" [Player]");
+					return msg( plr, "§a/friend " + args[ 0 ] + " [Player]" );
 				}
 				if ( args[ 1 ].equalsIgnoreCase( plrName )
 					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
