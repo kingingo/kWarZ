@@ -40,7 +40,7 @@ public class ShopBuyInventoryHandler {
 		addItem( 9 * 2 + 7 - 1, 2034891, Material.IRON_BOOTS, "§eHalf-Fall-Damage §7[§bPerk§7]", "§7> §eDein Fallschaden §6halbiert§e sich automatisch." );
 		addItem( 9 * 3 + 3 - 1, 2034899, Material.SKULL_ITEM, 3, "§eHead-Dropper §7[§bPerk§7]", "§7> §eDer Kopf deiner Gegner dropt, sobald du sie tötest." );
 		addItem( 9 * 3 + 4 - 1, 2034901, Material.POTION, "§eNo-Water-Damage §7[§bPerk§7]", "§7> §eDu erhälst im Wasser §6keinen §eSchaden." );
-		addItem( 9 * 3 + 5 - 1, 2034912, Material.DIAMOND_SWORD, "§eOne-Hit §7[§bPerk§7]", "§7> §eDu kannst jeden Zombie mit §6einem §eSchlag töten.", "  Mit jedem Schwert." );
+		addItem( 9 * 3 + 5 - 1, 2034912, Material.DIAMOND_SWORD, "§eOne-Hit §7[§bPerk§7]", "§7> §eDu kannst jeden Zombie mit §6einem §eSchlag töten.", "  §eMit jedem Schwert." );
 		addItem( 9 * 3 + 6 - 1, 2034925, Material.ANVIL, "§e/Repair §7[§bRechte§7]" ); //TODO maybe remove?
 		addItem( 9 * 3 + 7 - 1, 2034889, Material.COMPASS, "§e/Near §7[§bRechte§7]" );
 		UtilInv.getBase().addPage( inventory );
