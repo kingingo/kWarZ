@@ -152,7 +152,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 		}
 	}
 
-	@EventHandler(priority=EventPriority.MONITOR)
+	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
 	public void teleport(PlayerTeleportEvent ev){
 		if( UtilWorldGuard.RegionFlag( ev.getTo(), DefaultFlag.PVP ) ){
 			sendBorder(ev.getPlayer());
