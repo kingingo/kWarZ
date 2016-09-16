@@ -98,7 +98,6 @@ public class WarZ extends JavaPlugin {
 
 	private void setupKStuff() {
 		UtilServer.setPluginInstance( this );
-		userDataConfig = new UserDataConfig( this );
 
 		getConfig().addDefault( "mysql.host", "localhost" );
 		getConfig().addDefault( "mysql.user", "user" );
@@ -133,7 +132,8 @@ public class WarZ extends JavaPlugin {
 		UtilServer.getCommandHandler().register( CommandCMDMute.class, new CommandCMDMute(this));
 		UtilServer.getCommandHandler().register( CommandToggle.class, new CommandToggle(this));
 		UtilServer.getCommandHandler().register( CommandEnderchest.class, new CommandEnderchest(UtilServer.getMysql()));
-		
+
+		userDataConfig = new UserDataConfig( this );
 		UtilServer.getLagListener();
 		new DisguiseManager( this );
 		new ListenerCMD( this );
