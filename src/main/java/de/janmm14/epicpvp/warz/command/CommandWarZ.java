@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableList;
 import dev.wolveringer.client.debug.Debugger;
 import eu.epicpvp.kcore.Util.UtilNumber;
 import de.janmm14.epicpvp.warz.WarZ;
+import de.janmm14.epicpvp.warz.WarZListener;
 import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
 
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,15 @@ public class CommandWarZ implements TabExecutor {
 				if ( !( sender instanceof ConsoleCommandSender ) ) {
 					plugin.getServer().getConsoleSender().sendMessage( "§6WarZ config reloaded by " + sender.getName() );
 				}
+				break;
+			case "settime":
+				WarZListener.TIME = UtilNumber.toInt( args[ 1 ] );
+				break;
+			case "day":
+				WarZListener.TIME = 6000;
+				break;
+			case "night":
+				WarZListener.TIME = 18000;
 				break;
 			case "setslots":
 				WarZ.SLOTS = UtilNumber.toInt(args[ 1 ]);

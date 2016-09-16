@@ -95,22 +95,21 @@ public class WarZListener implements Listener {
 		UtilPlayer.RespawnNow( ev.getEntity(), plugin );
 	}
 
-	long time = 0;
-
+	public static long TIME = 0;
 	@EventHandler
 	public void time(UpdateEvent ev) {
 		if ( ev.getType() == UpdateType.TICK ) {
-			if ( time == 24000 ) time = -1;
-			time += 1;
+			if ( TIME == 24000 ) TIME = -1;
+			TIME += 1;
 
-			for ( Player player : Bukkit.getOnlinePlayers() ) player.setPlayerTime( time, false );
+			for ( Player player : Bukkit.getOnlinePlayers() ) player.setPlayerTime( TIME, false );
 		}
 	}
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
 		ev.setJoinMessage( null );
-		ev.getPlayer().setPlayerTime( time, false );
+		ev.getPlayer().setPlayerTime( TIME , false );
 		UtilPlayer.setTab( ev.getPlayer(), "WarZ" );
 	}
 
