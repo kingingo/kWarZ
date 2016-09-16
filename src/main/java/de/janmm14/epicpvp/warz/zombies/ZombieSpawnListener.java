@@ -38,12 +38,6 @@ public class ZombieSpawnListener implements Listener {
 				case ZOMBIE:
 					module.setupZombie( ( Zombie ) event.getEntity() );
 					break;
-				case SHEEP:
-					event.setCancelled( true );
-					Location loc = event.getLocation();
-					Zombie zombie = loc.getWorld().spawn( loc, Zombie.class );
-					module.setupZombie( zombie );
-					break;
 				default:
 					event.setCancelled( true );
 					break;
