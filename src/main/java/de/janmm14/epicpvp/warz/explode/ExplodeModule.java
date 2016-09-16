@@ -33,12 +33,12 @@ public class ExplodeModule extends Module<ExplodeModule> implements Listener {
 				int t = 0;
 
 				public void run() {
-					this.t += 5;
-					if ( this.t > 50 ) {
+					this.t += 1;
+					if ( this.t > 10 ) {
 						cancel();
-						return;
+					}else{
+						ev.getLocation().getWorld().spigot().playEffect( ev.getLocation(), Effect.EXPLOSION_HUGE, 0, 0, 1.0F, 1.0F, 1.0F, 0.0F, 3, 100 );
 					}
-					ev.getLocation().getWorld().spigot().playEffect( ev.getLocation(), Effect.EXPLOSION_HUGE, 0, 0, 1.0F, 1.0F, 1.0F, 0.0F, 3, 100 );
 				}
 			}
 				.runTaskTimer( getPlugin(), 0L, 5L );
