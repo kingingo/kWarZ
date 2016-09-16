@@ -17,15 +17,15 @@ commands:
     aliases: [wz]
   spawn:
     description: Teleport to the spawn
-    permission: warz.command.spawn
+    #permission: warz.command.spawn
     aliases: [wspawn]
   back:
     description: Teleport to the map
-    permission: warz.command.back
+    #permission: warz.command.back
     aliases: [start]
   shop:
     description: Open the shop
-    permission: warz.command.shop.browse
+    #permission: warz.command.shop.browse
   giveshopitem:
     description: Put an item into the player's chest
     permission: warz.command.shop.giveitem
@@ -34,7 +34,7 @@ commands:
     permission: warz.command.shop.setdeliverychest
   friends:
     description: Manage friendships
-    permission: warz.command.friends
+    #permission: warz.command.friends
     aliases: [friend, freund, freunde, frieden, friede]
 
 permissions:
