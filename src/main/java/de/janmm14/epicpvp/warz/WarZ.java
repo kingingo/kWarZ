@@ -17,6 +17,16 @@ import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.AACHack.AACHack;
 import eu.epicpvp.kcore.ChunkGenerator.CleanroomChunkGenerator;
 import eu.epicpvp.kcore.Command.CommandHandler;
+import eu.epicpvp.kcore.Command.Admin.CommandCMDMute;
+import eu.epicpvp.kcore.Command.Admin.CommandChatMute;
+import eu.epicpvp.kcore.Command.Admin.CommandFly;
+import eu.epicpvp.kcore.Command.Admin.CommandPvPMute;
+import eu.epicpvp.kcore.Command.Admin.CommandTp;
+import eu.epicpvp.kcore.Command.Admin.CommandTpHere;
+import eu.epicpvp.kcore.Command.Admin.CommandVanish;
+import eu.epicpvp.kcore.Command.Commands.CommandClearInventory;
+import eu.epicpvp.kcore.Command.Commands.CommandEnderchest;
+import eu.epicpvp.kcore.Command.Commands.CommandInvsee;
 import eu.epicpvp.kcore.Disguise.DisguiseManager;
 import eu.epicpvp.kcore.Kit.Command.CommandPerk;
 import eu.epicpvp.kcore.Kit.Perk;
@@ -107,7 +117,17 @@ public class WarZ extends JavaPlugin {
 			new PerkKillZombie()
 		} ) );
 		UtilServer.getCommandHandler().register( CommandPerk.class, new CommandPerk( UtilServer.getPerkManager() ) );
-
+		UtilServer.getCommandHandler().register( CommandFly.class, new CommandFly(this));
+		UtilServer.getCommandHandler().register( CommandTp.class, new CommandTp());
+		UtilServer.getCommandHandler().register( CommandTpHere.class, new CommandTpHere());
+		UtilServer.getCommandHandler().register( CommandClearInventory.class, new CommandClearInventory());
+		UtilServer.getCommandHandler().register( CommandInvsee.class, new CommandClearInventory());
+		UtilServer.getCommandHandler().register( CommandVanish.class, new CommandVanish(this));
+		UtilServer.getCommandHandler().register( CommandChatMute.class, new CommandChatMute(this));
+		UtilServer.getCommandHandler().register( CommandPvPMute.class, new CommandPvPMute(this));
+		UtilServer.getCommandHandler().register( CommandCMDMute.class, new CommandCMDMute(this));
+		UtilServer.getCommandHandler().register( CommandEnderchest.class, new CommandEnderchest(UtilServer.getMysql()));
+		
 		new DisguiseManager( this );
 		new ListenerCMD( this );
 		new ChatListener( this, UtilServer.getPermissionManager() );
