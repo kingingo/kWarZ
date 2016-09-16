@@ -21,6 +21,7 @@ import eu.epicpvp.kcore.Command.Admin.CommandCMDMute;
 import eu.epicpvp.kcore.Command.Admin.CommandChatMute;
 import eu.epicpvp.kcore.Command.Admin.CommandFly;
 import eu.epicpvp.kcore.Command.Admin.CommandPvPMute;
+import eu.epicpvp.kcore.Command.Admin.CommandToggle;
 import eu.epicpvp.kcore.Command.Admin.CommandTp;
 import eu.epicpvp.kcore.Command.Admin.CommandTpHere;
 import eu.epicpvp.kcore.Command.Admin.CommandVanish;
@@ -126,6 +127,7 @@ public class WarZ extends JavaPlugin {
 		UtilServer.getCommandHandler().register( CommandChatMute.class, new CommandChatMute(this));
 		UtilServer.getCommandHandler().register( CommandPvPMute.class, new CommandPvPMute(this));
 		UtilServer.getCommandHandler().register( CommandCMDMute.class, new CommandCMDMute(this));
+		UtilServer.getCommandHandler().register( CommandToggle.class, new CommandToggle(this));
 		UtilServer.getCommandHandler().register( CommandEnderchest.class, new CommandEnderchest(UtilServer.getMysql()));
 		
 		new DisguiseManager( this );
