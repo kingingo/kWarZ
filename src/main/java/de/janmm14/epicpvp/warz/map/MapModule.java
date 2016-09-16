@@ -66,7 +66,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 			plr.setItemInHand( map );
 			event.setCancelled( true );
 			if ( WarZ.DEBUG ) {
-				System.out.println( "[DEBUG] PlayerInteractEvent: swap empty map with map 25 " );
+				System.out.println( "[DEBUG] PlayerInteractEvent: swap empty map with map 25" );
 			}
 		}
 	}

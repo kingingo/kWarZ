@@ -11,15 +11,11 @@ import eu.epicpvp.kcore.Inventory.Inventory.InventoryCopy;
 import eu.epicpvp.kcore.Util.UtilInv;
 import eu.epicpvp.kcore.Util.UtilItem;
 
-import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
-
 public class ShopBuyInventoryHandler {
 
 	private final InventoryCopy inventory = new InventoryCopy( 6 * 9, "§6WarZ Shop" );
-	private final ItemRenameModule renameModule;
 
-	public ShopBuyInventoryHandler(ItemRenameModule renameModule) {
-		this.renameModule = renameModule;
+	public ShopBuyInventoryHandler() {
 		setupInventorz();
 	}
 

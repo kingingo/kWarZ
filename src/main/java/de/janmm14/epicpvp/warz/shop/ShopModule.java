@@ -7,7 +7,6 @@ import org.bukkit.util.Vector;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
-import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
 
 import lombok.Getter;
 
@@ -15,7 +14,7 @@ import lombok.Getter;
 public class ShopModule extends Module<ShopModule> {
 
 	@Getter
-	private final ShopBuyInventoryHandler buyInventoryHandler = new ShopBuyInventoryHandler( getModuleManager().getModule( ItemRenameModule.class ) );
+	private final ShopBuyInventoryHandler buyInventoryHandler = new ShopBuyInventoryHandler();
 	private ShopChestDeliveryHandler shopDeliveryHandler;
 	@Getter
 	@Nullable
