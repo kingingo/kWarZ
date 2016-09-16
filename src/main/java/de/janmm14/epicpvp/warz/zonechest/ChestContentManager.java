@@ -1,6 +1,7 @@
 package de.janmm14.epicpvp.warz.zonechest;
 
 import java.util.Arrays;
+import java.util.ConcurrentModificationException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -61,13 +62,13 @@ public class ChestContentManager implements Runnable {
 	}
 
 	public void reset() {
-		for(Player player : UtilServer.getPlayers())
-			player.closeInventory();
-		
-		
 		createdInventories.asMap()
 			.forEach( (blockVector, inventory) -> {
-				inventory.getViewers().forEach( HumanEntity::closeInventory );
+				try{
+					inventory.getViewers().forEach( HumanEntity::closeInventory );
+				}catch(ConcurrentModificationException e){
+					
+				}
 				inventory.clear();
 			} );
 		createdInventories.invalidateAll();
