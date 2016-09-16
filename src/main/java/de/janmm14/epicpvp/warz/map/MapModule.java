@@ -39,10 +39,11 @@ public class MapModule extends Module<MapModule> implements Listener {
 					System.out.println( "Rewriting map packet for " + event.getPlayer().getName() );
 				}
 				WrapperPlayServerMap packet = new WrapperPlayServerMap( event.getPacket() );
-				packet.setMapIcons( new MapIcon[]{ new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
-					( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
-					( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
-					( byte ) ( event.getPlayer().getLocation().getPitch() ) ) } );
+				packet.setMapIcons(new MapIcon[]{}); //TODO FIX it
+//				packet.setMapIcons( new MapIcon[]{ new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
+//					( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
+//					( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
+//					( byte ) ( event.getPlayer().getLocation().getPitch() ) ) } );
 			}
 
 			@Override
