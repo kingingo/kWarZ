@@ -42,7 +42,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 				packet.setMapIcons( new MapIcon[]{ new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
 					( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
 					( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
-					( byte ) ( event.getPlayer().getLocation().getYaw() ) ) } );
+					( byte ) ( event.getPlayer().getLocation().getPitch() ) ) } );
 			}
 
 			@Override

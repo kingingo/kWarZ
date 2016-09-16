@@ -141,6 +141,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
 		if ( UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) ) {
+			saveLastMapPos( ev.getPlayer(), ev.getPlayer().getLocation() );
 			ev.getPlayer().teleport( spawn );
 		}
 	}
