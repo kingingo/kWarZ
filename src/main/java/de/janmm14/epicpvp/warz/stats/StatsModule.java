@@ -22,20 +22,21 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+import dev.wolveringer.dataserver.gamestats.GameType;
+import dev.wolveringer.dataserver.gamestats.StatsKey;
+import eu.epicpvp.kcore.Scoreboard.Events.PlayerSetScoreboardEvent;
+import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsChangedEvent;
+import eu.epicpvp.kcore.StatsManager.StatsManager;
+import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
+import eu.epicpvp.kcore.Translation.TranslationHandler;
+import eu.epicpvp.kcore.Util.UtilPlayer;
+import eu.epicpvp.kcore.Util.UtilServer;
+
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.friends.FriendInfo;
 import de.janmm14.epicpvp.warz.friends.FriendModule;
 import de.janmm14.epicpvp.warz.util.ScoreboardAdapter;
-import dev.wolveringer.dataserver.gamestats.GameType;
-import dev.wolveringer.dataserver.gamestats.StatsKey;
-import eu.epicpvp.kcore.Scoreboard.Events.PlayerSetScoreboardEvent;
-import eu.epicpvp.kcore.StatsManager.StatsManager;
-import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
-import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsChangedEvent;
-import eu.epicpvp.kcore.Translation.TranslationHandler;
-import eu.epicpvp.kcore.Util.UtilPlayer;
-import eu.epicpvp.kcore.Util.UtilServer;
 
 public class StatsModule extends Module<StatsModule> implements Listener { //TODO /stats <name> | scoreboard
 
@@ -117,66 +118,68 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onDeath(PlayerDeathEvent event) {
-		Player victim = event.getEntity();
-		increaseStatistic( victim, StatsKey.DEATHS );
-		Player killer = victim.getKiller();
-		if ( killer == null ) {
-			EntityDamageEvent lastDmg = victim.getLastDamageCause();
-			if ( lastDmg == null ) {
-				return;
-			}
-			if ( lastDmg instanceof EntityDamageByEntityEvent ) {
-				EntityDamageByEntityEvent lastEntityDmg = ( EntityDamageByEntityEvent ) lastDmg;
-				if ( lastEntityDmg.getDamager() instanceof Projectile ) {
-					ProjectileSource shooter = ( ( Projectile ) lastEntityDmg.getDamager() ).getShooter();
-					if ( shooter instanceof LivingEntity ) {
-						LivingEntity shooterLiving = ( LivingEntity ) shooter;
-						if ( shooterLiving instanceof Player ) {
-							killer = ( Player ) shooterLiving;
-						} else {
-							increaseStatistic( victim, StatsKey.MONSTER_DEATHS );
+		getPlugin().getServer().getScheduler().runTaskAsynchronously( getPlugin(), () -> {
+			Player victim = event.getEntity();
+			increaseStatistic( victim, StatsKey.DEATHS );
+			Player killer = victim.getKiller();
+			if ( killer == null ) {
+				EntityDamageEvent lastDmg = victim.getLastDamageCause();
+				if ( lastDmg == null ) {
+					return;
+				}
+				if ( lastDmg instanceof EntityDamageByEntityEvent ) {
+					EntityDamageByEntityEvent lastEntityDmg = ( EntityDamageByEntityEvent ) lastDmg;
+					if ( lastEntityDmg.getDamager() instanceof Projectile ) {
+						ProjectileSource shooter = ( ( Projectile ) lastEntityDmg.getDamager() ).getShooter();
+						if ( shooter instanceof LivingEntity ) {
+							LivingEntity shooterLiving = ( LivingEntity ) shooter;
+							if ( shooterLiving instanceof Player ) {
+								killer = ( Player ) shooterLiving;
+							} else {
+								increaseStatistic( victim, StatsKey.MONSTER_DEATHS );
+							}
 						}
 					}
 				}
+				msg( victim, "DEATH", victim.getName() );
+				victim.sendMessage( TranslationHandler.getPrefixAndText( victim, "DEATH", victim.getName() ) );
+				return;
 			}
-			msg(victim, "DEATH", victim.getName());
-			victim.sendMessage( TranslationHandler.getPrefixAndText( victim, "DEATH", victim.getName() ) );
-			return;
-		}
-		
-		msg(victim,killer, "KILL_BY", victim.getName(), killer.getName());
-		
-		victim.sendMessage( TranslationHandler.getPrefixAndText( victim, "GUNGAME_KILLED_BY", killer.getName() ) );
-		killer.sendMessage( TranslationHandler.getPrefixAndText( killer, "GUNGAME_KILL", victim.getName() ) );
-		increaseStatistic( killer, StatsKey.ANIMAL_KILLS );
+
+			msg( victim, killer, "KILL_BY", victim.getName(), killer.getName() );
+
+			victim.sendMessage( TranslationHandler.getPrefixAndText( victim, "GUNGAME_KILLED_BY", killer.getName() ) );
+			killer.sendMessage( TranslationHandler.getPrefixAndText( killer, "GUNGAME_KILL", victim.getName() ) );
+			increaseStatistic( killer, StatsKey.ANIMAL_KILLS );
+		});
 	}
-	
+
 	public void msg(Player player, String tr, Object... input){
 		msg(player,null, tr, input);
 	}
-	
+
 	public void msg(Player victim, Player killer, String tr, Object... input){
 		FriendModule module = getModuleManager().getModule(FriendModule.class );
 		FriendInfo info = module.getFriendInfoManager().get(UtilPlayer.getPlayerId(victim));
-		
+
 		Player friend;
 		for(int friendId : info.getFriendWith().toArray()){
 			friend = UtilPlayer.searchExact(friendId);
-			
+
 			if(friend!=null){
 				friend.sendMessage( TranslationHandler.getPrefixAndText( friend, tr, input ) );
 			}
 			friend=null;
 		}
-		
+
 		if(killer!=null){
 			FriendInfo k_info = module.getFriendInfoManager().get(UtilPlayer.getPlayerId(victim));
-			
+
 			for(int friendId : k_info.getFriendWith().toArray()){
 				friend=null;
 				if(info.getFriendWith().contains(friendId))continue;
 				friend = UtilPlayer.searchExact(friendId);
-				
+
 				if(friend!=null){
 					friend.sendMessage( TranslationHandler.getPrefixAndText( friend, tr, input ) );
 				}

@@ -93,8 +93,10 @@ public class ShopChestDeliveryHandler implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onQuit(PlayerQuitEvent event) {
-		UserDataConverter.Profile profile = module.getPlugin().getUserDataConverter().getProfile( event.getPlayer() );
-		inventories.remove( profile.getPlayerId() );
+		module.getPlugin().getServer().getScheduler().runTaskAsynchronously( module.getPlugin(), () -> {
+			UserDataConverter.Profile profile = module.getPlugin().getUserDataConverter().getProfile( event.getPlayer() );
+			inventories.remove( profile.getPlayerId() );
+		} );
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
