@@ -84,8 +84,13 @@ public class WeaponDamageArmorListener implements Listener {
 
 	@Nullable
 	private ItemStack reduceDurability(ItemStack stack) {
-		short durability = ( short ) ( stack.getDurability() + 1 );
-		stack.setDurability( durability );
+		
+		if ( WarZ.DEBUG ) {
+			System.out.println( "itemstack = ["+stack.getType().name()+"], max-durability= ["+stack.getType().getMaxDurability()+"], durability= ["+stack.getDurability()+"]" );
+		}
+		
+//		short durability = ( short ) ( stack.getDurability() + 1 );
+//		stack.setDurability( durability );
 		return stack;
 	}
 
