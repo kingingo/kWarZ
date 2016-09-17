@@ -11,6 +11,10 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
+import com.shampaggon.crackshot.events.WeaponPreShootEvent;
+import com.shampaggon.crackshot.events.WeaponPrepareShootEvent;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 import de.janmm14.epicpvp.warz.WarZ;
 
@@ -148,6 +152,20 @@ public class WeaponDamageArmorListener implements Listener {
 				return true;
 			default:
 				return false;
+		}
+	}
+
+	@EventHandler
+	public void onShoot(WeaponPreShootEvent event) {
+		if ( !UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP )) {
+			event.setCancelled( true );
+		}
+	}
+
+	@EventHandler
+	public void onShoot(WeaponPrepareShootEvent event) {
+		if ( !UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP )) {
+			event.setCancelled( true );
 		}
 	}
 }

@@ -20,19 +20,20 @@ import org.bukkit.event.world.WorldLoadEvent;
 
 import com.shampaggon.crackshot.events.WeaponPreShootEvent;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-
-import de.janmm14.epicpvp.warz.util.MiscUtil;
 import dev.wolveringer.client.ClientWrapper;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
-import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Permission.Events.PlayerLoadPermissionEvent;
+import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
-import eu.epicpvp.kcore.Update.UpdateType;
 import eu.epicpvp.kcore.Update.Event.UpdateEvent;
+import eu.epicpvp.kcore.Update.UpdateType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilWorldGuard;
+
+import de.janmm14.epicpvp.warz.util.MiscUtil;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -47,29 +48,29 @@ public class WarZListener implements Listener {
 			event.disallow( AsyncPlayerPreLoginEvent.Result.KICK_OTHER, "Server not fully started up." );
 		}
 	}
-	
+
 	@EventHandler
-	public void protect_ItemFrame(EntityDamageEvent ev){
-		if(ev.getEntity() instanceof ItemFrame){
-			ev.setCancelled(true);
+	public void protect_ItemFrame(EntityDamageEvent ev) {
+		if ( ev.getEntity() instanceof ItemFrame ) {
+			ev.setCancelled( true );
 		}
 	}
-	
+
 	@EventHandler
-	public void slots(PlayerLoadPermissionEvent ev){
-		if(Bukkit.getOnlinePlayers().size() >= WarZ.SLOTS ){
-			if(ev.getPlayer().isOp())return;
-			
-			if(!ev.getPlayer().hasPermission(PermissionType.JOIN_FULL_SERVER.getPermissionToString())){
-				ev.getPlayer().kickPlayer(TranslationHandler.getText(ev.getPlayer(), "SERVER_FULL"));
-			}else{
-				if(Bukkit.getOnlinePlayers().size() >= WarZ.SLOTS_PREMIUM ){
-					ev.getPlayer().kickPlayer(TranslationHandler.getText(ev.getPlayer(), "SERVER_FULL"));
+	public void slots(PlayerLoadPermissionEvent ev) {
+		if ( Bukkit.getOnlinePlayers().size() >= WarZ.SLOTS ) {
+			if ( ev.getPlayer().isOp() ) return;
+
+			if ( !ev.getPlayer().hasPermission( PermissionType.JOIN_FULL_SERVER.getPermissionToString() ) ) {
+				ev.getPlayer().kickPlayer( TranslationHandler.getText( ev.getPlayer(), "SERVER_FULL" ) );
+			} else {
+				if ( Bukkit.getOnlinePlayers().size() >= WarZ.SLOTS_PREMIUM ) {
+					ev.getPlayer().kickPlayer( TranslationHandler.getText( ev.getPlayer(), "SERVER_FULL" ) );
 				}
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void loadWorld(WorldLoadEvent ev) {
 		ev.getWorld().setAutoSave( false );
@@ -89,11 +90,11 @@ public class WarZListener implements Listener {
 
 	@EventHandler
 	public void block(WeaponPreShootEvent ev) {
-		if ( !UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) ){
-			ev.setCancelled(true);
+		if ( !UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) ) {
+			ev.setCancelled( true );
 		}
 	}
-	
+
 	@EventHandler
 	public void onDeath(PlayerDeathEvent ev) {
 		ev.setDeathMessage( null );
@@ -101,6 +102,7 @@ public class WarZListener implements Listener {
 	}
 
 	public static long TIME = 0;
+
 	@EventHandler
 	public void time(UpdateEvent ev) {
 		if ( ev.getType() == UpdateType.TICK ) {
@@ -114,7 +116,7 @@ public class WarZListener implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
 		ev.setJoinMessage( null );
-		ev.getPlayer().setPlayerTime( TIME , false );
+		ev.getPlayer().setPlayerTime( TIME, false );
 		UtilPlayer.setTab( ev.getPlayer(), "WarZ" );
 	}
 
@@ -143,7 +145,7 @@ public class WarZListener implements Listener {
 		if ( ev.getPlayer().isOp() ) {
 			return;
 		}
-		String cmd = "";
+		String cmd;
 		if ( ev.getMessage().indexOf( ' ' ) != -1 ) {
 			String[] parts = ev.getMessage().split( " " );
 			cmd = parts[ 0 ];
@@ -153,6 +155,14 @@ public class WarZListener implements Listener {
 
 		if ( cmd.indexOf( ':' ) != -1 ) {
 			ev.setCancelled( true );
+		} else if (!cmd.isEmpty()){
+			cmd = cmd.toLowerCase();
+			if (cmd.charAt( 0 ) == '/') {
+				cmd = cmd.substring( 1 );
+			}
+			if ( cmd.startsWith( "me" ) ) {
+				ev.setCancelled( true );
+			}
 		}
 	}
 }
