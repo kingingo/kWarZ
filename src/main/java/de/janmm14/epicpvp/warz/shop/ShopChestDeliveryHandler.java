@@ -83,6 +83,7 @@ public class ShopChestDeliveryHandler implements Listener {
 	private void saveInventory(UserDataConverter.Profile profile, Inventory inv) {
 		kConfig config = userDataConfig.getConfig( profile.getPlayerId() );
 		config.setItemStackArray( "shop.delivery.chestcontent", inv.getContents() );
+		userDataConfig.saveConfig( profile.getPlayerId() );
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
