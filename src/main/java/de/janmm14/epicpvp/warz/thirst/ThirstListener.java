@@ -13,9 +13,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsCreateEvent;
 import eu.epicpvp.kcore.Util.UtilPlayer;
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +25,13 @@ import lombok.RequiredArgsConstructor;
 public class ThirstListener implements Listener {
 
 	private final ThirstModule module;
+
+	@EventHandler
+	public void onJoin(PlayerJoinEvent event) {
+		if ( !event.getPlayer().hasPlayedBefore() ) {
+			event.getPlayer().setExp( 1 );
+		}
+	}
 
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
@@ -61,6 +70,9 @@ public class ThirstListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onMove(PlayerMoveEvent event) {
 		Player plr = event.getPlayer();
+		if ( !UtilWorldGuard.RegionFlag( plr, DefaultFlag.PVP ) ) {
+			return;
+		}
 		if ( plr.getExp() <= 0.0 ) {
 			return;
 		}
