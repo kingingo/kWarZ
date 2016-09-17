@@ -12,9 +12,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import eu.epicpvp.kcore.Permission.Events.PlayerLoadPermissionEvent;
+import de.janmm14.epicpvp.warz.Module;
+import de.janmm14.epicpvp.warz.WarZ;
 import eu.epicpvp.kcore.Permission.Permission;
 import eu.epicpvp.kcore.Permission.PermissionType;
+import eu.epicpvp.kcore.Permission.Events.PlayerLoadPermissionEvent;
+import eu.epicpvp.kcore.Permission.Group.Group;
 import eu.epicpvp.kcore.UserDataConfig.Events.UserDataConfigRemoveEvent;
 import eu.epicpvp.kcore.Util.UtilEvent;
 import eu.epicpvp.kcore.Util.UtilEvent.ActionType;
@@ -24,9 +27,6 @@ import net.minecraft.server.v1_8_R3.EntityHuman;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.InventoryEnderChest;
 import net.minecraft.server.v1_8_R3.InventorySubcontainer;
-
-import de.janmm14.epicpvp.warz.Module;
-import de.janmm14.epicpvp.warz.WarZ;
 
 public class EnderchestModule extends Module<EnderchestModule> implements Listener {
 
@@ -79,9 +79,9 @@ public class EnderchestModule extends Module<EnderchestModule> implements Listen
 			if ( ev.getPlayer().isOp() || ev.getPlayer().hasPermission( PermissionType.ALL_PERMISSION.getPermissionToString() ) ) {
 				use_amount = 54;
 			} else {
-				for ( Permission perm : ev.getManager().getPermissionPlayer( ev.getPlayer() ).getPermissions() ) {
-					if ( perm.getPermission().contains( "epicpvp.warz.enderchest.size." ) ) {
-						use_amount = Integer.valueOf( perm.getPermission().substring( "epicpvp.warz.enderchest.size.".length(), perm.getPermission().length() ) );
+				for(int i = 54; i > 0; i--){
+					if(ev.getManager().getPermissionPlayer(ev.getPlayer()).hasPermission("epicpvp.warz.enderchest.size."+i)){
+						use_amount=i;
 						break;
 					}
 				}
