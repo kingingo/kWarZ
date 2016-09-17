@@ -99,7 +99,12 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 			return;
 		}
 		Player plr = Bukkit.getPlayer( UtilServer.getClient().getPlayer( event.getPlayerId() ).getUUID() );
-		ScoreboardAdapter adapter = scoreboardAdapters.get( plr.getUniqueId() );
+		ScoreboardAdapter adapter;
+		if (plr == null) {
+			adapter = new ScoreboardAdapter( new DummyObjective() );
+		} else {
+			adapter = scoreboardAdapters.get( plr.getUniqueId() );
+		}
 		if ( adapter == null ) {
 			return;
 		}
