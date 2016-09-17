@@ -41,9 +41,9 @@ public class FriendHurtListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true) //highest is for CrackShotTweakModule
 	public void onWeaponDamage(WeaponDamageEntityEvent event) {
-		if ( event.getVictim() instanceof Player && event.getDamager() instanceof Player ) {
+		if ( event.getVictim() instanceof Player ) {
 			UUID victimUuid = event.getVictim().getUniqueId();
-			UUID damagerUuid = event.getDamager().getUniqueId();
+			UUID damagerUuid = event.getPlayer().getUniqueId();
 			UserDataConverter.Profile damagerProfile = userDataConverter.getProfile( damagerUuid );
 			FriendInfoManager manager = module.getFriendInfoManager();
 			if ( PlayerFriendRelation.areFriends( manager, manager.get( victimUuid ), damagerProfile.getPlayerId() ) ) {
