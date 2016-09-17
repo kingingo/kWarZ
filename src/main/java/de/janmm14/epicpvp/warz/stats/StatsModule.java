@@ -98,7 +98,7 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 		if ( event.getManager().getType() != GameType.WARZ ) {
 			return;
 		}
-		Player plr = Bukkit.getPlayer( UtilServer.getClient().getPlayer( event.getPlayerId() ).getUUID() );
+		Player plr = Bukkit.getPlayer( UtilServer.getClient().getPlayerAndLoad( event.getPlayerId() ).getUUID() );
 		ScoreboardAdapter adapter;
 		if (plr == null) {
 			adapter = new ScoreboardAdapter( new DummyObjective() );
