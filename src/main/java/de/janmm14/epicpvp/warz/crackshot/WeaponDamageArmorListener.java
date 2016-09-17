@@ -73,8 +73,8 @@ public class WeaponDamageArmorListener implements Listener {
 				victim.setHealth( health + FAKE_EVENT_DMG );
 				event.setDamage( FAKE_EVENT_DMG );
 			} else { //player is going to die, but since crackshot applies default armor, set victim health to 1 half heart and the damage ridiculous high to force the death
-				victim.setHealth( 1 );
-				event.setDamage( 1000 );
+				victim.setHealth( 0.001 );
+				event.setDamage( 1 );
 			}
 		} else {
 			event.setDamage( 0 );
@@ -87,7 +87,7 @@ public class WeaponDamageArmorListener implements Listener {
 		if ( WarZ.DEBUG ) {
 			System.out.println( "itemstack = ["+stack.getType().name()+"], max-durability= ["+stack.getType().getMaxDurability()+"], durability= ["+stack.getDurability()+"]" );
 		}
-		
+
 		short durability = ( short ) ( stack.getDurability() + 1 );
 		stack.setDurability( durability );
 		return stack;
