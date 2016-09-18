@@ -58,7 +58,7 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 		return false;
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void damage(EntityDamageByEntityEvent ev){
 		if(ev.getEntity().getType() == EntityType.SKELETON){
 			if(ev.getDamager() instanceof Player){
