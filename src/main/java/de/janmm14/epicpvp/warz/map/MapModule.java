@@ -49,6 +49,11 @@ public class MapModule extends Module<MapModule> implements Listener {
 					return;
 				}
 				
+				if(event.getPlayer().getItemInHand()==null||event.getPlayer().getItemInHand().getType()!=Material.MAP){
+					event.setCancelled(true);
+					return;
+				}
+				
 				WrapperPlayServerMap packet = new WrapperPlayServerMap( event.getPacket() );
 				
 				if( UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ){
@@ -60,17 +65,17 @@ public class MapModule extends Module<MapModule> implements Listener {
 								( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
 								( byte ) ( getRotation(event.getPlayer().getLocation()) )));
 						
-						Collection<Entity> nearbyEntities = event.getPlayer().getWorld().getNearbyEntities( event.getPlayer().getLocation(), 25, 25, 25 );
+						Collection<Entity> nearbyEntities = event.getPlayer().getWorld().getNearbyEntities( event.getPlayer().getLocation(), 100, 100, 100 );
 						for ( Entity e : nearbyEntities ) {
 							if ( e instanceof Player && e.getUniqueId() != event.getPlayer().getUniqueId() ) {
-								icons.add(new MapIcon( MapCursor.Type.WHITE_CROSS.getValue(),
+								icons.add(new MapIcon( MapCursor.Type.WHITE_POINTER.getValue(),
 										( byte ) ( e.getLocation().getBlockX() / 8 ),
 										( byte ) ( e.getLocation().getBlockZ() / 8 ),
 										( byte ) ( getRotation(e.getLocation()) )));
 							}
 						}
 						
-						packet.setMapIcons( icons.toArray() );
+						packet.setMapIcons( icons.toArray(new MapIcon[icons.size()]) );
 					}else{
 						packet.setMapIcons( new MapIcon[]{ new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
 								( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),

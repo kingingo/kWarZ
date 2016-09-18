@@ -8,6 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import de.janmm14.epicpvp.warz.WarZ;
 import eu.epicpvp.kcore.Disguise.disguises.livings.DisguisePlayer;
 import eu.epicpvp.kcore.Util.UtilEnt;
 import eu.epicpvp.kcore.Util.UtilServer;
@@ -56,7 +57,10 @@ public class NPC {
 	}
 
 	public void remove() {
-		if ( npc != null && !npc.isDead() ) npc.remove();
+		if(WarZ.DEBUG)System.out.println("NPC removed "+(npc!=null)+" && "+npc.isDead());
+		if ( npc != null && !npc.isDead() ){
+			npc.remove();
+		}
 		UtilServer.getDisguiseManager().undisguise( entityId );
 	}
 
