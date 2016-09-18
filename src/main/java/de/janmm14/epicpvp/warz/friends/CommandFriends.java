@@ -403,6 +403,8 @@ public class CommandFriends implements TabExecutor {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+		if (true)
+			return null;
 		if ( !( sender instanceof Player ) ) {
 			return ImmutableList.of();
 		}
