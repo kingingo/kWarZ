@@ -24,7 +24,7 @@ public class ShopBuyInventoryHandler {
 	}
 
 	private void setupInventorz() {
-		inventory.fillBorder( Material.STAINED_GLASS_PANE, 7 );
+//		inventory.fillBorder( Material.STAINED_GLASS_PANE, 7 );
 
 		addItem( 5 - 1, 0, Material.NETHER_STAR, "§cWar§lZ§7 - §aShop" );
 		UtilItem.addEnchantmentGlow( inventory.getItem( 5 - 1 ) );
@@ -37,8 +37,16 @@ public class ShopBuyInventoryHandler {
 		addItem( 9 * 3 + 3 - 1, 2034899, Material.SKULL_ITEM, 3, "§eHead-Dropper §7[§bPerk§7]", "§7> §eDer Kopf deiner Gegner dropt, sobald du sie tötest." );
 		addItem( 9 * 3 + 4 - 1, 2034901, Material.POTION, "§eNo-Water-Damage §7[§bPerk§7]", "§7> §eDu erhälst im Wasser §6keinen §eSchaden." );
 		addItem( 9 * 3 + 5 - 1, 2034912, Material.DIAMOND_SWORD, "§eOne-Hit §7[§bPerk§7]", "§7> §eDu kannst jeden Zombie mit §6einem §eSchlag töten.", "  §eMit jedem Schwert." );
-		addItem( 9 * 3 + 6 - 1, 2034925, Material.ANVIL, "§e/Repair §7[§bRechte§7]" ); //TODO maybe remove?
+		addItem( 9 * 3 + 6 - 1, 2034925, Material.ANVIL, "§e/Repair §7[§bRechte§7]" );
 		addItem( 9 * 3 + 7 - 1, 2034889, Material.COMPASS, "§e/Near §7[§bRechte§7]" );
+		addItem( 9 * 4 + 3 - 1, 2063397, Material.COMPASS, "§eAlle Waffen" );
+		addItem( 9 * 4 + 4 - 1, 2063404, Material.GOLD_AXE, "§eTier V Sniper" );
+		addItem( 9 * 4 + 5 - 1, 2063408, Material.GOLD_PICKAXE, "§eTier V Shotgun" );
+		addItem( 9 * 4 + 6 - 1, 2063413, Material.GOLD_HOE, "§eTier V Autogun" );
+		addItem( 9 * 4 + 7 - 1, 2063416, Material.GOLD_SPADE, "§eTier V Pistol" );
+		addItem( 9 * 5 + 3 - 1, 2063422, Material.getMaterial(351), 11, "§eMunitions Paket" );
+		
+		
 		UtilInv.getBase().addPage( inventory );
 	}
 
