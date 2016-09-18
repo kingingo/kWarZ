@@ -71,6 +71,7 @@ public class CommandFriends implements TabExecutor {
 		builder.put( "ablehnen", "deny" );
 		builder.put( "zurückrufen", "revoke" );
 
+		builder.put( "anfragen", "add" );
 		builder.put( "anfragen", "request" );
 		builder.put( "hilfe", "help" );
 		subCommands = builder.build();
@@ -344,6 +345,7 @@ public class CommandFriends implements TabExecutor {
 					}
 					return;
 				}
+				case "add":
 				case "anfragen":
 				case "request": {
 					if ( args.length < 2 ) {
