@@ -40,24 +40,24 @@ public class FishingRodListener implements Listener {
 
 	@EventHandler
 	public void onFishingRod(PlayerFishEvent event) {
-		if (event.getState() == PlayerFishEvent.State.FISHING) {
+		if ( ( event.getState() == PlayerFishEvent.State.IN_GROUND || event.getState() == PlayerFishEvent.State.FAILED_ATTEMPT )
+			&& UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ) {
+
 			UUID uuid = event.getPlayer().getUniqueId();
 			Long lastUsage = delay.getIfPresent( uuid );
 			if ( lastUsage == null || lastUsage < System.currentTimeMillis() - USAGE_DELAY_SECONDS * 1000 ) {
 				delay.put( uuid, System.currentTimeMillis() );
 			} else {
 				event.setCancelled( true );
-				long sec = Math.max( 1, ( System.currentTimeMillis() - lastUsage ) / 1000 );
-				if (sec == 1) {
+				long sec = USAGE_DELAY_SECONDS - Math.max( 1, ( System.currentTimeMillis() - lastUsage ) / 1000 );
+				if ( sec == 1 ) {
 					event.getPlayer().sendMessage( "§cDu musst noch §6eine §cSekunde warten." );
 				} else {
 					event.getPlayer().sendMessage( "§cDu musst noch §6" + sec + "§c Sekunden warten." );
 				}
+				return;
 			}
-			return;
-		}
-		if ( ( event.getState() == PlayerFishEvent.State.IN_GROUND || event.getState() == PlayerFishEvent.State.FAILED_ATTEMPT )
-			&& UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ) {
+
 			Location location = event.getHook().getLocation();
 			boolean cancel = true;
 			for ( BlockFace face : BlockFace.values() ) {
