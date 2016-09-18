@@ -3,10 +3,13 @@ package de.janmm14.epicpvp.warz.logout;
 import java.util.HashMap;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
@@ -24,7 +27,9 @@ import eu.epicpvp.kcore.kConfig.kConfig;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
-
+import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
+import de.janmm14.epicpvp.warz.friends.FriendModule;
+import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
 import lombok.Getter;
 
 public class LogoutModule extends Module<LogoutModule> implements Listener {
@@ -47,6 +52,22 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 			return true;
 		}
 		return false;
+	}
+	
+	@EventHandler
+	public void damage(EntityDamageByEntityEvent ev){
+		if(ev.getEntity().getType() == EntityType.SKELETON){
+			if(ev.getDamager() instanceof Player){
+				Player damager = (Player)ev.getDamager();
+				int victimId = npcs.get(ev.getEntity().getEntityId()).getPlayerId();
+				
+				FriendInfoManager info = getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
+				
+				if(PlayerFriendRelation.areFriends(info, info.get(UtilPlayer.getPlayerId(damager)), victimId)){
+					ev.setCancelled(true);
+				}
+			}
+		}
 	}
 	
 	@EventHandler
