@@ -126,7 +126,10 @@ public class MapModule extends Module<MapModule> implements Listener {
             x = (byte)((center.getBlockX()/8) + r * Math.cos(angle));
             z = (byte)((center.getBlockZ()/8) + r * Math.sin(angle));
             
-            icons.add(new MapIcon(MapCursor.Type.WHITE_CROSS.getValue(), x, z, (byte)0));
+            if(x >= -64 && x <= 64
+            		&& z >= -64 && z <= 64){
+                icons.add(new MapIcon(MapCursor.Type.WHITE_CROSS.getValue(), x, z, (byte)0));
+            }
         }
 	}
 	
