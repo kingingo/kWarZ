@@ -24,16 +24,38 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FishingRodListener implements Listener {
 
+	private static final int USAGE_DELAY_SECONDS = 5;
 	private final FishingRodModule module;
 	private final Cache<UUID, Object> noFallDamage = CacheBuilder.newBuilder()
-		.expireAfterWrite( 10, TimeUnit.SECONDS )  //if he did not got fall damage by the velocity, remove him after some time
+		.expireAfterWrite( 10, TimeUnit.SECONDS ) // if he did not got fall damage by the velocity, remove him after some time
 		.initialCapacity( 32 )
-		.concurrencyLevel( 1 ) //events are sync
+		.concurrencyLevel( 1 ) // events are sync
+		.build();
+	private final Cache<UUID, Long> delay = CacheBuilder.newBuilder()
+		.expireAfterWrite( USAGE_DELAY_SECONDS, TimeUnit.SECONDS )
+		.initialCapacity( 32 )
+		.concurrencyLevel( 1 ) // events are sync
 		.build();
 	private static final Object DUMMY = new Object();
 
 	@EventHandler
 	public void onFishingRod(PlayerFishEvent event) {
+		if (event.getState() == PlayerFishEvent.State.FISHING) {
+			UUID uuid = event.getPlayer().getUniqueId();
+			Long lastUsage = delay.getIfPresent( uuid );
+			if ( lastUsage == null || lastUsage < System.currentTimeMillis() - USAGE_DELAY_SECONDS * 1000 ) {
+				delay.put( uuid, System.currentTimeMillis() );
+			} else {
+				event.setCancelled( true );
+				long sec = Math.max( 1, ( System.currentTimeMillis() - lastUsage ) / 1000 );
+				if (sec == 1) {
+					event.getPlayer().sendMessage( "§cDu musst noch §6eine §cSekunde warten." );
+				} else {
+					event.getPlayer().sendMessage( "§cDu musst noch §6" + sec + "§c Sekunden warten." );
+				}
+			}
+			return;
+		}
 		if ( ( event.getState() == PlayerFishEvent.State.IN_GROUND || event.getState() == PlayerFishEvent.State.FAILED_ATTEMPT )
 			&& UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ) {
 			Location location = event.getHook().getLocation();
