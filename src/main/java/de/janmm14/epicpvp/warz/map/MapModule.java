@@ -78,7 +78,6 @@ public class MapModule extends Module<MapModule> implements Listener {
 										( byte ) ( getRotation(plr.getLocation()) )));
 							}
 						}
-						createCircle(icons, 200, event.getPlayer().getLocation());
 						
 						packet.setMapIcons( icons.toArray(new MapIcon[icons.size()]) );
 					}else if(event.getPlayer().hasPermission(PermissionType.WARZ_MAP_OTHER_PLAYER.getPermissionToString())){
