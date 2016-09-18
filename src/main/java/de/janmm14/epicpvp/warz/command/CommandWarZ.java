@@ -31,6 +31,9 @@ public class CommandWarZ implements TabExecutor {
 			sender.sendMessage( "§c/warz reload §7- §6Liest die Config neu ein." );
 			sender.sendMessage( "§c/warz refill §7- §6Füllt die Kisten neu." );
 			sender.sendMessage( "§c/warz debug §7- §6Wechselt den Debug-Modus." );
+			sender.sendMessage( "§c/warz day §7- §6Setzt auf Tag." );
+			sender.sendMessage( "§c/warz night §7- §6Setzt auf Nacht." );
+			sender.sendMessage( "§c/warz settime [Time]§7 - §6Setzt die Zeit." );
 			return true;
 		}
 		switch ( args[ 0 ].toLowerCase() ) {

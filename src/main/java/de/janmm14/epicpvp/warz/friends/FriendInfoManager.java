@@ -210,13 +210,17 @@ public class FriendInfoManager {
 	private void save(FriendInfo friendInfo) {
 		kConfig cfg = friendInfo.getConfig();
 
-		cfg.set( "friendWith", toJava( friendInfo.getFriendWith() ) );
-		cfg.set( "requestsGot", toJava( friendInfo.getRequestsGot() ) );
-		cfg.set( "requestsSent", toJava( friendInfo.getRequestsSent() ) );
+		if(cfg!=null){
+			cfg.set( "friendWith", toJava( friendInfo.getFriendWith() ) );
+			cfg.set( "requestsGot", toJava( friendInfo.getRequestsGot() ) );
+			cfg.set( "requestsSent", toJava( friendInfo.getRequestsSent() ) );
 
-		getModule().getPlugin().getUserDataConfig().saveConfig( friendInfo.getPlayerId() );
+			getModule().getPlugin().getUserDataConfig().saveConfig( friendInfo.getPlayerId() );
 
-		friendInfo.setDirty( false );
+			friendInfo.setDirty( false );
+		}else{
+			System.err.println("FriendInfo Config from "+friendInfo.getPlayerId()+" is NULL!!!!!!");
+		}
 	}
 
 	private final class FlushRunnable implements Runnable {
