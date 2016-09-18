@@ -31,9 +31,13 @@ import net.minecraft.server.v1_8_R3.MapIcon;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
+import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
+import de.janmm14.epicpvp.warz.friends.FriendModule;
+import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
 import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.Util.UtilDirection;
+import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
@@ -68,7 +72,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 						
 						for(Player plr : UtilServer.getPlayers()){
 							if (plr.getUniqueId() != event.getPlayer().getUniqueId() ) {
-								icons.add(new MapIcon( MapCursor.Type.RED_POINTER.getValue(),
+								icons.add(new MapIcon( getPointer(event.getPlayer(), plr),
 										( byte ) ( plr.getLocation().getBlockX() / 8 ),
 										( byte ) ( plr.getLocation().getBlockZ() / 8 ),
 										( byte ) ( getRotation(plr.getLocation()) )));
@@ -87,13 +91,14 @@ public class MapModule extends Module<MapModule> implements Listener {
 						Collection<Entity> nearbyEntities = event.getPlayer().getWorld().getNearbyEntities( event.getPlayer().getLocation(), 200, 200, 200 );
 						for ( Entity e : nearbyEntities ) {
 							if ( e instanceof Player && e.getUniqueId() != event.getPlayer().getUniqueId() ) {
-								icons.add(new MapIcon( MapCursor.Type.RED_POINTER.getValue(),
+								icons.add(new MapIcon( getPointer(event.getPlayer(), ((Player)e)),
 										( byte ) ( e.getLocation().getBlockX() / 8 ),
 										( byte ) ( e.getLocation().getBlockZ() / 8 ),
 										( byte ) ( getRotation(e.getLocation()) )));
 							}
 						}
-						
+
+						createCircle(icons, 200, event.getPlayer().getLocation());
 						packet.setMapIcons( icons.toArray(new MapIcon[icons.size()]) );
 					}else{
 						packet.setMapIcons( new MapIcon[]{ new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
@@ -118,19 +123,25 @@ public class MapModule extends Module<MapModule> implements Listener {
 		} );
 	}
 	
+	public byte getPointer(Player owner, Player player){
+		FriendInfoManager info = getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
+		return (PlayerFriendRelation.areFriends(info, info.get(UtilPlayer.getPlayerId(owner)), UtilPlayer.getPlayerId(player)) ? MapCursor.Type.GREEN_POINTER.getValue() : MapCursor.Type.RED_POINTER.getValue());
+	}
+	
 	public void createCircle(List<MapIcon> icons,int r,Location center){
 		int x;
 		int z;    
-        for (double i = 0.0; i < 360.0; i += 0.1) {
+        for (double i = 0.0; i < 360.0; i += (800/r)) {
         	double angle = i * Math.PI / 180;
             x = (int)(center.getBlockX() + r * Math.cos(angle));
             z = (int)(center.getBlockZ() + r * Math.sin(angle));
             
-            if((x/8) >= -64 && (x/8) <= 64
-            		&& (z/8) >= -64 && (z/8) <= 64){
-                icons.add(new MapIcon(MapCursor.Type.WHITE_POINTER.getValue(), (byte)(x/8), (byte)(z/8), (byte)0));
+            if((x/8) >= -128 && (x/8) <= 128
+            		&& (z/8) >= -128 && (z/8) <= 128){
+                icons.add(new MapIcon(MapCursor.Type.WHITE_CROSS.getValue(), (byte)(x/8), (byte)(z/8), (byte)0));
             }
         }
+        
 	}
 	
 	public byte getRotation(Location location) {

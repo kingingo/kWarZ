@@ -38,8 +38,8 @@ public class ShopBuyInventoryHandler {
 		addItem( 9 * 3 + 4 - 1, 2034901, Material.POTION, "§eNo-Water-Damage §7[§bPerk§7]", "§7> §eDu erhälst im Wasser §6keinen §eSchaden." );
 		addItem( 9 * 3 + 5 - 1, 2034912, Material.DIAMOND_SWORD, "§eOne-Hit §7[§bPerk§7]", "§7> §eDu kannst jeden Zombie mit §6einem §eSchlag töten.", "  §eMit jedem Schwert." );
 		addItem( 9 * 3 + 6 - 1, 2034925, Material.ANVIL, "§e/Repair §7[§bRechte§7]" );
-		addItem( 9 * 3 + 7 - 1, 2034889, Material.COMPASS, "§e/Near §7[§bRechte§7]" );
-		addItem( 9 * 4 + 3 - 1, 2063397, Material.COMPASS, "§eAlle Waffen" );
+		addItem( 9 * 3 + 7 - 1, 2034889, Material.MAP, "§eMap erweiterung" );
+		addItem( 9 * 4 + 3 - 1, 2063397, Material.CHEST, "§eAlle Waffen" );
 		addItem( 9 * 4 + 4 - 1, 2063404, Material.GOLD_AXE, "§eTier V Sniper" );
 		addItem( 9 * 4 + 5 - 1, 2063408, Material.GOLD_PICKAXE, "§eTier V Shotgun" );
 		addItem( 9 * 4 + 6 - 1, 2063413, Material.GOLD_HOE, "§eTier V Autogun" );
