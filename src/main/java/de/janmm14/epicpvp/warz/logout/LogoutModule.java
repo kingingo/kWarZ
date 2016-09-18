@@ -60,7 +60,7 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void damage(EntityDamageByEntityEvent ev){
-		if(ev.getEntity().getType() == EntityType.SKELETON){
+		if(ev.getEntity().getType() == EntityType.SKELETON && npcs.containsKey(ev.getEntity().getEntityId())){
 			if(ev.getDamager() instanceof Player){
 				Player damager = (Player)ev.getDamager();
 				int victimId = npcs.get(ev.getEntity().getEntityId()).getPlayerId();
@@ -76,7 +76,7 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true) //highest is for CrackShotTweakModule
 	public void onWeaponDamage(WeaponDamageEntityEvent event) {
-		if ( event.getVictim() instanceof Skeleton ) {
+		if ( event.getVictim() instanceof Skeleton && npcs.containsKey(event.getVictim().getEntityId())) {
 			int victimId = npcs.get(event.getVictim().getEntityId()).getPlayerId();
 			UUID damagerUuid = event.getPlayer().getUniqueId();
 			
