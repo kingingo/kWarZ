@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 
 import com.google.common.collect.ImmutableList;
 import dev.wolveringer.client.debug.Debugger;
+import eu.epicpvp.kcore.Command.CommandHandler.Sender;
 import eu.epicpvp.kcore.Util.UtilNumber;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.WarZListener;
@@ -20,20 +22,20 @@ import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CommandWarZ implements TabExecutor {
+public class CommandWarZ implements CommandExecutor{
 
 	private final WarZ plugin;
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
+	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "wz", sender = Sender.PLAYER)
+	public boolean onCommand(CommandSender sender, Command cmd, String arg2,String[] args) {
 		if ( args.length == 0 ) {
 			sender.sendMessage( "§aWarZ Plugin by Janmm14" );
-			sender.sendMessage( "§c/warz reload §7- §6Liest die Config neu ein." );
-			sender.sendMessage( "§c/warz refill §7- §6Füllt die Kisten neu." );
-			sender.sendMessage( "§c/warz debug §7- §6Wechselt den Debug-Modus." );
-			sender.sendMessage( "§c/warz day §7- §6Setzt auf Tag." );
-			sender.sendMessage( "§c/warz night §7- §6Setzt auf Nacht." );
-			sender.sendMessage( "§c/warz settime [Time]§7 - §6Setzt die Zeit." );
+			sender.sendMessage( "§c/wz reload §7- §6Liest die Config neu ein." );
+			sender.sendMessage( "§c/wz refill §7- §6Füllt die Kisten neu." );
+			sender.sendMessage( "§c/wz debug §7- §6Wechselt den Debug-Modus." );
+			sender.sendMessage( "§c/wz day §7- §6Setzt auf Tag." );
+			sender.sendMessage( "§c/wz night §7- §6Setzt auf Nacht." );
+			sender.sendMessage( "§c/wz settime [Time]§7 - §6Setzt die Zeit." );
 			return true;
 		}
 		switch ( args[ 0 ].toLowerCase() ) {
@@ -95,19 +97,19 @@ public class CommandWarZ implements TabExecutor {
 		return true;
 	}
 
-	private ImmutableList<String> options = ImmutableList.of( "reload", "refill", "debug", "debug2" );
-
-	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-		if ( args.length != 1 ) {
-			return Collections.emptyList();
-		}
-		String arg0 = args[ 0 ].toLowerCase();
-		if ( arg0.isEmpty() ) {
-			return Arrays.asList( "reload", "refill", "debug", "debug2" );
-		}
-		return options.stream()
-			.filter( option -> option.toLowerCase().startsWith( arg0 ) )
-			.collect( Collectors.toList() );
-	}
+//	private ImmutableList<String> options = ImmutableList.of( "reload", "refill", "debug", "debug2" );
+//
+//	@Override
+//	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+//		if ( args.length != 1 ) {
+//			return Collections.emptyList();
+//		}
+//		String arg0 = args[ 0 ].toLowerCase();
+//		if ( arg0.isEmpty() ) {
+//			return Arrays.asList( "reload", "refill", "debug", "debug2" );
+//		}
+//		return options.stream()
+//			.filter( option -> option.toLowerCase().startsWith( arg0 ) )
+//			.collect( Collectors.toList() );
+//	}
 }

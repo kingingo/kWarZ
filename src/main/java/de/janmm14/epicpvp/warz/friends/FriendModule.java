@@ -4,7 +4,7 @@ import org.bukkit.command.PluginCommand;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
-
+import eu.epicpvp.kcore.Util.UtilServer;
 import lombok.Getter;
 
 public class FriendModule extends Module<FriendModule> {
@@ -18,10 +18,11 @@ public class FriendModule extends Module<FriendModule> {
 	public FriendModule(WarZ plugin) {
 		super( plugin, FriendHurtListener::new, FriendNotifyListener::new );
 		friendInfoManager = new FriendInfoManager( this );
-		CommandFriends handler = new CommandFriends( this );
-		PluginCommand cmd = getPlugin().getCommand( "friends" );
-		cmd.setExecutor( handler );
-		cmd.setTabCompleter( handler );
+//		CommandFriends handler = new CommandFriends( this );
+//		PluginCommand cmd = getPlugin().getCommand( "friends" );
+//		cmd.setExecutor( handler );
+//		cmd.setTabCompleter( handler );
+		UtilServer.getCommandHandler().register(CommandFriends.class, new CommandFriends(this));
 	}
 
 	@Override

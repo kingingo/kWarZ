@@ -38,9 +38,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 				if ( event.getPacketType() != PacketType.Play.Server.MAP ) {
 					return;
 				}
-				if ( WarZ.DEBUG ) {
-					System.out.println( "Rewriting map packet for " + event.getPlayer().getName() );
-				}
+				
 				WrapperPlayServerMap packet = new WrapperPlayServerMap( event.getPacket() );
 				
 				if( UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ){
@@ -50,6 +48,10 @@ public class MapModule extends Module<MapModule> implements Listener {
 							( byte ) ( event.getPlayer().getLocation().getPitch() ) ) } );
 				}else{
 					packet.setMapIcons(new MapIcon[]{});
+				}
+				
+				if ( WarZ.DEBUG ) {
+					System.out.println( "Rewriting map packet for " + event.getPlayer().getName() +" MapId:"+packet.getItemDamage());
 				}
 			}
 

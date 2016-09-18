@@ -13,9 +13,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import javax.print.CancelablePrintJob;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
@@ -24,6 +27,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import dev.wolveringer.dataserver.player.LanguageType;
+import eu.epicpvp.kcore.Command.CommandHandler.Sender;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
 import gnu.trove.TIntCollection;
 import gnu.trove.list.TIntList;
@@ -38,7 +42,7 @@ import lombok.NonNull;
 import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.stream;
 import static de.janmm14.epicpvp.warz.util.MiscUtil.not;
 
-public class CommandFriends implements TabExecutor {
+public class CommandFriends implements CommandExecutor{
 
 	private static final int FRIEND_LIST_PAGE_SIZE = 10;
 	private static final Pattern MINUS_PATTERN = Pattern.compile( "-", Pattern.LITERAL );
@@ -105,17 +109,17 @@ public class CommandFriends implements TabExecutor {
 		return true;
 	}
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) { //TODO make command handling asnyc maybe
-		module.getPlugin().getServer().getScheduler().runTaskAsynchronously( module.getPlugin(), () -> {
+	@SuppressWarnings("deprecation")
+	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "friend", sender = Sender.PLAYER)
+	public boolean onCommand(CommandSender sender, Command cmd, String alias,String[] args) {
 			if ( !( sender instanceof Player ) ) {
 				msg( sender, "§cDu musst ein Spieler sein!" );
-				return;
+				return false;
 			}
 			Player plr = ( Player ) sender;
 			if ( args.length == 0 ) {
 				sendHelp( plr );
-				return;
+				return false;
 			}
 			String plrName = plr.getName();
 			UUID initiatorUuid = plr.getUniqueId();
@@ -124,14 +128,14 @@ public class CommandFriends implements TabExecutor {
 					FriendInfo initiatorInfo = manager.get( initiatorUuid );
 					if ( initiatorInfo == null ) {
 						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_WORK_FAIL" ) );
-						return;
+						return false;
 					}
 					int rowstart = 0;
 					int page = 1;
 					if ( args.length > 2 ) {
 						if ( !StringUtils.isNumeric( args[ 1 ] ) ) {
 							msg( plr, TranslationHandler.getPrefixAndText( plr, "BG_INTEGER" ) );
-							return;
+							return false;
 						}
 						page = Integer.parseInt( args[ 1 ] );
 						if ( page < 1 ) {// if 0, rowstart would be negative
@@ -139,50 +143,50 @@ public class CommandFriends implements TabExecutor {
 						}
 						if ( page > ( initiatorInfo.getFriendWith().size() / FRIEND_LIST_PAGE_SIZE + 1 ) ) {
 							msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PAGEAMOUNT_FALSE" ) );
-							return;
+							return false;
 						}
 						rowstart = ( page - 1 ) * FRIEND_LIST_PAGE_SIZE;
 					}
 					sendFriendList( plr, initiatorInfo.getFriendWith(), rowstart, FRIEND_LIST_PAGE_SIZE, alias, page + 1 );
-					return;
+					return false;
 				}
 				case "status": {
 					if ( args.length < 2 ) {
 						//TODO send help
 						msg( plr, "halp" );
-						return;
+						return false;
 					}
 					if ( args[ 1 ].equalsIgnoreCase( plrName ) || args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() ) || args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
 						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_SELF_PEACE" ) );
-						return;
+						return false;
 					}
 					UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
 					if ( targetProfile == null ) {
 						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ] ) );
-						return;
+						return false;
 					}
 					FriendInfo initiator = manager.get( initiatorUuid );
 
 					int targetPlayerId = targetProfile.getPlayerId();
 					if ( PlayerFriendRelation.areFriends( manager, initiator, targetPlayerId ) ) {
 						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP", targetProfile.getName() ) );
-						return;
+						return false;
 					}
 					if ( PlayerFriendRelation.isRequestSent( manager, initiator, targetPlayerId ) ) {
 						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_SEND_FRIENDSHIP", targetProfile.getName() ) );
-						return;
+						return false;
 					}
 					if ( PlayerFriendRelation.isRequestRecieved( manager, initiator, targetPlayerId ) ) {
 						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_RECEIVE_FRIENDSHIP", targetProfile.getName() ) );
-						return;
+						return false;
 					}
 					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_NOT_FRIENDSHIP", targetProfile.getName() ) );
-					return;
+					return false;
 				}
 				case "hilfe":
 				case "help": {
 					sendHelp( plr );
-					return;
+					return false;
 				}
 				case "beenden":
 				case "entfernen":
@@ -194,68 +198,63 @@ public class CommandFriends implements TabExecutor {
 				case "revoke": {
 					if ( args.length < 2 ) {
 						msg( plr, "§a/friend " + args[ 0 ] + " [Player]" );
-						return;
+						return false;
 					}
 					if ( args[ 1 ].equalsIgnoreCase( plrName )
 						|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
 						|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
 						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_SEND_SELF_FRIENDSHIP" ) );
-						return;
+						return false;
 					}
 					FriendInfo initiator = manager.get( initiatorUuid );
 					UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
 					if ( targetProfile == null ) {
 						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ] ) );
-						return;
+						return false;
 					}
 					int targetPlayerId = targetProfile.getPlayerId();
 					if ( PlayerFriendRelation.areFriends( manager, initiator, targetPlayerId ) ) {
 						FriendInfo targetInfo = manager.get( targetPlayerId );
+						
+						module.getPlugin().getServer().getScheduler().runTaskAsynchronously( module.getPlugin(), new Runnable(){
 
-						Player targetPlr_ = targetInfo.getPlayer();
-						if ( targetPlr_ != null ) {
-							msg( targetPlr_, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr_, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, "30" ) );
-						}
+							@Override
+							public void run() {
+								int time = 31;
+								while(true){
+									time--;
+									if(time<=0){
+										targetInfo.getFriendWith().remove( initiator.getPlayerId() );
+										targetInfo.setDirty();
+										initiator.getFriendWith().remove( targetPlayerId );
+										initiator.setDirty();
 
-						module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
-							Player targetPlr = targetInfo.getPlayer();
-							if ( targetPlr != null ) {
-								msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, "20" ) );
-							}
-						}, ( 30 - 20 ) * 20 );
-						module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
-							Player targetPlr = targetInfo.getPlayer();
-							if ( targetPlr != null ) {
-								msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, "10" ) );
-							}
-						}, ( 30 - 10 ) * 20 );
-
-						for ( int i = 5; i > 0; i++ ) {
-							int iCopy = i;
-							module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
-								Player targetPlr = targetInfo.getPlayer();
-								if ( targetPlr != null ) {
-									msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, iCopy ) );
+										msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_DISSOLVE_FRIENDSHIP", targetProfile.getName() ) );
+										Player targetPlr = targetInfo.getPlayer();
+										if ( targetPlr != null ) {
+											msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_FROM_FRIENDSHIP", plrName ) );
+										} else {
+											targetInfo.getNotifyFriendshipEnded().add( initiator.getPlayerId() );
+											targetInfo.setDirty();
+										}
+										
+										return;
+									}else if(time==30||time==20||time==10||time<=5){
+										Player targetPlr = targetInfo.getPlayer();
+										if ( targetPlr != null ) {
+											msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, time ) );
+										}
+									}
+									try {
+										Thread.sleep(1000);
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
 								}
-							}, ( 30 - i ) * 20 );
-						}
-
-						module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
-							targetInfo.getFriendWith().remove( initiator.getPlayerId() );
-							targetInfo.setDirty();
-							initiator.getFriendWith().remove( targetPlayerId );
-							initiator.setDirty();
-
-							msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_DISSOLVE_FRIENDSHIP", targetProfile.getName() ) );
-							Player targetPlr = targetInfo.getPlayer();
-							if ( targetPlr != null ) {
-								msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_FROM_FRIENDSHIP", plrName ) );
-							} else {
-								targetInfo.getNotifyFriendshipEnded().add( initiator.getPlayerId() );
-								targetInfo.setDirty();
 							}
-						}, 30 * 20 );
-						return;
+							
+						});
+						return false;
 					}
 					if ( PlayerFriendRelation.isRequestSent( manager, initiator, targetPlayerId ) ) {
 						FriendInfo targetInfo = manager.get( targetPlayerId );
@@ -269,9 +268,9 @@ public class CommandFriends implements TabExecutor {
 						Player targetPlr = server.getPlayer( targetProfile.getUuid() );
 						if ( targetPlr != null ) {
 							msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_CANCEL_FROM_FRIENDSHIP_REQUEST", plrName ) );
-							return;
+							return false;
 						}
-						return;
+						return false;
 					}
 					if ( PlayerFriendRelation.isRequestRecieved( manager, initiator, targetPlayerId ) ) {
 						FriendInfo targetInfo = manager.get( targetPlayerId );
@@ -285,33 +284,33 @@ public class CommandFriends implements TabExecutor {
 						Player targetPlr = server.getPlayer( targetProfile.getUuid() );
 						if ( targetPlr != null ) {
 							msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_REJECT_FROM_FRIENDSHIP_REQUEST", plrName ) );
-							return;
+							return false;
 						} else {
 							targetInfo.getNotifyRequestDenied().add( initiator.getPlayerId() );
 							targetInfo.setDirty();
 						}
-						return;
+						return false;
 					}
 					msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP_REQUEST_NOT", targetProfile.getName() ) );
-					return;
+					return false;
 				}
 				case "accept":
 				case "annehmen": {
 					if ( args.length < 2 ) {
 						msg( plr, "§a/friend " + args[ 0 ] + " [Player]" );
-						return;
+						return false;
 					}
 					if ( args[ 1 ].equalsIgnoreCase( plrName )
 						|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
 						|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
 						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_ARE_FRIENDS" ) );
-						return;
+						return false;
 					}
 					FriendInfo initiatorInfo = manager.get( initiatorUuid );
 					UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
 					if ( targetProfile == null ) {
 						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ] ) );
-						return;
+						return false;
 					}
 
 					int targetPlayerId = targetProfile.getPlayerId();
@@ -319,11 +318,11 @@ public class CommandFriends implements TabExecutor {
 
 					if ( PlayerFriendRelation.areFriends( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
 						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP", targetProfile.getName() ) );
-						return;
+						return false;
 					}
 					if ( !PlayerFriendRelation.isRequestRecieved( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
 						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP_REQUEST_NOT_EXIST", targetProfile.getName() ) );
-						return;
+						return false;
 					}
 
 					initiatorInfo.getRequestsSent().remove( targetPlayerId );
@@ -338,44 +337,44 @@ public class CommandFriends implements TabExecutor {
 					Player targetPlr = targetInfo.getPlayer();
 					if ( targetPlr != null ) {
 						msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_ACCEPT_FROM_FRIENDSHIP", plrName ) );
-						return;
+						return false;
 					} else {
 						targetInfo.getNotifyRequestAccepted().add( initiatorInfo.getPlayerId() );
 						targetInfo.setDirty();
 					}
-					return;
+					return false;
 				}
 				case "add":
 				case "anfragen":
 				case "request": {
 					if ( args.length < 2 ) {
 						msg( plr, "§a/friend " + args[ 0 ] + " [Player]" );
-						return;
+						return false;
 					}
 					if ( args[ 1 ].equalsIgnoreCase( plrName )
 						|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
 						|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
 						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_SEND_SELF_FRIENDSHIP" ) );
-						return;
+						return false;
 					}
 					FriendInfo initiatorInfo = manager.get( initiatorUuid );
 					UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
 					if ( targetProfile == null ) {
 						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ] ) );
-						return;
+						return false;
 					}
 
 					if ( PlayerFriendRelation.areFriends( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
 						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP", targetProfile.getName() ) );
-						return;
+						return false;
 					}
 					if ( PlayerFriendRelation.isRequestSent( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
 						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_HAVE_SENT_FRIENDSHIP", targetProfile.getName() ) );
-						return;
+						return false;
 					}
 					if ( PlayerFriendRelation.isRequestRecieved( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
 						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_HAVE_GOT_FRIENDSHIP", targetProfile.getName(), alias ) );
-						return;
+						return false;
 					}
 
 					int targetPlayerId = targetProfile.getPlayerId();
@@ -391,107 +390,105 @@ public class CommandFriends implements TabExecutor {
 					if ( targetPlr != null ) {
 						msg( targetPlr, TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_RECEIVE_FRIENDSHIP", plrName ) );
 					}
-					return;
+					return false;
 				}
 				default: {
 					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_UNKNOWN", args[ 0 ] ) );
 					sendHelp( plr );
-					return;
+					return false;
 				}
 			}
-		} );
-		return true;
 	}
 
-	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-		if (true)
-			return null;
-		if ( !( sender instanceof Player ) ) {
-			return ImmutableList.of();
-		}
-		Player plr = ( Player ) sender;
-		if ( args.length == 0 ) { //should not happen; api behaviour not documented enough to remove
-			return ImmutableList.of();
-		}
-		UserDataConverter.Profile profile = userDataConverter.getProfile( plr );
-		int playerId = profile.getPlayerId();
-		switch ( args[ 0 ].toLowerCase().trim() ) {
-			case "": {
-				return subCommandKeys;
-			}
-			case "accept":
-			case "annehmnen": {
-				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getRequestsGot );
-			}
-			case "status": {
-				return getTabCompleteMatchesAndGetFriendInfo( playerId, args, 1, friendInfo -> {
-					return IntStream.concat(
-						IntStream.concat(
-							Bukkit.getOnlinePlayers().stream().mapToInt( p -> userDataConverter.getProfile( p ).getPlayerId() ),
-							stream( friendInfo.getFriendWith() ) ),
-						IntStream.concat(
-							stream( friendInfo.getRequestsGot() ),
-							stream( friendInfo.getRequestsSent() ) ) );
-				} );
-			}
-			case "beenden":
-			case "entfernen":
-			case "remove": {
-				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getFriendWith );
-			}
-			case "stop": {
-				return getTabCompleteMatchesAndGetFriendInfo( playerId, args, 1, friendInfo -> {
-					return IntStream.concat(
-						stream( friendInfo.getFriendWith() ),
-						stream( friendInfo.getRequestsSent() ) );
-				} );
-			}
-			case "ablehnen":
-			case "deny": {
-				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getRequestsGot );
-			}
-			case "zurückrufen":
-			case "revoke": {
-				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getRequestsSent );
-			}
-			case "request":
-			case "anfragen": {
-				return getTabCompleteMatchesAndGetFriendInfo( playerId, args, 1, friendInfo -> {
-					return Bukkit.getOnlinePlayers().stream()
-						.mapToInt( p -> userDataConverter.getProfile( p ).getPlayerId() )
-						.filter( not( friendInfo.getFriendWith()::contains ) );
-				} );
-			}
-			default: {
-				if ( args.length == 1 ) {
-					String startedSubCmd = args[ 0 ].toLowerCase();
-
-					//look for base subcommand matches; if there is no match for a base subcommand, checking its aliases
-					Map<String, Collection<String>> entries = subCommands.asMap();
-					List<String> result = new ArrayList<>();
-
-					for ( Map.Entry<String, Collection<String>> entry : entries.entrySet() ) {
-						if ( entry.getKey().startsWith( startedSubCmd ) ) { // base subcommand match first
-							result.add( entry.getKey() );
-						} else {
-							//find first matching alias
-							Optional<String> first = entry.getValue().stream()
-								.filter( subCmdAlias -> subCmdAlias.startsWith( startedSubCmd ) )
-								.findFirst();
-							if ( first.isPresent() ) {
-								result.add( first.get() );
-							}
-						}
-					}
-					if ( result.isEmpty() ) { // if nothing matches, just return all base subcommands
-						return subCommandKeys;
-					}
-				}
-				return ImmutableList.of();
-			}
-		}
-	}
+//	@Override
+//	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+//		if (true)
+//			return null;
+//		if ( !( sender instanceof Player ) ) {
+//			return ImmutableList.of();
+//		}
+//		Player plr = ( Player ) sender;
+//		if ( args.length == 0 ) { //should not happen; api behaviour not documented enough to remove
+//			return ImmutableList.of();
+//		}
+//		UserDataConverter.Profile profile = userDataConverter.getProfile( plr );
+//		int playerId = profile.getPlayerId();
+//		switch ( args[ 0 ].toLowerCase().trim() ) {
+//			case "": {
+//				return subCommandKeys;
+//			}
+//			case "accept":
+//			case "annehmnen": {
+//				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getRequestsGot );
+//			}
+//			case "status": {
+//				return getTabCompleteMatchesAndGetFriendInfo( playerId, args, 1, friendInfo -> {
+//					return IntStream.concat(
+//						IntStream.concat(
+//							Bukkit.getOnlinePlayers().stream().mapToInt( p -> userDataConverter.getProfile( p ).getPlayerId() ),
+//							stream( friendInfo.getFriendWith() ) ),
+//						IntStream.concat(
+//							stream( friendInfo.getRequestsGot() ),
+//							stream( friendInfo.getRequestsSent() ) ) );
+//				} );
+//			}
+//			case "beenden":
+//			case "entfernen":
+//			case "remove": {
+//				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getFriendWith );
+//			}
+//			case "stop": {
+//				return getTabCompleteMatchesAndGetFriendInfo( playerId, args, 1, friendInfo -> {
+//					return IntStream.concat(
+//						stream( friendInfo.getFriendWith() ),
+//						stream( friendInfo.getRequestsSent() ) );
+//				} );
+//			}
+//			case "ablehnen":
+//			case "deny": {
+//				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getRequestsGot );
+//			}
+//			case "zurückrufen":
+//			case "revoke": {
+//				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getRequestsSent );
+//			}
+//			case "request":
+//			case "anfragen": {
+//				return getTabCompleteMatchesAndGetFriendInfo( playerId, args, 1, friendInfo -> {
+//					return Bukkit.getOnlinePlayers().stream()
+//						.mapToInt( p -> userDataConverter.getProfile( p ).getPlayerId() )
+//						.filter( not( friendInfo.getFriendWith()::contains ) );
+//				} );
+//			}
+//			default: {
+//				if ( args.length == 1 ) {
+//					String startedSubCmd = args[ 0 ].toLowerCase();
+//
+//					//look for base subcommand matches; if there is no match for a base subcommand, checking its aliases
+//					Map<String, Collection<String>> entries = subCommands.asMap();
+//					List<String> result = new ArrayList<>();
+//
+//					for ( Map.Entry<String, Collection<String>> entry : entries.entrySet() ) {
+//						if ( entry.getKey().startsWith( startedSubCmd ) ) { // base subcommand match first
+//							result.add( entry.getKey() );
+//						} else {
+//							//find first matching alias
+//							Optional<String> first = entry.getValue().stream()
+//								.filter( subCmdAlias -> subCmdAlias.startsWith( startedSubCmd ) )
+//								.findFirst();
+//							if ( first.isPresent() ) {
+//								result.add( first.get() );
+//							}
+//						}
+//					}
+//					if ( result.isEmpty() ) { // if nothing matches, just return all base subcommands
+//						return subCommandKeys;
+//					}
+//				}
+//				return ImmutableList.of();
+//			}
+//		}
+//	}
 
 	private List<String> getTabCompleteMatchesAndGetFriendInfo(int uuid, String[] args, int namePos, Function<FriendInfo, IntStream> playerIdProvider) {
 		FriendInfo friendInfo = manager.get( uuid );

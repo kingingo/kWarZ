@@ -27,6 +27,7 @@ import eu.epicpvp.kcore.kConfig.kConfig;
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
+import de.janmm14.epicpvp.warz.logout.LogoutModule;
 import de.janmm14.epicpvp.warz.util.ConfigLocationAdapter;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
 
@@ -140,7 +141,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
-		if ( UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) ) {
+		if ( UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) && !getModuleManager().getModule( LogoutModule.class ).containsNpc(ev.getPlayer())) {
 			saveLastMapPos( ev.getPlayer(), ev.getPlayer().getLocation() );
 			ev.getPlayer().teleport( spawn );
 		}

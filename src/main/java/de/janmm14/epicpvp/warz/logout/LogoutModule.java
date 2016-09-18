@@ -3,6 +3,7 @@ package de.janmm14.epicpvp.warz.logout;
 import java.util.HashMap;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,11 +31,24 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 
 	@Getter
 	private HashMap<Integer, NPC> npcs = new HashMap<>();
+	private HashMap<Integer, NPC> npcs_playerId = new HashMap<>();
 
 	public LogoutModule(WarZ plugin) {
 		super( plugin, module -> module );
 	}
 
+	public boolean containsNpc(Player player){
+		if(npcs_playerId.containsKey(UtilPlayer.getPlayerId(player))){
+			NPC npc = npcs_playerId.get(UtilPlayer.getPlayerId(player));
+			
+			npc.remove();
+			npcs.remove(npc.getEntityId());
+			npcs_playerId.remove(npc.getPlayerId());
+			return true;
+		}
+		return false;
+	}
+	
 	@EventHandler
 	public void kill(EntityDeathEvent ev) {
 		if ( this.npcs.containsKey( ev.getEntity().getEntityId() ) ) {
@@ -55,8 +69,9 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 		if ( ev.getConfig().contains( "Death" ) ) {
 			if ( ev.getConfig().getBoolean( "Death" ) ) {
 				ev.getPlayer().getInventory().clear();
-				ev.getPlayer().getInventory().setContents( new ItemStack[]{} );
+				ev.getPlayer().getInventory().setArmorContents( new ItemStack[]{} );
 				ev.getConfig().set( "Death", null );
+				
 				ev.getConfig().save();
 			}
 		}
@@ -66,6 +81,8 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 	public void quit(PlayerQuitEvent ev) {
 		if ( UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) ) {
 			new NPC( ev.getPlayer(), this );
+			
+			if(WarZ.DEBUG)System.err.println("Player logout out "+ev.getPlayer().getName());
 		}
 	}
 
@@ -76,8 +93,10 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 			for ( int i = 0; i < npcs.size(); i++ ) {
 				npc = ( NPC ) npcs.values().toArray()[ i ];
 
-				if ( UtilPlayer.isOnline( npc.getPlayername() ) || ( System.currentTimeMillis() - npc.getTime() ) > TimeSpan.SECOND * 25 ) {
+				if (( System.currentTimeMillis() - npc.getTime() ) > TimeSpan.SECOND * 25 ) {
+					if(WarZ.DEBUG)System.err.println("NPC Time is over "+npc.getPlayername()+" "+(( System.currentTimeMillis() - npc.getTime() ) > TimeSpan.SECOND * 25));
 					npc.remove();
+					npcs_playerId.remove( npc.getPlayerId() );
 					npcs.remove( npc.getEntityId() );
 				}
 			}

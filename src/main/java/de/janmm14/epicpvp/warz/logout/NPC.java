@@ -55,8 +55,8 @@ public class NPC {
 	}
 
 	public void remove() {
-		UtilServer.getDisguiseManager().undisguise( entityId );
 		if ( npc != null && !npc.isDead() ) npc.remove();
+		UtilServer.getDisguiseManager().undisguise( entityId );
 	}
 
 	public void setup(LogoutModule module) {

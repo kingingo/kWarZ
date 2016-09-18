@@ -87,7 +87,7 @@ public class WarZ extends JavaPlugin {
 			getLogger().info( "Debug mode activated!" );
 		}
 
-		registerTabExecutor( "warz", new CommandWarZ( this ) );
+//		registerTabExecutor( "warz", new CommandWarZ( this ) );
 
 		setupKStuff();
 
@@ -141,6 +141,7 @@ public class WarZ extends JavaPlugin {
 		UtilServer.getCommandHandler().register( CommandEnderchest.class, new CommandEnderchest(UtilServer.getMysql()));
 		UtilServer.getCommandHandler().register( CommandK.class, new CommandK());
 		UtilServer.getCommandHandler().register( CommandRepair.class, new CommandRepair());
+		UtilServer.getCommandHandler().register( CommandWarZ.class, new CommandWarZ(this));
 
 		UtilServer.getLagListener();
 		new DisguiseManager( this );

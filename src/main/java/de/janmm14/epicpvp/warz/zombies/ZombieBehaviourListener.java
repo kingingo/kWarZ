@@ -18,7 +18,7 @@ public class ZombieBehaviourListener implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onCombust(EntityCombustEvent event) { //stops zombies being on fire by sun
 		if ( !( event instanceof EntityCombustByEntityEvent ) && !( event instanceof EntityCombustByBlockEvent ) //allow zombies being fired by entities and blocks
-			&& event.getEntityType() == EntityType.ZOMBIE ) {
+			&& event.getEntityType() == EntityType.ZOMBIE || event.getEntityType() == EntityType.SKELETON ) {
 			event.setDuration( 0 );
 		}
 	}
