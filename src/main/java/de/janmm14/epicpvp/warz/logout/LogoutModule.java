@@ -31,6 +31,7 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 
 	@Getter
 	private HashMap<Integer, NPC> npcs = new HashMap<>();
+	@Getter
 	private HashMap<Integer, NPC> npcs_playerId = new HashMap<>();
 
 	public LogoutModule(WarZ plugin) {
@@ -42,8 +43,7 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 			NPC npc = npcs_playerId.get(UtilPlayer.getPlayerId(player));
 			
 			npc.remove();
-			npcs.remove(npc.getEntityId());
-			npcs_playerId.remove(npc.getPlayerId());
+			if(WarZ.DEBUG)System.out.println("Player joined and replaced the NPC");
 			return true;
 		}
 		return false;
@@ -59,8 +59,6 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 			config.set( "lastMapPos", null );
 			config.set( "Death", true );
 			config.save();
-
-			npcs.remove( ev.getEntity().getEntityId() );
 		}
 	}
 
@@ -96,8 +94,6 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 				if (( System.currentTimeMillis() - npc.getTime() ) > TimeSpan.SECOND * 25 ) {
 					if(WarZ.DEBUG)System.err.println("NPC Time is over "+npc.getPlayername()+" "+(( System.currentTimeMillis() - npc.getTime() ) > TimeSpan.SECOND * 25));
 					npc.remove();
-					npcs_playerId.remove( npc.getPlayerId() );
-					npcs.remove( npc.getEntityId() );
 				}
 			}
 		}

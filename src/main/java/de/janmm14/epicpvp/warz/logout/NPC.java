@@ -34,6 +34,7 @@ public class NPC {
 	private int playerId;
 	@Getter
 	private long time;
+	private LogoutModule module;
 
 	public NPC(Player player, LogoutModule module) {
 		this.location = player.getLocation();
@@ -57,16 +58,19 @@ public class NPC {
 	}
 
 	public void remove() {
-		if(WarZ.DEBUG)System.out.println("NPC removed "+(npc!=null)+" && "+npc.isDead());
-		if ( npc != null && !npc.isDead() ){
-			npc.remove();
-		}
+		if(WarZ.DEBUG)
+			System.out.println("NPC removed NULL = "+(npc==null));
+		
+		module.getNpcs().remove(getEntityId());
+		module.getNpcs_playerId().remove(getPlayerId());
 		UtilServer.getDisguiseManager().undisguise( entityId );
+		if ( npc != null) npc.remove();
 	}
 
 	public void setup(LogoutModule module) {
+		this.module=module;
 		time = System.currentTimeMillis();
-		LivingEntity npc = ( LivingEntity ) location.getWorld().spawnEntity( location, EntityType.SKELETON );
+		npc = ( LivingEntity ) location.getWorld().spawnEntity( location, EntityType.SKELETON );
 		npc.getEquipment().clear();
 		npc.getEquipment().setItemInHand( null );
 		entityId = npc.getEntityId();
@@ -76,5 +80,6 @@ public class NPC {
 		dbase.loadSkin( playername ); //TODO Skin load fix
 		UtilServer.getDisguiseManager().disguise( dbase );
 		module.getNpcs().put( npc.getEntityId(), this );
+		module.getNpcs_playerId().put( getPlayerId(), this );
 	}
 }
