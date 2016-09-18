@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.MapInitializeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapCursor;
@@ -50,6 +51,8 @@ public class MapModule extends Module<MapModule> implements Listener {
 					packet.setMapIcons(new MapIcon[]{});
 				}
 				
+				
+				
 				if ( WarZ.DEBUG ) {
 					System.out.println( "Rewriting map packet for " + event.getPlayer().getName() +" MapId:"+packet.getItemDamage());
 				}
@@ -66,6 +69,11 @@ public class MapModule extends Module<MapModule> implements Listener {
 	public void reloadConfig() {
 	}
 
+	@EventHandler
+	public void join(PlayerJoinEvent ev){
+		ev.getPlayer().sendMap(Bukkit.getMap( ( short ) 25 ));
+	}
+	
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
 		Player plr = event.getPlayer();

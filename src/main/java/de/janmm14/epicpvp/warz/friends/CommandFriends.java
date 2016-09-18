@@ -90,21 +90,25 @@ public class CommandFriends implements CommandExecutor{
 
 	private static boolean sendHelp(@NonNull Player plr) {
 		if ( TranslationHandler.getLanguage( plr ) == LanguageType.GERMAN ) {
-			msg( plr, "§a/friend list" );
-			msg( plr, "§a/friend status" );
-			msg( plr, "§a/friend beenden" );
-			msg( plr, "§a/friend annehmen" );
-			msg( plr, "§a/friend ablehnen" );
-			msg( plr, "§a/friend zurückrufen" );
-			msg( plr, "§a/friend anfragen" );
+			msg( plr, "§7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬§6 Friend-Menü§7 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
+			msg( plr, "§6 /friend list §8- §6Listet alle Freunde auf" );
+			msg( plr, "§6 /friend status <name> §8 - §6Zeigt dir deinen Freundschaft Status" );
+			msg( plr, "§6 /friend beenden <name> §8- §6Zum entfernen von freunden" );
+			msg( plr, "§6 /friend annehmen <name> §8- §6Zum akzeptieren von anfragen" );
+			msg( plr, "§6 /friend ablehnen <name> §8- §6Zum ablehnen von anfragen" );
+			msg( plr, "§6 /friend zurückrufen <name>§8 - §6Zum zurückziehen von anfragen" );
+			msg( plr, "§6 /friend anfragen <name> §8- §6Um eine anfrage zusenden" );
+			msg( plr, "§7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬§6 Friend-Menü§7 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
 		} else {
-			msg( plr, "§a/friend list" );
-			msg( plr, "§a/friend status" );
-			msg( plr, "§a/friend remove" );
-			msg( plr, "§a/friend accept" );
-			msg( plr, "§a/friend deny" );
-			msg( plr, "§a/friend revoke" );
-			msg( plr, "§a/friend request" );
+			msg( plr, "§7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬§6 Friend-Menu§7 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
+			msg( plr, "§6 /friend list §8- §6Show all your friends " );
+			msg( plr, "§6 /friend status <name> §8 -§6 Shows you if somebody is friend with you" );
+			msg( plr, "§6 /friend remove <name> §8-§6 Remove somebody from your friendlist" );
+			msg( plr, "§6 /friend accept <name> §8- §6Accept a friend request" );
+			msg( plr, "§6 /friend deny <name> §8- §6Deny a friend request" );
+			msg( plr, "§6 /friend revoke <name>§8 - §6Withdraw your friendrequest to somebody" );
+			msg( plr, "§6 /friend request <name> §8- §6Send a friendrequest to somebody" );
+			msg( plr, "§7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬§6 Friend-Menu§7 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
 		}
 		return true;
 	}
