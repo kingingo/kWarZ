@@ -1,12 +1,14 @@
 package de.janmm14.epicpvp.warz.logout;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -15,6 +17,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import eu.epicpvp.kcore.Update.Event.UpdateEvent;
 import eu.epicpvp.kcore.Update.UpdateType;
@@ -30,6 +33,7 @@ import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
 import de.janmm14.epicpvp.warz.friends.FriendModule;
 import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
+import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 import lombok.Getter;
 
 public class LogoutModule extends Module<LogoutModule> implements Listener {
@@ -66,6 +70,19 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 				if(PlayerFriendRelation.areFriends(info, info.get(UtilPlayer.getPlayerId(damager)), victimId)){
 					ev.setCancelled(true);
 				}
+			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true) //highest is for CrackShotTweakModule
+	public void onWeaponDamage(WeaponDamageEntityEvent event) {
+		if ( event.getVictim() instanceof Skeleton ) {
+			int victimId = npcs.get(event.getVictim().getEntityId()).getPlayerId();
+			UUID damagerUuid = event.getPlayer().getUniqueId();
+			
+			FriendInfoManager info = getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
+			if ( PlayerFriendRelation.areFriends( info, info.get( damagerUuid ), victimId ) ) {
+				event.setCancelled( true );
 			}
 		}
 	}
