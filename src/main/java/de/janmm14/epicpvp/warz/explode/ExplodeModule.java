@@ -6,12 +6,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.shampaggon.crackshot.events.WeaponExplodeEvent;
-import com.shampaggon.crackshot.events.WeaponPreShootEvent;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
-import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 public class ExplodeModule extends Module<ExplodeModule> implements Listener {
 
@@ -22,10 +19,10 @@ public class ExplodeModule extends Module<ExplodeModule> implements Listener {
 	@Override
 	public void reloadConfig() {
 	}
-	
+
 	@EventHandler
 	public void weaponExp(WeaponExplodeEvent ev) {
-		
+
 		if ( WarZ.DEBUG ) System.out.println( "Use " + ev.getWeaponTitle() );
 
 		if ( ev.getWeaponTitle().equalsIgnoreCase( "Rauchgranate" ) ) {
@@ -36,7 +33,7 @@ public class ExplodeModule extends Module<ExplodeModule> implements Listener {
 					this.t += 1;
 					if ( this.t > 10 ) {
 						cancel();
-					}else{
+					} else {
 						ev.getLocation().getWorld().spigot().playEffect( ev.getLocation(), Effect.EXPLOSION_HUGE, 0, 0, 1.0F, 1.0F, 1.0F, 0.0F, 3, 100 );
 					}
 				}

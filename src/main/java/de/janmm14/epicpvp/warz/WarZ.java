@@ -63,8 +63,8 @@ import lombok.Getter;
 public class WarZ extends JavaPlugin {
 
 	public static boolean DEBUG;
-	public static int SLOTS=0;
-	public static int SLOTS_PREMIUM=0;
+	public static int SLOTS = 0;
+	public static int SLOTS_PREMIUM = 0;
 	@Getter
 	private static WarZ instance;
 	private ModuleManager moduleManager;
@@ -126,22 +126,22 @@ public class WarZ extends JavaPlugin {
 			new PerkKillZombie()
 		} ) );
 		UtilServer.getCommandHandler().register( CommandPerk.class, new CommandPerk( UtilServer.getPerkManager() ) );
-		UtilServer.getCommandHandler().register( CommandFly.class, new CommandFly(this));
-		UtilServer.getCommandHandler().register( CommandFlyspeed.class, new CommandFlyspeed());
-		UtilServer.getCommandHandler().register( CommandTp.class, new CommandTp());
-		UtilServer.getCommandHandler().register( CommandTpHere.class, new CommandTpHere());
-		UtilServer.getCommandHandler().register( CommandClearInventory.class, new CommandClearInventory());
-		UtilServer.getCommandHandler().register( CommandInvsee.class, new CommandInvsee(UtilServer.getMysql()));
-		UtilServer.getCommandHandler().register( CommandVanish.class, new CommandVanish(this));
-		UtilServer.getCommandHandler().register( CommandChatMute.class, new CommandChatMute(this));
-		UtilServer.getCommandHandler().register( CommandPvPMute.class, new CommandPvPMute(this));
-		UtilServer.getCommandHandler().register( CommandCMDMute.class, new CommandCMDMute(this));
-		UtilServer.getCommandHandler().register( CommandToggle.class, new CommandToggle(this));
-		UtilServer.getCommandHandler().register( CommandTppos.class, new CommandTppos());
-		UtilServer.getCommandHandler().register( CommandEnderchest.class, new CommandEnderchest(UtilServer.getMysql()));
-		UtilServer.getCommandHandler().register( CommandK.class, new CommandK());
-		UtilServer.getCommandHandler().register( CommandRepair.class, new CommandRepair());
-		UtilServer.getCommandHandler().register( CommandWarZ.class, new CommandWarZ(this));
+		UtilServer.getCommandHandler().register( CommandFly.class, new CommandFly( this ) );
+		UtilServer.getCommandHandler().register( CommandFlyspeed.class, new CommandFlyspeed() );
+		UtilServer.getCommandHandler().register( CommandTp.class, new CommandTp() );
+		UtilServer.getCommandHandler().register( CommandTpHere.class, new CommandTpHere() );
+		UtilServer.getCommandHandler().register( CommandClearInventory.class, new CommandClearInventory() );
+		UtilServer.getCommandHandler().register( CommandInvsee.class, new CommandInvsee( UtilServer.getMysql() ) );
+		UtilServer.getCommandHandler().register( CommandVanish.class, new CommandVanish( this ) );
+		UtilServer.getCommandHandler().register( CommandChatMute.class, new CommandChatMute( this ) );
+		UtilServer.getCommandHandler().register( CommandPvPMute.class, new CommandPvPMute( this ) );
+		UtilServer.getCommandHandler().register( CommandCMDMute.class, new CommandCMDMute( this ) );
+		UtilServer.getCommandHandler().register( CommandToggle.class, new CommandToggle( this ) );
+		UtilServer.getCommandHandler().register( CommandTppos.class, new CommandTppos() );
+		UtilServer.getCommandHandler().register( CommandEnderchest.class, new CommandEnderchest( UtilServer.getMysql() ) );
+		UtilServer.getCommandHandler().register( CommandK.class, new CommandK() );
+		UtilServer.getCommandHandler().register( CommandRepair.class, new CommandRepair() );
+		UtilServer.getCommandHandler().register( CommandWarZ.class, new CommandWarZ( this ) );
 
 		UtilServer.getLagListener();
 		new DisguiseManager( this );

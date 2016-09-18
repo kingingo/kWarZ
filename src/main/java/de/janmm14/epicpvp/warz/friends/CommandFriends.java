@@ -1,11 +1,7 @@
 package de.janmm14.epicpvp.warz.friends;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -13,14 +9,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import javax.print.CancelablePrintJob;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import com.google.common.collect.ImmutableList;
@@ -40,9 +32,8 @@ import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 import lombok.NonNull;
 
 import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.stream;
-import static de.janmm14.epicpvp.warz.util.MiscUtil.not;
 
-public class CommandFriends implements CommandExecutor{
+public class CommandFriends implements CommandExecutor {
 
 	private static final int FRIEND_LIST_PAGE_SIZE = 10;
 	private static final Pattern MINUS_PATTERN = Pattern.compile( "-", Pattern.LITERAL );
@@ -90,7 +81,7 @@ public class CommandFriends implements CommandExecutor{
 
 	private static boolean sendHelp(@NonNull Player plr) {
 		if ( TranslationHandler.getLanguage( plr ) == LanguageType.GERMAN ) {
-			msg( plr, "§7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬§6 Friend-Menü§7 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
+			msg( plr, "§7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬§6 Friend-Menü§7 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" );
 			msg( plr, "§6 /friend list §8- §6Listet alle Freunde auf" );
 			msg( plr, "§6 /friend status <name> §8 - §6Zeigt dir deinen Freundschaft Status" );
 			msg( plr, "§6 /friend beenden <name> §8- §6Zum entfernen von freunden" );
@@ -98,9 +89,9 @@ public class CommandFriends implements CommandExecutor{
 			msg( plr, "§6 /friend ablehnen <name> §8- §6Zum ablehnen von anfragen" );
 			msg( plr, "§6 /friend zurückrufen <name>§8 - §6Zum zurückziehen von anfragen" );
 			msg( plr, "§6 /friend anfragen <name> §8- §6Um eine anfrage zusenden" );
-			msg( plr, "§7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬§6 Friend-Menü§7 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
+			msg( plr, "§7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬§6 Friend-Menü§7 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" );
 		} else {
-			msg( plr, "§7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬§6 Friend-Menu§7 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
+			msg( plr, "§7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬§6 Friend-Menu§7 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" );
 			msg( plr, "§6 /friend list §8- §6Show all your friends " );
 			msg( plr, "§6 /friend status <name> §8 -§6 Shows you if somebody is friend with you" );
 			msg( plr, "§6 /friend remove <name> §8-§6 Remove somebody from your friendlist" );
@@ -108,300 +99,300 @@ public class CommandFriends implements CommandExecutor{
 			msg( plr, "§6 /friend deny <name> §8- §6Deny a friend request" );
 			msg( plr, "§6 /friend revoke <name>§8 - §6Withdraw your friendrequest to somebody" );
 			msg( plr, "§6 /friend request <name> §8- §6Send a friendrequest to somebody" );
-			msg( plr, "§7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬§6 Friend-Menu§7 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
+			msg( plr, "§7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬§6 Friend-Menu§7 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" );
 		}
 		return true;
 	}
 
 	@SuppressWarnings("deprecation")
 	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "friend", sender = Sender.PLAYER)
-	public boolean onCommand(CommandSender sender, Command cmd, String alias,String[] args) {
-			if ( !( sender instanceof Player ) ) {
-				msg( sender, "§cDu musst ein Spieler sein!" );
+	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
+		if ( !( sender instanceof Player ) ) {
+			msg( sender, "§cDu musst ein Spieler sein!" );
+			return false;
+		}
+		Player plr = ( Player ) sender;
+		if ( args.length == 0 ) {
+			sendHelp( plr );
+			return false;
+		}
+		String plrName = plr.getName();
+		UUID initiatorUuid = plr.getUniqueId();
+		switch ( args[ 0 ].toLowerCase() ) {
+			case "list": {
+				FriendInfo initiatorInfo = manager.get( initiatorUuid );
+				if ( initiatorInfo == null ) {
+					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_WORK_FAIL" ) );
+					return false;
+				}
+				int rowstart = 0;
+				int page = 1;
+				if ( args.length > 2 ) {
+					if ( !StringUtils.isNumeric( args[ 1 ] ) ) {
+						msg( plr, TranslationHandler.getPrefixAndText( plr, "BG_INTEGER" ) );
+						return false;
+					}
+					page = Integer.parseInt( args[ 1 ] );
+					if ( page < 1 ) {// if 0, rowstart would be negative
+						page = 1;
+					}
+					if ( page > ( initiatorInfo.getFriendWith().size() / FRIEND_LIST_PAGE_SIZE + 1 ) ) {
+						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PAGEAMOUNT_FALSE" ) );
+						return false;
+					}
+					rowstart = ( page - 1 ) * FRIEND_LIST_PAGE_SIZE;
+				}
+				sendFriendList( plr, initiatorInfo.getFriendWith(), rowstart, FRIEND_LIST_PAGE_SIZE, alias, page + 1 );
 				return false;
 			}
-			Player plr = ( Player ) sender;
-			if ( args.length == 0 ) {
+			case "status": {
+				if ( args.length < 2 ) {
+					//TODO send help
+					msg( plr, "§a/friend " + args[ 0 ] + " <name>" );
+					return false;
+				}
+				if ( args[ 1 ].equalsIgnoreCase( plrName ) || args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() ) || args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
+					msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_SELF_PEACE" ) );
+					return false;
+				}
+				UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
+				if ( targetProfile == null ) {
+					msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ] ) );
+					return false;
+				}
+				FriendInfo initiator = manager.get( initiatorUuid );
+
+				int targetPlayerId = targetProfile.getPlayerId();
+				if ( PlayerFriendRelation.areFriends( manager, initiator, targetPlayerId ) ) {
+					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP", targetProfile.getName() ) );
+					return false;
+				}
+				if ( PlayerFriendRelation.isRequestSent( manager, initiator, targetPlayerId ) ) {
+					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_SEND_FRIENDSHIP", targetProfile.getName() ) );
+					return false;
+				}
+				if ( PlayerFriendRelation.isRequestRecieved( manager, initiator, targetPlayerId ) ) {
+					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_RECEIVE_FRIENDSHIP", targetProfile.getName() ) );
+					return false;
+				}
+				msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_NOT_FRIENDSHIP", targetProfile.getName() ) );
+				return false;
+			}
+			case "hilfe":
+			case "help": {
 				sendHelp( plr );
 				return false;
 			}
-			String plrName = plr.getName();
-			UUID initiatorUuid = plr.getUniqueId();
-			switch ( args[ 0 ].toLowerCase() ) {
-				case "list": {
-					FriendInfo initiatorInfo = manager.get( initiatorUuid );
-					if ( initiatorInfo == null ) {
-						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_WORK_FAIL" ) );
-						return false;
-					}
-					int rowstart = 0;
-					int page = 1;
-					if ( args.length > 2 ) {
-						if ( !StringUtils.isNumeric( args[ 1 ] ) ) {
-							msg( plr, TranslationHandler.getPrefixAndText( plr, "BG_INTEGER" ) );
-							return false;
-						}
-						page = Integer.parseInt( args[ 1 ] );
-						if ( page < 1 ) {// if 0, rowstart would be negative
-							page = 1;
-						}
-						if ( page > ( initiatorInfo.getFriendWith().size() / FRIEND_LIST_PAGE_SIZE + 1 ) ) {
-							msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PAGEAMOUNT_FALSE" ) );
-							return false;
-						}
-						rowstart = ( page - 1 ) * FRIEND_LIST_PAGE_SIZE;
-					}
-					sendFriendList( plr, initiatorInfo.getFriendWith(), rowstart, FRIEND_LIST_PAGE_SIZE, alias, page + 1 );
+			case "beenden":
+			case "entfernen":
+			case "stop":
+			case "remove":
+			case "ablehnen":
+			case "deny":
+			case "zurückrufen":
+			case "revoke": {
+				if ( args.length < 2 ) {
+					msg( plr, "§a/friend " + args[ 0 ] + " <name>" );
 					return false;
 				}
-				case "status": {
-					if ( args.length < 2 ) {
-						//TODO send help
-						msg( plr, "halp" );
-						return false;
-					}
-					if ( args[ 1 ].equalsIgnoreCase( plrName ) || args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() ) || args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
-						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_SELF_PEACE" ) );
-						return false;
-					}
-					UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
-					if ( targetProfile == null ) {
-						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ] ) );
-						return false;
-					}
-					FriendInfo initiator = manager.get( initiatorUuid );
+				if ( args[ 1 ].equalsIgnoreCase( plrName )
+					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
+					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
+					msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_SEND_SELF_FRIENDSHIP" ) );
+					return false;
+				}
+				FriendInfo initiator = manager.get( initiatorUuid );
+				UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
+				if ( targetProfile == null ) {
+					msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ] ) );
+					return false;
+				}
+				int targetPlayerId = targetProfile.getPlayerId();
+				if ( PlayerFriendRelation.areFriends( manager, initiator, targetPlayerId ) ) {
+					FriendInfo targetInfo = manager.get( targetPlayerId );
 
-					int targetPlayerId = targetProfile.getPlayerId();
-					if ( PlayerFriendRelation.areFriends( manager, initiator, targetPlayerId ) ) {
-						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP", targetProfile.getName() ) );
-						return false;
-					}
-					if ( PlayerFriendRelation.isRequestSent( manager, initiator, targetPlayerId ) ) {
-						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_SEND_FRIENDSHIP", targetProfile.getName() ) );
-						return false;
-					}
-					if ( PlayerFriendRelation.isRequestRecieved( manager, initiator, targetPlayerId ) ) {
-						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_RECEIVE_FRIENDSHIP", targetProfile.getName() ) );
-						return false;
-					}
-					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_NOT_FRIENDSHIP", targetProfile.getName() ) );
-					return false;
-				}
-				case "hilfe":
-				case "help": {
-					sendHelp( plr );
-					return false;
-				}
-				case "beenden":
-				case "entfernen":
-				case "stop":
-				case "remove":
-				case "ablehnen":
-				case "deny":
-				case "zurückrufen":
-				case "revoke": {
-					if ( args.length < 2 ) {
-						msg( plr, "§a/friend " + args[ 0 ] + " [Player]" );
-						return false;
-					}
-					if ( args[ 1 ].equalsIgnoreCase( plrName )
-						|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
-						|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
-						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_SEND_SELF_FRIENDSHIP" ) );
-						return false;
-					}
-					FriendInfo initiator = manager.get( initiatorUuid );
-					UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
-					if ( targetProfile == null ) {
-						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ] ) );
-						return false;
-					}
-					int targetPlayerId = targetProfile.getPlayerId();
-					if ( PlayerFriendRelation.areFriends( manager, initiator, targetPlayerId ) ) {
-						FriendInfo targetInfo = manager.get( targetPlayerId );
-						
-						module.getPlugin().getServer().getScheduler().runTaskAsynchronously( module.getPlugin(), new Runnable(){
+					module.getPlugin().getServer().getScheduler().runTaskAsynchronously( module.getPlugin(), new Runnable() {
 
-							@Override
-							public void run() {
-								int time = 31;
-								while(true){
-									time--;
-									if(time<=0){
-										targetInfo.getFriendWith().remove( initiator.getPlayerId() );
+						@Override
+						public void run() {
+							int time = 31;
+							while ( true ) {
+								time--;
+								if ( time <= 0 ) {
+									targetInfo.getFriendWith().remove( initiator.getPlayerId() );
+									targetInfo.setDirty();
+									initiator.getFriendWith().remove( targetPlayerId );
+									initiator.setDirty();
+
+									msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_DISSOLVE_FRIENDSHIP", targetProfile.getName() ) );
+									Player targetPlr = targetInfo.getPlayer();
+									if ( targetPlr != null ) {
+										msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_FROM_FRIENDSHIP", plrName ) );
+									} else {
+										targetInfo.getNotifyFriendshipEnded().add( initiator.getPlayerId() );
 										targetInfo.setDirty();
-										initiator.getFriendWith().remove( targetPlayerId );
-										initiator.setDirty();
-
-										msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_DISSOLVE_FRIENDSHIP", targetProfile.getName() ) );
-										Player targetPlr = targetInfo.getPlayer();
-										if ( targetPlr != null ) {
-											msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_FROM_FRIENDSHIP", plrName ) );
-										} else {
-											targetInfo.getNotifyFriendshipEnded().add( initiator.getPlayerId() );
-											targetInfo.setDirty();
-										}
-										
-										return;
-									}else if(time==30||time==20||time==10||time<=5){
-										Player targetPlr = targetInfo.getPlayer();
-										if ( targetPlr != null ) {
-											msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, time ) );
-										}
 									}
-									try {
-										Thread.sleep(1000);
-									} catch (InterruptedException e) {
-										e.printStackTrace();
+
+									return;
+								} else if ( time == 30 || time == 20 || time == 10 || time <= 5 ) {
+									Player targetPlr = targetInfo.getPlayer();
+									if ( targetPlr != null ) {
+										msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, time ) );
 									}
 								}
+								try {
+									Thread.sleep( 1000 );
+								}
+								catch ( InterruptedException e ) {
+									e.printStackTrace();
+								}
 							}
-							
-						});
-						return false;
-					}
-					if ( PlayerFriendRelation.isRequestSent( manager, initiator, targetPlayerId ) ) {
-						FriendInfo targetInfo = manager.get( targetPlayerId );
-
-						targetInfo.getRequestsGot().remove( initiator.getPlayerId() );
-						targetInfo.setDirty();
-						initiator.getRequestsSent().remove( targetPlayerId );
-						initiator.setDirty();
-
-						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_CANCEL_FRIENDSHIP_REQUEST", targetProfile.getName() ) );
-						Player targetPlr = server.getPlayer( targetProfile.getUuid() );
-						if ( targetPlr != null ) {
-							msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_CANCEL_FROM_FRIENDSHIP_REQUEST", plrName ) );
-							return false;
 						}
-						return false;
-					}
-					if ( PlayerFriendRelation.isRequestRecieved( manager, initiator, targetPlayerId ) ) {
-						FriendInfo targetInfo = manager.get( targetPlayerId );
-
-						targetInfo.getRequestsSent().remove( initiator.getPlayerId() );
-						targetInfo.setDirty();
-						initiator.getRequestsGot().remove( targetPlayerId );
-						initiator.setDirty();
-
-						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_REJECT_FRIENDSHIP_REQUEST", targetProfile.getName() ) );
-						Player targetPlr = server.getPlayer( targetProfile.getUuid() );
-						if ( targetPlr != null ) {
-							msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_REJECT_FROM_FRIENDSHIP_REQUEST", plrName ) );
-							return false;
-						} else {
-							targetInfo.getNotifyRequestDenied().add( initiator.getPlayerId() );
-							targetInfo.setDirty();
-						}
-						return false;
-					}
-					msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP_REQUEST_NOT", targetProfile.getName() ) );
+					} );
 					return false;
 				}
-				case "accept":
-				case "annehmen": {
-					if ( args.length < 2 ) {
-						msg( plr, "§a/friend " + args[ 0 ] + " [Player]" );
-						return false;
-					}
-					if ( args[ 1 ].equalsIgnoreCase( plrName )
-						|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
-						|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
-						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_ARE_FRIENDS" ) );
-						return false;
-					}
-					FriendInfo initiatorInfo = manager.get( initiatorUuid );
-					UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
-					if ( targetProfile == null ) {
-						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ] ) );
-						return false;
-					}
-
-					int targetPlayerId = targetProfile.getPlayerId();
+				if ( PlayerFriendRelation.isRequestSent( manager, initiator, targetPlayerId ) ) {
 					FriendInfo targetInfo = manager.get( targetPlayerId );
 
-					if ( PlayerFriendRelation.areFriends( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
-						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP", targetProfile.getName() ) );
-						return false;
-					}
-					if ( !PlayerFriendRelation.isRequestRecieved( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
-						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP_REQUEST_NOT_EXIST", targetProfile.getName() ) );
-						return false;
-					}
-
-					initiatorInfo.getRequestsSent().remove( targetPlayerId );
-					initiatorInfo.getFriendWith().add( targetPlayerId );
-					initiatorInfo.setDirty();
-					targetInfo.getRequestsGot().remove( initiatorInfo.getPlayerId() );
-					targetInfo.getFriendWith().add( initiatorInfo.getPlayerId() );
+					targetInfo.getRequestsGot().remove( initiator.getPlayerId() );
 					targetInfo.setDirty();
+					initiator.getRequestsSent().remove( targetPlayerId );
+					initiator.setDirty();
 
-					msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_ACCEPT_FRIENDSHIP", targetProfile.getName() ) );
-
-					Player targetPlr = targetInfo.getPlayer();
+					msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_CANCEL_FRIENDSHIP_REQUEST", targetProfile.getName() ) );
+					Player targetPlr = server.getPlayer( targetProfile.getUuid() );
 					if ( targetPlr != null ) {
-						msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_ACCEPT_FROM_FRIENDSHIP", plrName ) );
+						msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_CANCEL_FROM_FRIENDSHIP_REQUEST", plrName ) );
+						return false;
+					}
+					return false;
+				}
+				if ( PlayerFriendRelation.isRequestRecieved( manager, initiator, targetPlayerId ) ) {
+					FriendInfo targetInfo = manager.get( targetPlayerId );
+
+					targetInfo.getRequestsSent().remove( initiator.getPlayerId() );
+					targetInfo.setDirty();
+					initiator.getRequestsGot().remove( targetPlayerId );
+					initiator.setDirty();
+
+					msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_REJECT_FRIENDSHIP_REQUEST", targetProfile.getName() ) );
+					Player targetPlr = server.getPlayer( targetProfile.getUuid() );
+					if ( targetPlr != null ) {
+						msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_REJECT_FROM_FRIENDSHIP_REQUEST", plrName ) );
 						return false;
 					} else {
-						targetInfo.getNotifyRequestAccepted().add( initiatorInfo.getPlayerId() );
+						targetInfo.getNotifyRequestDenied().add( initiator.getPlayerId() );
 						targetInfo.setDirty();
 					}
 					return false;
 				}
-				case "add":
-				case "anfragen":
-				case "request": {
-					if ( args.length < 2 ) {
-						msg( plr, "§a/friend " + args[ 0 ] + " [Player]" );
-						return false;
-					}
-					if ( args[ 1 ].equalsIgnoreCase( plrName )
-						|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
-						|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
-						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_SEND_SELF_FRIENDSHIP" ) );
-						return false;
-					}
-					FriendInfo initiatorInfo = manager.get( initiatorUuid );
-					UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
-					if ( targetProfile == null ) {
-						msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ] ) );
-						return false;
-					}
-
-					if ( PlayerFriendRelation.areFriends( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
-						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP", targetProfile.getName() ) );
-						return false;
-					}
-					if ( PlayerFriendRelation.isRequestSent( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
-						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_HAVE_SENT_FRIENDSHIP", targetProfile.getName() ) );
-						return false;
-					}
-					if ( PlayerFriendRelation.isRequestRecieved( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
-						msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_HAVE_GOT_FRIENDSHIP", targetProfile.getName(), alias ) );
-						return false;
-					}
-
-					int targetPlayerId = targetProfile.getPlayerId();
-					FriendInfo targetInfo = manager.get( targetPlayerId );
-					initiatorInfo.getRequestsSent().add( targetPlayerId );
-					initiatorInfo.setDirty();
-					targetInfo.getRequestsGot().add( initiatorInfo.getPlayerId() );
-					targetInfo.setDirty();
-
-					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_SEND_FRIENDSHIP", targetProfile.getName() ) );
-
-					Player targetPlr = targetInfo.getPlayer();
-					if ( targetPlr != null ) {
-						msg( targetPlr, TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_RECEIVE_FRIENDSHIP", plrName ) );
-					}
-					return false;
-				}
-				default: {
-					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_UNKNOWN", args[ 0 ] ) );
-					sendHelp( plr );
-					return false;
-				}
+				msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP_REQUEST_NOT", targetProfile.getName() ) );
+				return false;
 			}
+			case "accept":
+			case "annehmen": {
+				if ( args.length < 2 ) {
+					msg( plr, "§a/friend " + args[ 0 ] + " <name>" );
+					return false;
+				}
+				if ( args[ 1 ].equalsIgnoreCase( plrName )
+					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
+					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
+					msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_ARE_FRIENDS" ) );
+					return false;
+				}
+				FriendInfo initiatorInfo = manager.get( initiatorUuid );
+				UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
+				if ( targetProfile == null ) {
+					msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ] ) );
+					return false;
+				}
+
+				int targetPlayerId = targetProfile.getPlayerId();
+				FriendInfo targetInfo = manager.get( targetPlayerId );
+
+				if ( PlayerFriendRelation.areFriends( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
+					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP", targetProfile.getName() ) );
+					return false;
+				}
+				if ( !PlayerFriendRelation.isRequestRecieved( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
+					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP_REQUEST_NOT_EXIST", targetProfile.getName() ) );
+					return false;
+				}
+
+				initiatorInfo.getRequestsSent().remove( targetPlayerId );
+				initiatorInfo.getFriendWith().add( targetPlayerId );
+				initiatorInfo.setDirty();
+				targetInfo.getRequestsGot().remove( initiatorInfo.getPlayerId() );
+				targetInfo.getFriendWith().add( initiatorInfo.getPlayerId() );
+				targetInfo.setDirty();
+
+				msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_ACCEPT_FRIENDSHIP", targetProfile.getName() ) );
+
+				Player targetPlr = targetInfo.getPlayer();
+				if ( targetPlr != null ) {
+					msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_ACCEPT_FROM_FRIENDSHIP", plrName ) );
+					return false;
+				} else {
+					targetInfo.getNotifyRequestAccepted().add( initiatorInfo.getPlayerId() );
+					targetInfo.setDirty();
+				}
+				return false;
+			}
+			case "add":
+			case "anfragen":
+			case "request": {
+				if ( args.length < 2 ) {
+					msg( plr, "§a/friend " + args[ 0 ] + " [Player]" );
+					return false;
+				}
+				if ( args[ 1 ].equalsIgnoreCase( plrName )
+					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString() )
+					|| args[ 1 ].equalsIgnoreCase( initiatorUuid.toString().replace( "-", "" ) ) ) {
+					msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_SEND_SELF_FRIENDSHIP" ) );
+					return false;
+				}
+				FriendInfo initiatorInfo = manager.get( initiatorUuid );
+				UserDataConverter.Profile targetProfile = userDataConverter.getProfileFromInput( args[ 1 ] );
+				if ( targetProfile == null ) {
+					msg( plr, module.getPrefix() + TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_PLAYER_NOTFOUND", args[ 1 ] ) );
+					return false;
+				}
+
+				if ( PlayerFriendRelation.areFriends( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
+					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_FRIENDSHIP", targetProfile.getName() ) );
+					return false;
+				}
+				if ( PlayerFriendRelation.isRequestSent( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
+					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_HAVE_SENT_FRIENDSHIP", targetProfile.getName() ) );
+					return false;
+				}
+				if ( PlayerFriendRelation.isRequestRecieved( manager, initiatorInfo, targetProfile.getPlayerId() ) ) {
+					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_HAVE_GOT_FRIENDSHIP", targetProfile.getName(), alias ) );
+					return false;
+				}
+
+				int targetPlayerId = targetProfile.getPlayerId();
+				FriendInfo targetInfo = manager.get( targetPlayerId );
+				initiatorInfo.getRequestsSent().add( targetPlayerId );
+				initiatorInfo.setDirty();
+				targetInfo.getRequestsGot().add( initiatorInfo.getPlayerId() );
+				targetInfo.setDirty();
+
+				msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_FRIEND_SEND_FRIENDSHIP", targetProfile.getName() ) );
+
+				Player targetPlr = targetInfo.getPlayer();
+				if ( targetPlr != null ) {
+					msg( targetPlr, TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_RECEIVE_FRIENDSHIP", plrName ) );
+				}
+				return false;
+			}
+			default: {
+				msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_UNKNOWN", args[ 0 ] ) );
+				sendHelp( plr );
+				return false;
+			}
+		}
 	}
 
 //	@Override

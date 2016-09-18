@@ -11,14 +11,14 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import eu.epicpvp.kcore.Translation.TranslationHandler;
+import eu.epicpvp.kcore.Util.UtilPlayer;
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 import de.janmm14.epicpvp.warz.friends.FriendInfo;
 import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
 import de.janmm14.epicpvp.warz.friends.FriendModule;
 import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
-import eu.epicpvp.kcore.Translation.TranslationHandler;
-import eu.epicpvp.kcore.Util.UtilPlayer;
-import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,14 +36,14 @@ public class CommandSpawn implements CommandExecutor {
 		Player plr = ( Player ) sender;
 		if ( args.length == 0 || !sender.isOp() ) {
 			if ( UtilWorldGuard.RegionFlag( plr, DefaultFlag.PVP ) ) {
-				if(!plr.isOp()){
+				if ( !plr.isOp() ) {
 					FriendInfoManager info = module.getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
-					FriendInfo plrF = info.get(UtilPlayer.getPlayerId(plr));
-					
+					FriendInfo plrF = info.get( UtilPlayer.getPlayerId( plr ) );
+
 					Collection<Entity> nearbyEntities = plr.getWorld().getNearbyEntities( plr.getLocation(), 25, 25, 25 );
 					for ( Entity e : nearbyEntities ) {
 						if ( e instanceof Player && e.getUniqueId() != plr.getUniqueId() ) {
-							if( !PlayerFriendRelation.areFriends(info, plrF, UtilPlayer.getPlayerId( ((Player)e) ))){
+							if ( !PlayerFriendRelation.areFriends( info, plrF, UtilPlayer.getPlayerId( ( ( Player ) e ) ) ) ) {
 								sender.sendMessage( TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_SPAWN_NEAR_TO_PLAYER" ) );
 								return true;
 							}

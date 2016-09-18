@@ -44,9 +44,9 @@ public class ShopBuyInventoryHandler {
 		addItem( 9 * 4 + 5 - 1, 2063408, Material.GOLD_PICKAXE, "§eTier V Shotgun" );
 		addItem( 9 * 4 + 6 - 1, 2063413, Material.GOLD_HOE, "§eTier V Autogun" );
 		addItem( 9 * 4 + 7 - 1, 2063416, Material.GOLD_SPADE, "§eTier V Pistol" );
-		addItem( 9 * 5 + 3 - 1, 2063422, Material.getMaterial(351), 11, "§eMunitions Paket" );
-		
-		
+		addItem( 9 * 5 + 3 - 1, 2063422, Material.getMaterial( 351 ), 11, "§eMunitions Paket" );
+
+
 		UtilInv.getBase().addPage( inventory );
 	}
 

@@ -155,9 +155,9 @@ public class WarZListener implements Listener {
 
 		if ( cmd.indexOf( ':' ) != -1 ) {
 			ev.setCancelled( true );
-		} else if (!cmd.isEmpty()){
+		} else if ( !cmd.isEmpty() ) {
 			cmd = cmd.toLowerCase();
-			if (cmd.charAt( 0 ) == '/') {
+			if ( cmd.charAt( 0 ) == '/' ) {
 				cmd = cmd.substring( 1 );
 			}
 			if ( cmd.startsWith( "me" ) ) {

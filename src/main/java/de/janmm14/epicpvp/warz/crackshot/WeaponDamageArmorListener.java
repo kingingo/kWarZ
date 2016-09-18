@@ -89,7 +89,7 @@ public class WeaponDamageArmorListener implements Listener {
 	@Nullable
 	private ItemStack reduceDurability(ItemStack stack) {
 		if ( WarZ.DEBUG ) {
-			System.out.println( "itemstack = ["+stack.getType().name()+"], max-durability= ["+stack.getType().getMaxDurability()+"], durability= ["+stack.getDurability()+"]" );
+			System.out.println( "itemstack = [" + stack.getType().name() + "], max-durability= [" + stack.getType().getMaxDurability() + "], durability= [" + stack.getDurability() + "]" );
 		}
 
 		short durability = ( short ) ( stack.getDurability() + 1 );
@@ -157,14 +157,14 @@ public class WeaponDamageArmorListener implements Listener {
 
 	@EventHandler
 	public void onShoot(WeaponPreShootEvent event) {
-		if ( !UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP )) {
+		if ( !UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ) {
 			event.setCancelled( true );
 		}
 	}
 
 	@EventHandler
 	public void onShoot(WeaponPrepareShootEvent event) {
-		if ( !UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP )) {
+		if ( !UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ) {
 			event.setCancelled( true );
 		}
 	}

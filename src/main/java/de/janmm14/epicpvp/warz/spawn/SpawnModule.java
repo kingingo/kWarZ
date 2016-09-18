@@ -141,7 +141,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
-		if ( UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) && !getModuleManager().getModule( LogoutModule.class ).containsNpc(ev.getPlayer())) {
+		if ( UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) && !getModuleManager().getModule( LogoutModule.class ).containsNpc( ev.getPlayer() ) ) {
 			saveLastMapPos( ev.getPlayer(), ev.getPlayer().getLocation() );
 			ev.getPlayer().teleport( spawn );
 		}
@@ -154,15 +154,15 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 		}
 	}
 
-	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
-	public void teleport(PlayerTeleportEvent ev){
-		if( UtilWorldGuard.RegionFlag( ev.getTo(), DefaultFlag.PVP ) ){
-			sendBorder(ev.getPlayer());
-		}else{
-			resetBorder(ev.getPlayer());
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void teleport(PlayerTeleportEvent ev) {
+		if ( UtilWorldGuard.RegionFlag( ev.getTo(), DefaultFlag.PVP ) ) {
+			sendBorder( ev.getPlayer() );
+		} else {
+			resetBorder( ev.getPlayer() );
 		}
 	}
-	
+
 	@EventHandler
 	public void onDeath(PlayerDeathEvent ev) {
 		resetLastMapPos( ev.getEntity() );

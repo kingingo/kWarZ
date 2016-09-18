@@ -1,20 +1,14 @@
 package de.janmm14.epicpvp.warz.command;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.command.TabExecutor;
 
-import com.google.common.collect.ImmutableList;
 import dev.wolveringer.client.debug.Debugger;
 import eu.epicpvp.kcore.Command.CommandHandler.Sender;
 import eu.epicpvp.kcore.Util.UtilNumber;
+
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.WarZListener;
 import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
@@ -22,12 +16,12 @@ import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CommandWarZ implements CommandExecutor{
+public class CommandWarZ implements CommandExecutor {
 
 	private final WarZ plugin;
 
 	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "wz", sender = Sender.PLAYER)
-	public boolean onCommand(CommandSender sender, Command cmd, String arg2,String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String arg2, String[] args) {
 		if ( args.length == 0 ) {
 			sender.sendMessage( "§aWarZ Plugin by Janmm14" );
 			sender.sendMessage( "§c/wz reload §7- §6Liest die Config neu ein." );
@@ -56,16 +50,16 @@ public class CommandWarZ implements CommandExecutor{
 				WarZListener.TIME = 18000;
 				break;
 			case "setslots":
-				WarZ.SLOTS = UtilNumber.toInt(args[ 1 ]);
+				WarZ.SLOTS = UtilNumber.toInt( args[ 1 ] );
 				plugin.getConfig().set( "slots", WarZ.SLOTS );
 				plugin.saveConfig();
-				sender.sendMessage( "§6Die Slots wurden auf §e"+WarZ.SLOTS+"§6 gesetzt!" );
+				sender.sendMessage( "§6Die Slots wurden auf §e" + WarZ.SLOTS + "§6 gesetzt!" );
 				break;
 			case "setslotspremium":
-				WarZ.SLOTS_PREMIUM = UtilNumber.toInt(args[ 1 ]);
+				WarZ.SLOTS_PREMIUM = UtilNumber.toInt( args[ 1 ] );
 				plugin.getConfig().set( "slots_premium", WarZ.SLOTS_PREMIUM );
 				plugin.saveConfig();
-				sender.sendMessage( "§6Die §ePremium-Slots§6 wurden auf §e"+WarZ.SLOTS_PREMIUM+"§6 gesetzt!" );
+				sender.sendMessage( "§6Die §ePremium-Slots§6 wurden auf §e" + WarZ.SLOTS_PREMIUM + "§6 gesetzt!" );
 				break;
 			case "refill":
 				plugin.getModuleManager().getModule( ZoneAndChestsModule.class ).getChestContentManager().reset();
