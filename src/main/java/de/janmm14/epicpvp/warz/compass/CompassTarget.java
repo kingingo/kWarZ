@@ -8,6 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import eu.epicpvp.kcore.Util.UtilPlayer;
+
 import de.janmm14.epicpvp.warz.friends.FriendInfo;
 import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
 import de.janmm14.epicpvp.warz.friends.FriendModule;
@@ -38,7 +40,7 @@ public enum CompassTarget {
 				if ( !plr.getWorld().equals( possTarget.getWorld() ) ) {
 					continue;
 				}
-				if ( PlayerFriendRelation.areFriends( manager, friendInfo, friendInfo.getPlayerId() ) ) {
+				if ( PlayerFriendRelation.areFriends( manager, friendInfo, UtilPlayer.getPlayerId( possTarget ) ) ) {
 					continue;
 				}
 				double currDistanceSquared = plr.getLocation().distanceSquared( possTarget.getLocation() );
