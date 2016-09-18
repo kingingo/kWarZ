@@ -17,10 +17,13 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+
 import net.minecraft.server.v1_8_R3.MapIcon;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 public class MapModule extends Module<MapModule> implements Listener {
 
@@ -39,10 +42,15 @@ public class MapModule extends Module<MapModule> implements Listener {
 					System.out.println( "Rewriting map packet for " + event.getPlayer().getName() );
 				}
 				WrapperPlayServerMap packet = new WrapperPlayServerMap( event.getPacket() );
-				packet.setMapIcons( new MapIcon[]{ new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
-					( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
-					( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
-					( byte ) ( event.getPlayer().getLocation().getPitch() ) ) } );
+				
+				if( UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ){
+					packet.setMapIcons( new MapIcon[]{ new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
+							( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
+							( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
+							( byte ) ( event.getPlayer().getLocation().getPitch() ) ) } );
+				}else{
+					packet.setMapIcons(new MapIcon[]{});
+				}
 			}
 
 			@Override
