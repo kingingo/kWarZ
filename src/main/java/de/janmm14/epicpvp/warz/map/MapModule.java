@@ -31,8 +31,10 @@ import net.minecraft.server.v1_8_R3.MapIcon;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
+import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.Util.UtilDirection;
+import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 public class MapModule extends Module<MapModule> implements Listener {
@@ -57,7 +59,6 @@ public class MapModule extends Module<MapModule> implements Listener {
 				WrapperPlayServerMap packet = new WrapperPlayServerMap( event.getPacket() );
 				
 				if( UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ){
-					
 					if(event.getPlayer().isOp()){
 						List<MapIcon> icons = new ArrayList<>();
 						icons.add(new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
@@ -65,10 +66,28 @@ public class MapModule extends Module<MapModule> implements Listener {
 								( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
 								( byte ) ( getRotation(event.getPlayer().getLocation()) )));
 						
-						Collection<Entity> nearbyEntities = event.getPlayer().getWorld().getNearbyEntities( event.getPlayer().getLocation(), 100, 100, 100 );
+						for(Player plr : UtilServer.getPlayers()){
+							if (plr.getUniqueId() != event.getPlayer().getUniqueId() ) {
+								icons.add(new MapIcon( MapCursor.Type.RED_POINTER.getValue(),
+										( byte ) ( plr.getLocation().getBlockX() / 8 ),
+										( byte ) ( plr.getLocation().getBlockZ() / 8 ),
+										( byte ) ( getRotation(plr.getLocation()) )));
+							}
+						}
+						createCircle(icons, 200, event.getPlayer().getLocation());
+						
+						packet.setMapIcons( icons.toArray(new MapIcon[icons.size()]) );
+					}else if(event.getPlayer().hasPermission(PermissionType.WARZ_MAP_OTHER_PLAYER.getPermissionToString())){
+						List<MapIcon> icons = new ArrayList<>();
+						icons.add(new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
+								( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
+								( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
+								( byte ) ( getRotation(event.getPlayer().getLocation()) )));
+						
+						Collection<Entity> nearbyEntities = event.getPlayer().getWorld().getNearbyEntities( event.getPlayer().getLocation(), 200, 200, 200 );
 						for ( Entity e : nearbyEntities ) {
 							if ( e instanceof Player && e.getUniqueId() != event.getPlayer().getUniqueId() ) {
-								icons.add(new MapIcon( MapCursor.Type.WHITE_POINTER.getValue(),
+								icons.add(new MapIcon( MapCursor.Type.RED_POINTER.getValue(),
 										( byte ) ( e.getLocation().getBlockX() / 8 ),
 										( byte ) ( e.getLocation().getBlockZ() / 8 ),
 										( byte ) ( getRotation(e.getLocation()) )));
@@ -97,6 +116,18 @@ public class MapModule extends Module<MapModule> implements Listener {
 				//has to be here due to a protocollib error
 			}
 		} );
+	}
+	
+	public void createCircle(List<MapIcon> icons,int r,Location center){
+		byte x;
+		byte z;    
+        for (double i = 0.0; i < 360.0; i += 0.1) {
+        	double angle = i * Math.PI / 180;
+            x = (byte)((center.getBlockX()/8) + r * Math.cos(angle));
+            z = (byte)((center.getBlockZ()/8) + r * Math.sin(angle));
+            
+            icons.add(new MapIcon(MapCursor.Type.WHITE_CROSS.getValue(), x, z, (byte)0));
+        }
 	}
 	
 	public byte getRotation(Location location) {
