@@ -119,16 +119,16 @@ public class MapModule extends Module<MapModule> implements Listener {
 	}
 	
 	public void createCircle(List<MapIcon> icons,int r,Location center){
-		byte x;
-		byte z;    
+		int x;
+		int z;    
         for (double i = 0.0; i < 360.0; i += 0.1) {
         	double angle = i * Math.PI / 180;
-            x = (byte)((center.getBlockX()/8) + r * Math.cos(angle));
-            z = (byte)((center.getBlockZ()/8) + r * Math.sin(angle));
+            x = (int)(center.getBlockX() + r * Math.cos(angle));
+            z = (int)(center.getBlockZ() + r * Math.sin(angle));
             
-            if(x >= -64 && x <= 64
-            		&& z >= -64 && z <= 64){
-                icons.add(new MapIcon(MapCursor.Type.WHITE_CROSS.getValue(), x, z, (byte)0));
+            if((x/8) >= -64 && (x/8) <= 64
+            		&& (z/8) >= -64 && (z/8) <= 64){
+                icons.add(new MapIcon(MapCursor.Type.WHITE_POINTER.getValue(), (byte)(x/8), (byte)(z/8), (byte)0));
             }
         }
 	}
