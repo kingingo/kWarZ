@@ -145,7 +145,7 @@ public class ShopChestDeliveryHandler implements Listener {
 				event.setCancelled( true );
 				break;
 			case MOVE_TO_OTHER_INVENTORY:
-				if ( !( event.getClickedInventory() instanceof ShopInventoryHolder ) ) {
+				if ( !( event.getClickedInventory().getHolder() instanceof ShopInventoryHolder ) ) {
 					event.setCancelled( true );
 				}
 				break;
