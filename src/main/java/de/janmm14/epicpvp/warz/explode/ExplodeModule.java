@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
 import com.shampaggon.crackshot.events.WeaponExplodeEvent;
 
 import de.janmm14.epicpvp.warz.Module;
@@ -20,6 +21,14 @@ public class ExplodeModule extends Module<ExplodeModule> implements Listener {
 	public void reloadConfig() {
 	}
 
+	@EventHandler
+	public void damage(WeaponDamageEntityEvent ev){
+		if(ev.getWeaponTitle().equalsIgnoreCase("Rauchgranate")||ev.getWeaponTitle().equalsIgnoreCase("Blentgranate")){
+			ev.setDamage(0);
+			ev.setCancelled(true);
+		}
+	}
+	
 	@EventHandler
 	public void weaponExp(WeaponExplodeEvent ev) {
 

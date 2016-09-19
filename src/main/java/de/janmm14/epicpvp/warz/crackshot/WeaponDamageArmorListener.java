@@ -35,7 +35,7 @@ public class WeaponDamageArmorListener implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onWeaponDamage(WeaponDamageEntityEvent event) {
 		Entity victimEntity = event.getVictim();
-
+		
 		if ( !( victimEntity instanceof LivingEntity ) ) {
 			return;
 		}
