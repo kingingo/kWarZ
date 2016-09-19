@@ -105,7 +105,7 @@ public class CommandFriends implements CommandExecutor {
 	}
 
 	@SuppressWarnings("deprecation")
-	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "friend", sender = Sender.PLAYER)
+	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "friend",alias={"freunde","friede","frieden","freund"}, sender = Sender.PLAYER)
 	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 		if ( !( sender instanceof Player ) ) {
 			msg( sender, "§cDu musst ein Spieler sein!" );

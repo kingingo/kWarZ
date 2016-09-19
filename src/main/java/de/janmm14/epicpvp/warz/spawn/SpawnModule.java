@@ -12,12 +12,14 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutWorldBorder;
+import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsCreateEvent;
 import eu.epicpvp.kcore.Util.UtilMath;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilWorld;
@@ -30,7 +32,7 @@ import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
 import de.janmm14.epicpvp.warz.logout.LogoutModule;
 import de.janmm14.epicpvp.warz.util.ConfigLocationAdapter;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
-
+import dev.wolveringer.dataserver.gamestats.GameType;
 import lombok.Getter;
 
 public class SpawnModule extends Module<SpawnModule> implements Listener {
@@ -117,42 +119,44 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 		} else {
 			if ( !this.mapSpawns.isEmpty() ) {
 				plr.teleport( getRandomMapSpawn() );
-
-				PlayerInventory inventory = plr.getInventory();
-				if (isEmpty( inventory.getHelmet() )) {
-					inventory.setHelmet( new ItemStack( Material.LEATHER_HELMET ) );
-				} else {
-					inventory.addItem(new ItemStack( Material.LEATHER_HELMET ));
-				}
-				if (isEmpty( inventory.getChestplate() )) {
-					inventory.setChestplate( new ItemStack( Material.LEATHER_CHESTPLATE ) );
-				} else {
-					inventory.addItem(new ItemStack( Material.LEATHER_CHESTPLATE ));
-				}
-				if (isEmpty( inventory.getLeggings() )) {
-					inventory.setLeggings( new ItemStack( Material.LEATHER_LEGGINGS ) );
-				} else {
-					inventory.addItem(new ItemStack( Material.LEATHER_LEGGINGS ));
-				}
-				if (isEmpty( inventory.getBoots() )) {
-					inventory.setBoots( new ItemStack( Material.LEATHER_BOOTS ) );
-				} else {
-					inventory.addItem(new ItemStack( Material.LEATHER_BOOTS ));
-				}
-				inventory.addItem( Zone.crackshotRename( new ItemStack( Material.STONE_SPADE ) ) );
-				inventory.addItem( new ItemStack( Material.WOOD_SWORD ) );
-				inventory.addItem( new ItemStack( Material.MAP, 1, ( short ) 25 ) );
-				inventory.addItem( new ItemStack( 351, 16, ( short ) 13 ) );
-				inventory.addItem( new ItemStack( 351, 16, ( short ) 6 ) );
-				inventory.addItem( new ItemStack( 351, 16, ( short ) 3 ) );
-				plr.setExp( 1 );
-				plr.setFoodLevel( 20 );
-				plr.setSaturation( Float.MAX_VALUE );
-
-				this.getModuleManager().getModule( ItemRenameModule.class ).renameItemStackArray( inventory.getContents() );
-				plr.updateInventory();
 			}
 		}
+	}
+	
+	public void setStarterKit(Player plr){
+		PlayerInventory inventory = plr.getInventory();
+		if (isEmpty( inventory.getHelmet() )) {
+			inventory.setHelmet( new ItemStack( Material.LEATHER_HELMET ) );
+		} else {
+			inventory.addItem(new ItemStack( Material.LEATHER_HELMET ));
+		}
+		if (isEmpty( inventory.getChestplate() )) {
+			inventory.setChestplate( new ItemStack( Material.LEATHER_CHESTPLATE ) );
+		} else {
+			inventory.addItem(new ItemStack( Material.LEATHER_CHESTPLATE ));
+		}
+		if (isEmpty( inventory.getLeggings() )) {
+			inventory.setLeggings( new ItemStack( Material.LEATHER_LEGGINGS ) );
+		} else {
+			inventory.addItem(new ItemStack( Material.LEATHER_LEGGINGS ));
+		}
+		if (isEmpty( inventory.getBoots() )) {
+			inventory.setBoots( new ItemStack( Material.LEATHER_BOOTS ) );
+		} else {
+			inventory.addItem(new ItemStack( Material.LEATHER_BOOTS ));
+		}
+		inventory.addItem( Zone.crackshotRename( new ItemStack( Material.STONE_SPADE ) ) );
+		inventory.addItem( new ItemStack( Material.WOOD_SWORD ) );
+		inventory.addItem( new ItemStack( Material.MAP, 1, ( short ) 25 ) );
+		inventory.addItem( new ItemStack( 351, 16, ( short ) 13 ) );
+		inventory.addItem( new ItemStack( 351, 16, ( short ) 6 ) );
+		inventory.addItem( new ItemStack( 351, 16, ( short ) 3 ) );
+		plr.setExp( 1 );
+		plr.setFoodLevel( 20 );
+		plr.setSaturation( Float.MAX_VALUE );
+
+		this.getModuleManager().getModule( ItemRenameModule.class ).renameItemStackArray( inventory.getContents() );
+		plr.updateInventory();
 	}
 
 	private boolean isEmpty(ItemStack is) {
@@ -180,6 +184,20 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 		} else {
 			resetBorder( ev.getPlayer() );
 		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void newPlayer(PlayerStatsCreateEvent ev){
+		if(ev.getManager().getType()!=GameType.WARZ)return;
+		
+		Player plr = UtilPlayer.searchExact(ev.getPlayerId());
+		
+		if(plr!=null)setStarterKit(plr);
+	}
+	
+	@EventHandler
+	public void respawn(PlayerRespawnEvent ev){
+		setStarterKit(ev.getPlayer());
 	}
 
 	@EventHandler

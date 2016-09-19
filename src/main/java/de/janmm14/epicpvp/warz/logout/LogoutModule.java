@@ -20,8 +20,11 @@ import org.bukkit.inventory.ItemStack;
 
 import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+
+import dev.wolveringer.dataserver.player.LanguageType;
 import dev.wolveringer.skin.Skin;
 import eu.epicpvp.kcore.Listener.SkinCatcherListener.SkinCatcherListener;
+import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.Update.Event.UpdateEvent;
 import eu.epicpvp.kcore.Update.UpdateType;
 import eu.epicpvp.kcore.UserDataConfig.Events.UserDataConfigLoadEvent;
@@ -42,6 +45,11 @@ import lombok.Getter;
 
 public class LogoutModule extends Module<LogoutModule> implements Listener {
 
+	static{
+		TranslationHandler.registerFallback(LanguageType.GERMAN, "warz.module.logout.death", "§cDer Spieler §e%s0§c hat dich getötet!");
+		TranslationHandler.registerFallback(LanguageType.ENGLISH, "warz.module.logout.death", "§cThe Player §e%s0§c has killed you!");
+	}
+	
 	@Getter
 	private Map<Integer, NPC> npcs = new HashMap<>();
 	@Getter
@@ -95,13 +103,13 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 
 	@EventHandler
 	public void kill(EntityDeathEvent ev) {
-		if ( this.npcs.containsKey( ev.getEntity().getEntityId() ) ) {
+		if ( this.npcs.containsKey( ev.getEntity().getEntityId() )  && ev.getEntity().getKiller()!=null) {
 			NPC npc = this.npcs.get( ev.getEntity().getEntityId() );
 			npc.drop();
 
 			kConfig config = UtilServer.getUserData().loadConfig( npc.getPlayerId() );
 			config.set( "lastMapPos", null );
-			config.set( "Death", true );
+			config.set( "Death", ev.getEntity().getKiller().getName() );
 			config.save();
 		}
 	}
@@ -109,11 +117,12 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 	@EventHandler
 	public void load(UserDataConfigLoadEvent ev) {
 		if ( ev.getConfig().contains( "Death" ) ) {
-			if ( ev.getConfig().getBoolean( "Death" ) ) {
+			String killer = ev.getConfig().getString( "Death" );
+			if ( !killer.isEmpty() ) {
+				ev.getPlayer().sendMessage(TranslationHandler.getPrefixAndText(ev.getPlayer(), "warz.module.logout.death",killer));
 				ev.getPlayer().getInventory().clear();
 				ev.getPlayer().getInventory().setArmorContents( new ItemStack[]{} );
 				ev.getConfig().set( "Death", null );
-
 				ev.getConfig().save();
 			}
 		}
@@ -121,19 +130,12 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onJoin(PlayerJoinEvent event) {
-		UUID uuid = event.getPlayer().getUniqueId();
-		SkinCatcherListener catcher = UtilSkin.getCatcher();
-		Skin skin = catcher.getSkins().get( uuid );
-		if ( skin == null ) {
-			UtilSkin.loadSkin( (loadedSkin, throwable) -> {
-				if ( throwable != null ) {
-					throwable.printStackTrace();
-				}
-				skinCache.put( uuid, loadedSkin );
-			}, uuid );
-		} else {
-			skinCache.put( uuid, skin );
-		}
+		UtilSkin.loadSkin( (loadedSkin, throwable) -> {
+			if ( throwable != null ) {
+				throwable.printStackTrace();
+			}
+			skinCache.put( event.getPlayer().getUniqueId(), loadedSkin );
+		}, event.getPlayer().getUniqueId() );
 	}
 
 	@EventHandler

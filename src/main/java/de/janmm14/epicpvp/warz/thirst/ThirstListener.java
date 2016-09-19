@@ -88,17 +88,6 @@ public class ThirstListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onPlayerNew(PlayerStatsCreateEvent event) {
-		if ( event.getManager().getType() == GameType.WARZ ) {
-			Player plr = UtilPlayer.searchExact( event.getPlayerId() );
-			if ( plr != null ) {
-				plr.setExp( 1 );
-				checkExpAbilities( plr );
-			}
-		}
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player plr = event.getPlayer();
 		checkExpAbilities( plr );
