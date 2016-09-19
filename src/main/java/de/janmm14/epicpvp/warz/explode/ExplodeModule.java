@@ -26,6 +26,9 @@ public class ExplodeModule extends Module<ExplodeModule> implements Listener {
 		if(ev.getWeaponTitle().equalsIgnoreCase("Rauchgranate")||ev.getWeaponTitle().equalsIgnoreCase("Blentgranate")){
 			ev.setDamage(0);
 			ev.setCancelled(true);
+		}else if(ev.getWeaponTitle().equalsIgnoreCase("Granate")){
+			ev.setDamage(15);
+			ev.setCancelled(true);
 		}
 	}
 	
