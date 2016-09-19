@@ -119,10 +119,26 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 				plr.teleport( getRandomMapSpawn() );
 
 				PlayerInventory inventory = plr.getInventory();
-				inventory.setHelmet( new ItemStack( Material.LEATHER_HELMET ) );
-				inventory.setChestplate( new ItemStack( Material.LEATHER_CHESTPLATE ) );
-				inventory.setLeggings( new ItemStack( Material.LEATHER_LEGGINGS ) );
-				inventory.setBoots( new ItemStack( Material.LEATHER_BOOTS ) );
+				if (isEmpty( inventory.getHelmet() )) {
+					inventory.setHelmet( new ItemStack( Material.LEATHER_HELMET ) );
+				} else {
+					inventory.addItem(new ItemStack( Material.LEATHER_HELMET ));
+				}
+				if (isEmpty( inventory.getChestplate() )) {
+					inventory.setChestplate( new ItemStack( Material.LEATHER_CHESTPLATE ) );
+				} else {
+					inventory.addItem(new ItemStack( Material.LEATHER_CHESTPLATE ));
+				}
+				if (isEmpty( inventory.getLeggings() )) {
+					inventory.setLeggings( new ItemStack( Material.LEATHER_LEGGINGS ) );
+				} else {
+					inventory.addItem(new ItemStack( Material.LEATHER_LEGGINGS ));
+				}
+				if (isEmpty( inventory.getBoots() )) {
+					inventory.setBoots( new ItemStack( Material.LEATHER_BOOTS ) );
+				} else {
+					inventory.addItem(new ItemStack( Material.LEATHER_BOOTS ));
+				}
 				inventory.addItem( Zone.crackshotRename( new ItemStack( Material.STONE_SPADE ) ) );
 				inventory.addItem( new ItemStack( Material.WOOD_SWORD ) );
 				inventory.addItem( new ItemStack( Material.MAP, 1, ( short ) 25 ) );
@@ -139,6 +155,9 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 		}
 	}
 
+	private boolean isEmpty(ItemStack is) {
+		return is == null || is.getType() == Material.AIR;
+	}
 	@EventHandler
 	public void onJoin(PlayerJoinEvent ev) {
 		if ( UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) && !getModuleManager().getModule( LogoutModule.class ).containsNpc( ev.getPlayer() ) ) {
