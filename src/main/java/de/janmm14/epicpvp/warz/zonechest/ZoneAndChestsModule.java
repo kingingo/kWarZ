@@ -139,7 +139,6 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 		return getZone( new Location( world, blockVector.getX(), blockVector.getY(), blockVector.getZ() ) );
 	}
 
-	@Nullable
 	public Collection<Zone> getZones() {
 		return zones.values();
 	}
