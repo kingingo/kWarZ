@@ -1,9 +1,14 @@
 package de.janmm14.epicpvp.warz.command;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import dev.wolveringer.client.debug.Debugger;
 import eu.epicpvp.kcore.Command.CommandHandler.Sender;
@@ -11,6 +16,8 @@ import eu.epicpvp.kcore.Util.UtilNumber;
 
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.WarZListener;
+import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
+import de.janmm14.epicpvp.warz.zonechest.Zone;
 import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
 
 import lombok.RequiredArgsConstructor;
@@ -21,7 +28,7 @@ public class CommandWarZ implements CommandExecutor {
 	private final WarZ plugin;
 
 	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "wz", sender = Sender.PLAYER)
-	public boolean onCommand(CommandSender sender, Command cmd, String arg2, String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 		if ( args.length == 0 ) {
 			sender.sendMessage( "§aWarZ Plugin by Janmm14" );
 			sender.sendMessage( "§c/wz reload §7- §6Liest die Config neu ein." );
@@ -83,6 +90,48 @@ public class CommandWarZ implements CommandExecutor {
 					sender.sendMessage( "§6Der DatenClient-Debug-Modus ist nun§a angeschaltet§6." );
 				} else {
 					sender.sendMessage( "§6Der DatenClient-Debug-Modus ist nun§a ausgeschaltet§6." );
+				}
+				break;
+			case "items":
+				if ( !sender.isOp() ) {
+					return true;
+				}
+				if ( args.length != 3 ) {
+					sender.sendMessage( "§c/" + alias + " items <zone> <kistenzahl>" );
+					return true;
+				}
+				Zone zone = plugin.getModuleManager().getModule( ZoneAndChestsModule.class ).getZone( args[ 1 ] );
+				if ( zone == null ) {
+					sender.sendMessage( "§cCould not find zone " + args[ 1 ] );
+					return true;
+				}
+				int chestAmount = Integer.parseInt( args[ 2 ] );
+				List<ItemStack> items = new ArrayList<>( ( int ) ( chestAmount * 3.5 ) );
+				for ( int i = 0; i < chestAmount; i++ ) {
+					List<ItemStack> chest = zone.getRandomChoosenChestItems();
+					loopnew:
+					for ( ItemStack newItem : chest ) {
+						for ( ItemStack item : items ) {
+							if ( item.isSimilar( newItem ) ) {
+								item.setAmount( item.getAmount() + newItem.getAmount() );
+								continue loopnew;
+							}
+						}
+						items.add( newItem );
+					}
+				}
+				for ( ItemStack item : items ) {
+					plugin.getModuleManager().getModule( ItemRenameModule.class ).renameIfNeeded( item );
+					Zone.crackshotRename( item );
+					String itemStr = "";
+					ItemMeta meta = item.getItemMeta();
+					if ( meta.hasDisplayName() ) {
+						itemStr += meta.getDisplayName();
+					} else {
+						itemStr += item.getType() + ":" + item.getDurability();
+					}
+					itemStr += " -> " + item.getAmount();
+					sender.sendMessage( itemStr );
 				}
 				break;
 			default:
