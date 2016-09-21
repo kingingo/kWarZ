@@ -27,7 +27,7 @@ public class CommandWarZ implements CommandExecutor {
 
 	private final WarZ plugin;
 
-	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "wz", sender = Sender.PLAYER)
+	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "wz", sender = Sender.EVERYONE)
 	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 		if ( !sender.isOp() ) {
 			return true;
