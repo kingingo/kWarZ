@@ -97,7 +97,10 @@ public class ShopChestDeliveryHandler implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		module.getPlugin().getServer().getScheduler().runTaskAsynchronously( module.getPlugin(), () -> {
 			UserDataConverter.Profile profile = module.getPlugin().getUserDataConverter().getProfile( event.getPlayer() );
-			saveInventory( profile, inventories.remove( profile.getPlayerId() ) );
+			Inventory remove = inventories.remove( profile.getPlayerId() );
+			if (remove != null) {
+				saveInventory( profile, remove );
+			}
 		} );
 	}
 
@@ -198,5 +201,19 @@ public class ShopChestDeliveryHandler implements Listener {
 			}
 		}
 		return true;
+	}
+
+	public void openInventory(Player sender, UserDataConverter.Profile target) {
+		UserDataConverter.Profile profile = module.getPlugin().getUserDataConverter().getProfile( target.getPlayerId() );
+		Inventory inv = loadInventory( profile );
+		if ( inv == null || isEmpty( inv ) ) {
+			sender.spigot().sendMessage( NO_ITEMS_TO_DELIVER_MSG );
+			return;
+		}
+		ItemStack[] contents = inv.getContents();
+		if ( module.getModuleManager().getModule( ItemRenameModule.class ).renameItemStackArray( contents ) ) {
+			inv.setContents( contents );
+		}
+		sender.openInventory( inv );
 	}
 }
