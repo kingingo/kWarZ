@@ -3,6 +3,7 @@ package de.janmm14.epicpvp.warz.command;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +18,7 @@ import eu.epicpvp.kcore.Util.UtilNumber;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.WarZListener;
 import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
+import de.janmm14.epicpvp.warz.util.random.RandomUtil;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
 import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
 
@@ -113,6 +115,46 @@ public class CommandWarZ implements CommandExecutor {
 					loopnew:
 					for ( ItemStack newItem : chest ) {
 						for ( ItemStack item : items ) {
+							if ( item.getType() == Material.INK_SACK || item.getType() == Material.WEB ) {
+								String s = String.valueOf( item.getAmount() );
+								int lower, upper;
+								switch ( s.length() ) {
+									case 1: {
+										lower = item.getAmount();
+										upper = lower;
+										break;
+									}
+									case 2: {
+										char[] chars = s.toCharArray();
+										lower = Integer.valueOf( String.valueOf( chars[ 0 ] ) );
+										upper = Integer.valueOf( String.valueOf( chars[ 1 ] ) );
+										break;
+									}
+									case 3: {
+										char[] chars = s.toCharArray();
+										lower = Integer.valueOf( String.valueOf( chars[ 0 ] ) );
+										upper = Integer.valueOf( String.valueOf( chars[ 1 ] ) + chars[ 2 ] );
+										break;
+									}
+									case 4: {
+										char[] chars = s.toCharArray();
+										lower = Integer.valueOf( String.valueOf( chars[ 0 ] ) + chars[ 1 ] );
+										upper = Integer.valueOf( String.valueOf( chars[ 2 ] ) + chars[ 3 ] );
+										break;
+									}
+									default: {
+										lower = 1;
+										upper = 1;
+									}
+								}
+								if ( lower < 0 ) {
+									lower = 1;
+								}
+								if ( lower > upper ) {
+									upper = lower;
+								}
+								item.setAmount( RandomUtil.getRandomInt( lower, upper ) );
+							}
 							if ( item.isSimilar( newItem ) ) {
 								item.setAmount( item.getAmount() + newItem.getAmount() );
 								continue loopnew;
