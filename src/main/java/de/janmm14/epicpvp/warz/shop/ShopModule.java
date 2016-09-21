@@ -25,6 +25,7 @@ public class ShopModule extends Module<ShopModule> {
 		getPlugin().getCommand( "shop" ).setExecutor( new CommandShop( this ) );
 		getPlugin().getCommand( "giveshopitem" ).setExecutor( new CommandGiveShopItem( this ) );
 		getPlugin().getCommand( "setdelivery" ).setExecutor( new CommandSetDelivery( this ) );
+		getPlugin().getCommand( "shopchestadmin" ).setExecutor( new CommandShopChestAdmin( this ) );
 	}
 
 	@Override

@@ -32,6 +32,9 @@ commands:
   setdelivery:
     description: Set delivery chest position
     permission: warz.command.shop.setdeliverychest
+  shopchestadmin:
+    description: Shop chest admin tools
+    permission: warz.command.shop.chestadmin
   friends:
     description: Manage friendships
     #permission: warz.command.friends
