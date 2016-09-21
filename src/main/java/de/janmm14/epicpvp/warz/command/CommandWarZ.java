@@ -29,6 +29,9 @@ public class CommandWarZ implements CommandExecutor {
 
 	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "wz", sender = Sender.PLAYER)
 	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
+		if ( !sender.isOp() ) {
+			return true;
+		}
 		if ( args.length == 0 ) {
 			sender.sendMessage( "§aWarZ Plugin by Janmm14" );
 			sender.sendMessage( "§c/wz reload §7- §6Liest die Config neu ein." );
@@ -93,9 +96,6 @@ public class CommandWarZ implements CommandExecutor {
 				}
 				break;
 			case "items":
-				if ( !sender.isOp() ) {
-					return true;
-				}
 				if ( args.length != 3 ) {
 					sender.sendMessage( "§c/" + alias + " items <zone> <kistenzahl>" );
 					return true;
