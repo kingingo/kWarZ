@@ -1,6 +1,7 @@
 package de.janmm14.epicpvp.warz.explode;
 
 import org.bukkit.Effect;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
