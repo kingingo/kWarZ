@@ -40,6 +40,7 @@ public class CommandWarZ implements CommandExecutor {
 			sender.sendMessage( "§c/wz day §7- §6Setzt auf Tag." );
 			sender.sendMessage( "§c/wz night §7- §6Setzt auf Nacht." );
 			sender.sendMessage( "§c/wz settime [Time]§7 - §6Setzt die Zeit." );
+			sender.sendMessage( "§c/wz items <zone> <kistenzahl>" );
 			return true;
 		}
 		switch ( args[ 0 ].toLowerCase() ) {
