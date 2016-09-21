@@ -66,7 +66,7 @@ public class ShopChestDeliveryHandler implements Listener {
 
 	private Inventory loadInventory(UserDataConverter.Profile profile) {
 		kConfig config = userDataConfig.getConfig( profile.getPlayerId() );
-		ShopInventoryHolder owner = new ShopInventoryHolder();
+		ShopInventoryHolder owner = new ShopInventoryHolder(profile, config);
 		Inventory inv = module.getPlugin().getServer().createInventory( owner, 6 * 9, "§6Shop delivery" );
 		owner.setInventory( inv );
 		if ( config.contains( "shop.delivery.chestcontent" ) ) {
@@ -83,6 +83,11 @@ public class ShopChestDeliveryHandler implements Listener {
 
 	private void saveInventory(UserDataConverter.Profile profile, Inventory inv) {
 		kConfig config = userDataConfig.getConfig( profile.getPlayerId() );
+		config.setItemStackArray( "shop.delivery.chestcontent", inv.getContents() );
+		userDataConfig.saveConfig( profile.getPlayerId() );
+	}
+
+	private void saveInventory(UserDataConverter.Profile profile, Inventory inv, kConfig config) {
 		config.setItemStackArray( "shop.delivery.chestcontent", inv.getContents() );
 		userDataConfig.saveConfig( profile.getPlayerId() );
 	}
@@ -173,11 +178,12 @@ public class ShopChestDeliveryHandler implements Listener {
 	}
 
 	@EventHandler
-	public void onInvClose(InventoryCloseEvent event) {
+	public void onInventoryClose(InventoryCloseEvent event) {
 		if ( event.getInventory().getHolder() instanceof ShopInventoryHolder ) {
-			UserDataConverter.Profile profile = module.getPlugin().getUserDataConverter().getProfile( ( Player ) event.getPlayer() );
+			ShopInventoryHolder holder = ( ShopInventoryHolder ) event.getInventory().getHolder();
+			UserDataConverter.Profile profile = holder.getProfile();
 			Inventory inventory = inventories.get( profile.getPlayerId() );
-			saveInventory( profile, inventory );
+			saveInventory( profile, inventory, holder.getConfig() );
 		}
 	}
 
