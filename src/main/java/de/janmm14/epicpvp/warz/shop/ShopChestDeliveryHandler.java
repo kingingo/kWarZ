@@ -8,6 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -96,7 +97,7 @@ public class ShopChestDeliveryHandler implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		module.getPlugin().getServer().getScheduler().runTaskAsynchronously( module.getPlugin(), () -> {
 			UserDataConverter.Profile profile = module.getPlugin().getUserDataConverter().getProfile( event.getPlayer() );
-			inventories.remove( profile.getPlayerId() );
+			saveInventory( profile, inventories.remove( profile.getPlayerId() ) );
 		} );
 	}
 
@@ -165,6 +166,15 @@ public class ShopChestDeliveryHandler implements Listener {
 		}
 		if ( event.isCancelled() ) {
 			module.getPlugin().getServer().getScheduler().runTask( module.getPlugin(), () -> ( ( Player ) event.getWhoClicked() ).updateInventory() );
+		}
+	}
+
+	@EventHandler
+	public void onInvClose(InventoryCloseEvent event) {
+		if ( event.getInventory().getHolder() instanceof ShopInventoryHolder ) {
+			UserDataConverter.Profile profile = module.getPlugin().getUserDataConverter().getProfile( ( Player ) event.getPlayer() );
+			Inventory inventory = inventories.get( profile.getPlayerId() );
+			saveInventory( profile, inventory );
 		}
 	}
 
