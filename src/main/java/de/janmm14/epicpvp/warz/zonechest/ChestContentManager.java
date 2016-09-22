@@ -1,5 +1,6 @@
 package de.janmm14.epicpvp.warz.zonechest;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Random;
@@ -66,7 +67,7 @@ public class ChestContentManager implements Runnable {
 			createdInventories.asMap()
 				.forEach( (blockVector, inventory) -> {
 					try {
-						inventory.getViewers().forEach( HumanEntity::closeInventory );
+						new ArrayList<>( inventory.getViewers() ).forEach( HumanEntity::closeInventory );
 					}
 					catch ( ConcurrentModificationException ex ) {
 						ex.printStackTrace();
