@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FishingRodListener implements Listener {
 
-	private static final int USAGE_DELAY_SECONDS = 5;
+	private static final int USAGE_DELAY_SECONDS = 3;
 	private final FishingRodModule module;
 	private final Cache<UUID, Object> noFallDamage = CacheBuilder.newBuilder()
 		.expireAfterWrite( 10, TimeUnit.SECONDS ) // if he did not got fall damage by the velocity, remove him after some time
@@ -40,7 +40,20 @@ public class FishingRodListener implements Listener {
 
 	@EventHandler
 	public void onFishingRod(PlayerFishEvent event) {
-		if ( ( event.getState() == PlayerFishEvent.State.IN_GROUND || event.getState() == PlayerFishEvent.State.FAILED_ATTEMPT )
+		if ( event.getState() == PlayerFishEvent.State.FISHING ) {
+			UUID uuid = event.getPlayer().getUniqueId();
+			Long lastUsage = delay.getIfPresent( uuid );
+			if ( lastUsage != null && lastUsage >= System.currentTimeMillis() - USAGE_DELAY_SECONDS * 1000 ) {
+				event.setCancelled( true );
+				long sec = USAGE_DELAY_SECONDS - Math.max( 1, ( System.currentTimeMillis() - lastUsage ) / 1000 );
+				if ( sec == 1 ) {
+					event.getPlayer().sendMessage( "§cDu musst noch §6eine §cSekunde warten." );
+				} else {
+					event.getPlayer().sendMessage( "§cDu musst noch §6" + sec + "§c Sekunden warten." );
+				}
+				return;
+			}
+		} else if ( ( event.getState() == PlayerFishEvent.State.IN_GROUND || event.getState() == PlayerFishEvent.State.FAILED_ATTEMPT )
 			&& UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ) {
 
 			UUID uuid = event.getPlayer().getUniqueId();
