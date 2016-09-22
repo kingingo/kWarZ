@@ -16,7 +16,7 @@ public class FriendModule extends Module<FriendModule> {
 	private final FriendInfoManager friendInfoManager;
 
 	public FriendModule(WarZ plugin) {
-		super( plugin, FriendHurtListener::new, FriendNotifyListener::new );
+		super( plugin, FriendHurtListener::new, FriendNotifyListener::new, FriendSaveListener::new );
 		friendInfoManager = new FriendInfoManager( this );
 //		CommandFriends handler = new CommandFriends( this );
 //		PluginCommand cmd = getPlugin().getCommand( "friends" );

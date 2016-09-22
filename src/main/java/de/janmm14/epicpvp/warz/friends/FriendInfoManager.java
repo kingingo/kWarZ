@@ -145,7 +145,7 @@ public class FriendInfoManager {
 	}
 
 	/**
-	 * Removes the {@link FriendInfo} from the cache and saves it asynchroniously to the database
+	 * Removes the {@link FriendInfo} from the cache and saves it asynchroniously
 	 *
 	 * @param playerId the playerId which {@link FriendInfo} should be removed
 	 */
@@ -207,7 +207,7 @@ public class FriendInfoManager {
 		return new FriendInfo( this, playerId, friendWith, requestsGot, requestsSent, notifyFriendshipEnded, notifyRequestDenied, notifyRequestAccepted, cfg );
 	}
 
-	private void save(FriendInfo friendInfo) {
+	public void save(FriendInfo friendInfo, boolean saveFile) {
 		kConfig cfg = friendInfo.getConfig();
 
 		if ( cfg != null ) {
@@ -215,9 +215,10 @@ public class FriendInfoManager {
 			cfg.set( "requestsGot", toJava( friendInfo.getRequestsGot() ) );
 			cfg.set( "requestsSent", toJava( friendInfo.getRequestsSent() ) );
 
-			getModule().getPlugin().getUserDataConfig().saveConfig( friendInfo.getPlayerId() );
-
-			friendInfo.setDirty( false );
+			if ( saveFile ) {
+				getModule().getPlugin().getUserDataConfig().saveConfig( friendInfo.getPlayerId() );
+				friendInfo.setDirty( false );
+			}
 		} else {
 			System.err.println( "FriendInfo Config from " + friendInfo.getPlayerId() + " is NULL!!!!!!" );
 		}
@@ -237,7 +238,7 @@ public class FriendInfoManager {
 			if ( !friendInfo.isDirty() ) {
 				return;
 			}
-			save( friendInfo );
+			save( friendInfo, true );
 		}
 	}
 }
