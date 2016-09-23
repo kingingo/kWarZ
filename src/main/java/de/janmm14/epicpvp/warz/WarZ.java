@@ -150,7 +150,7 @@ public class WarZ extends JavaPlugin {
 		StatsManagerRepository.getStatsManager( GameType.WARZ ).setGilde(new GildeHandler(GildeType.ALL));
 		new DisguiseManager( this );
 		new ListenerCMD( this );
-		new ChatListener( this, UtilServer.getPermissionManager() );
+		new ChatListener();
 		new AntiCrashListener( UtilServer.getClient(), UtilServer.getMysql() );
 		new EnderChestListener( getUserDataConfig() );
 		new TeleportManager( new CommandHandler( this ), UtilServer.getPermissionManager(), TeleportCheck.NEAR );
