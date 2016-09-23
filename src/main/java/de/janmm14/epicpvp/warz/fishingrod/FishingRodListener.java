@@ -120,7 +120,6 @@ public class FishingRodListener implements Listener {
 			case CLIMB:
 			case GLIDE:
 			case NORMALMOVEMENTS:
-				case
 				if ( noFallDamage.getIfPresent( event.getPlayer().getUniqueId() ) != null ) {
 					event.setCancelled( true );
 				}

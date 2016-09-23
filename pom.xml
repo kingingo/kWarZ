@@ -212,6 +212,11 @@
             <systemPath>${project.basedir}/lib/CrackShot.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>eu.epicpvp</groupId>
+            <artifactId>aac</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>13.0</version>
