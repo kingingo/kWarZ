@@ -26,7 +26,6 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
-import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilWorldGuard;
 import net.minecraft.server.v1_8_R3.MapIcon;
 
@@ -57,15 +56,18 @@ public class MapModule extends Module<MapModule> implements Listener {
 
 				WrapperPlayServerMap packet = new WrapperPlayServerMap( event.getPacket() );
 
-				if ( UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ) {
+				boolean isInPvP = UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP );
+				if ( isInPvP || event.getPlayer().isOp() ) {
 					if ( event.getPlayer().isOp() ) {
 						List<MapIcon> icons = new ArrayList<>();
-						icons.add( new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
-							( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
-							( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
-							( byte ) ( getRotation( event.getPlayer().getLocation() ) ) ) );
+						if (isInPvP) {
+							icons.add( new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
+								( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
+								( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
+								( byte ) ( getRotation( event.getPlayer().getLocation() ) ) ) );
+						}
 
-						for ( Player plr : UtilServer.getPlayers() ) {
+						for ( Player plr : getPlugin().getServer().getOnlinePlayers() ) {
 							if ( plr.getUniqueId() != event.getPlayer().getUniqueId() ) {
 								icons.add( new MapIcon( getPointer( event.getPlayer(), plr ),
 									( byte ) ( plr.getLocation().getBlockX() / 8 ),
