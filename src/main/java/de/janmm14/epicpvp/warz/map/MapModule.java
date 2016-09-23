@@ -68,7 +68,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 						}
 
 						for ( Player plr : getPlugin().getServer().getOnlinePlayers() ) {
-							if ( plr.getUniqueId() != event.getPlayer().getUniqueId() ) {
+							if ( plr.getUniqueId() != event.getPlayer().getUniqueId() && UtilWorldGuard.RegionFlag( plr, DefaultFlag.PVP )) {
 								icons.add( new MapIcon( getPointer( event.getPlayer(), plr ),
 									( byte ) ( plr.getLocation().getBlockX() / 8 ),
 									( byte ) ( plr.getLocation().getBlockZ() / 8 ),
@@ -86,7 +86,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 
 						Collection<Entity> nearbyEntities = event.getPlayer().getWorld().getNearbyEntities( event.getPlayer().getLocation(), 200, 200, 200 );
 						for ( Entity e : nearbyEntities ) {
-							if ( e instanceof Player && e.getUniqueId() != event.getPlayer().getUniqueId() ) {
+							if ( e instanceof Player && e.getUniqueId() != event.getPlayer().getUniqueId() && UtilWorldGuard.RegionFlag( (Player) e, DefaultFlag.PVP ) ) {
 								icons.add( new MapIcon( getPointer( event.getPlayer(), ( ( Player ) e ) ),
 									( byte ) ( e.getLocation().getBlockX() / 8 ),
 									( byte ) ( e.getLocation().getBlockZ() / 8 ),
