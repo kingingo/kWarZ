@@ -14,6 +14,7 @@ import dev.wolveringer.bukkit.permissions.GroupTyp;
 import dev.wolveringer.client.connection.ClientType;
 import dev.wolveringer.client.debug.Debugger;
 import dev.wolveringer.dataserver.gamestats.GameType;
+import dev.wolveringer.gilde.GildeType;
 import eu.epicpvp.kcore.AACHack.AACHack;
 import eu.epicpvp.kcore.ChunkGenerator.CleanroomChunkGenerator;
 import eu.epicpvp.kcore.Command.Admin.CommandCMDMute;
@@ -54,7 +55,7 @@ import eu.epicpvp.kcore.Util.TimeSpan;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilTime;
-
+import eu.epicpvp.kcore.newGilde.GildeHandler;
 import de.janmm14.epicpvp.warz.command.CommandWarZ;
 import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
@@ -146,6 +147,7 @@ public class WarZ extends JavaPlugin {
 		UtilServer.getCommandHandler().register( CommandWarZ.class, new CommandWarZ( this ) );
 
 		UtilServer.getLagListener();
+		StatsManagerRepository.getStatsManager( GameType.WARZ ).setGilde(new GildeHandler(GildeType.ALL));
 		new DisguiseManager( this );
 		new ListenerCMD( this );
 		new ChatListener( this, UtilServer.getPermissionManager() );

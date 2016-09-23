@@ -24,16 +24,18 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import eu.epicpvp.kcore.Permission.PermissionType;
-import eu.epicpvp.kcore.Util.UtilPlayer;
-import eu.epicpvp.kcore.Util.UtilWorldGuard;
-import net.minecraft.server.v1_8_R3.MapIcon;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
 import de.janmm14.epicpvp.warz.friends.FriendModule;
 import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
+import eu.epicpvp.kcore.Permission.PermissionType;
+import eu.epicpvp.kcore.Util.UtilPlayer;
+import eu.epicpvp.kcore.Util.UtilServer;
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
+import eu.epicpvp.kcore.newGilde.GildeHandler;
+import net.minecraft.server.v1_8_R3.MapIcon;
 
 public class MapModule extends Module<MapModule> implements Listener {
 
@@ -61,7 +63,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 					if ( event.getPlayer().isOp() ) {
 						List<MapIcon> icons = new ArrayList<>();
 						if (isInPvP) {
-							icons.add( new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
+							icons.add( new MapIcon( MapCursor.Type.WHITE_POINTER.getValue(),
 								( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
 								( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
 								( byte ) ( getRotation( event.getPlayer().getLocation() ) ) ) );
@@ -79,7 +81,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 						packet.setMapIcons( icons.toArray( new MapIcon[ icons.size() ] ) );
 					} else if ( event.getPlayer().hasPermission( PermissionType.WARZ_MAP_OTHER_PLAYER.getPermissionToString() ) ) {
 						List<MapIcon> icons = new ArrayList<>();
-						icons.add( new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
+						icons.add( new MapIcon( MapCursor.Type.WHITE_POINTER.getValue(),
 							( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
 							( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
 							( byte ) ( getRotation( event.getPlayer().getLocation() ) ) ) );
@@ -119,6 +121,11 @@ public class MapModule extends Module<MapModule> implements Listener {
 	}
 
 	public byte getPointer(Player owner, Player player) {
+		GildeHandler gilde = UtilServer.getGildeHandler();
+		if(gilde!=null&&gilde.areGildeFriends(owner, player)){
+			return MapCursor.Type.BLUE_POINTER.getValue();
+		}
+		
 		FriendInfoManager info = getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
 		return ( PlayerFriendRelation.areFriends( info, info.get( UtilPlayer.getPlayerId( owner ) ), UtilPlayer.getPlayerId( player ) ) ? MapCursor.Type.GREEN_POINTER.getValue() : MapCursor.Type.RED_POINTER.getValue() );
 	}
