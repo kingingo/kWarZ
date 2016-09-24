@@ -18,6 +18,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import eu.epicpvp.kcore.Util.UtilWorldGuard;
+import me.konsolas.aac.api.PlayerViolationEvent;
 
 import lombok.RequiredArgsConstructor;
 
@@ -108,6 +109,20 @@ public class FishingRodListener implements Listener {
 				event.setCancelled( true );
 				noFallDamage.invalidate( uuid );
 			}
+		}
+	}
+
+	@EventHandler
+	public void onAacViolation(PlayerViolationEvent event) {
+		switch ( event.getHackType() ) {
+			case FLY:
+			case SPEED:
+			case CLIMB:
+			case GLIDE:
+			case NORMALMOVEMENTS:
+				if ( noFallDamage.getIfPresent( event.getPlayer().getUniqueId() ) != null ) {
+					event.setCancelled( true );
+				}
 		}
 	}
 }
