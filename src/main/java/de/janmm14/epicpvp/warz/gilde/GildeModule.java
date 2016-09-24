@@ -43,6 +43,7 @@ public class GildeModule extends Module<GildeModule> implements Listener {
 		this.handler=new GildeHandler(GildeType.WARZ);
 		StatsManagerRepository.getStatsManager(GameType.WARZ).setGilde(handler);
 		UtilServer.getCommandHandler().register(CommandSetGildeChest.class, new CommandSetGildeChest(this));
+		new GildeChestListener(this);
 	}
 
 	public void onDisable() {
@@ -84,10 +85,10 @@ public class GildeModule extends Module<GildeModule> implements Listener {
 			if(section != null){
 				if(!inventories.containsKey(section.getHandle().getUuid())){
 					NBTTagCompound data = handler.getData(playerId);
-					Inventory inventory = Bukkit.createInventory(new GildenChestHolder(this), 9, "Gilde Chest:");
+					Inventory inventory = Bukkit.createInventory(new GildenChestHolder(this), 9*3, "Gilde Chest:");
 					String base64 = data.getString("inventory");
 					
-					if(!base64.isEmpty()){
+					if(base64!=null && !base64.isEmpty()){
 						try {
 							ItemStack[] items = UtilInv.itemStackArrayFromBase64(base64);
 							inventory.setContents(items);
