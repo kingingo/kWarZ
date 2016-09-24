@@ -13,4 +13,8 @@ public class FishingRodModule extends Module<FishingRodModule> {
 	public void reloadConfig() {
 
 	}
+	
+	public void onDisable() {
+		
+	}
 }

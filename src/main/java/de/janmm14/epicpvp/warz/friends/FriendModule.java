@@ -22,6 +22,10 @@ public class FriendModule extends Module<FriendModule> {
 //		cmd.setTabCompleter( handler );
 		UtilServer.getCommandHandler().register( CommandFriends.class, new CommandFriends( this ) );
 	}
+	
+	public void onDisable() {
+		
+	}
 
 	@Override
 	public void reloadConfig() {

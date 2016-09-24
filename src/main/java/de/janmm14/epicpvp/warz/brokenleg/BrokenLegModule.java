@@ -19,6 +19,10 @@ public class BrokenLegModule extends Module<BrokenLegModule> {
 	public BrokenLegModule(WarZ plugin) {
 		super( plugin, FallDamageListener::new, BoneUseListener::new );
 	}
+	
+	public void onDisable() {
+		
+	}
 
 	@Override
 	public void reloadConfig() {

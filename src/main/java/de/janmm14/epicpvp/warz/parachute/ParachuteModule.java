@@ -18,6 +18,10 @@ public class ParachuteModule extends Module<ParachuteModule> {
 		getConfig().addDefault( PATH_MAX_TIME_TICKS, 30 * 20 );
 		maxTimeTicks = getConfig().getInt( PATH_MAX_TIME_TICKS );
 	}
+	
+	public void onDisable() {
+		
+	}
 
 	public int getMaxTimeTicks() {
 		return maxTimeTicks;

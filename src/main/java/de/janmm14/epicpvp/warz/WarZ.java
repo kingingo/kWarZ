@@ -17,7 +17,6 @@ import dev.wolveringer.bukkit.permissions.GroupTyp;
 import dev.wolveringer.client.connection.ClientType;
 import dev.wolveringer.client.debug.Debugger;
 import dev.wolveringer.dataserver.gamestats.GameType;
-import dev.wolveringer.gilde.GildeType;
 import eu.epicpvp.kcore.AACHack.AACHack;
 import eu.epicpvp.kcore.ChunkGenerator.CleanroomChunkGenerator;
 import eu.epicpvp.kcore.Command.CommandHandler;
@@ -56,7 +55,6 @@ import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilTime;
-import eu.epicpvp.kcore.newGilde.GildeHandler;
 import lombok.Getter;
 
 @Getter
@@ -163,6 +161,7 @@ public class WarZ extends JavaPlugin {
 	public void onDisable() {
 		instance = null;
 		saveConfig();
+		getModuleManager().onDisable();
 	}
 
 	@Override

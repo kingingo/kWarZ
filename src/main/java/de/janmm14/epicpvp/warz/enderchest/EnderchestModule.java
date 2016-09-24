@@ -36,6 +36,10 @@ public class EnderchestModule extends Module<EnderchestModule> implements Listen
 	public void reloadConfig() {
 	}
 
+	public void onDisable() {
+		
+	}
+	
 	@EventHandler
 	public void onInteract(PlayerInteractEvent ev) {
 		if ( UtilEvent.isAction( ev, ActionType.RIGHT_BLOCK ) ) {

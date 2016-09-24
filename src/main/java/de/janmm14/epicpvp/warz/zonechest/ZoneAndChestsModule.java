@@ -41,7 +41,7 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 		super( plugin, ChestOpenListener::new );
 		getPlugin().getServer().getScheduler().runTaskTimerAsynchronously( getPlugin(), chestContentManager = new ChestContentManager( this ), 1 * 20, 1 * 20 );
 	}
-
+	
 	private Multimap<String, Zone> zones = HashMultimap.create( 6, 1 );
 
 	private static ItemStack getExampleItemStackWithEverything() {
@@ -60,6 +60,10 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 
 		is.setItemMeta( im );
 		return is;
+	}
+
+	public void onDisable() {
+		
 	}
 
 	@Override

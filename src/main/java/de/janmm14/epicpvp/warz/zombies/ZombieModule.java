@@ -28,6 +28,10 @@ public class ZombieModule extends Module<ZombieModule> {
 		super( plugin, ZombieBehaviourListener::new, ZombieSpawnListener::new, ZombieAttackListener::new );
 		getConfig().addDefault( PATH_REDSTONE_TORCH_RANGE, 15 );
 	}
+	
+	public void onDisable() {
+		
+	}
 
 	public void setupZombie(Zombie zombie) {
 		zombie.setFireTicks( 0 );

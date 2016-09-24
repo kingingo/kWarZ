@@ -21,6 +21,10 @@ public class ExplodeModule extends Module<ExplodeModule> implements Listener {
 	public void reloadConfig() {
 	}
 
+	public void onDisable() {
+		
+	}
+	
 	@EventHandler
 	public void damage(WeaponDamageEntityEvent ev){
 		if(ev.getWeaponTitle().equalsIgnoreCase("Rauchgranate")||ev.getWeaponTitle().equalsIgnoreCase("Blentgranate")){

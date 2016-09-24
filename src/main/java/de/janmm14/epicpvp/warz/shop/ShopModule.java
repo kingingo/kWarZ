@@ -42,6 +42,10 @@ public class ShopModule extends Module<ShopModule> {
 		}
 		return shopDeliveryHandler;
 	}
+	
+	public void onDisable() {
+		
+	}
 
 	public void setDeliveryChestLocation(@Nullable BlockVector deliveryChestLocation) {
 		this.deliveryChestLocation = deliveryChestLocation;

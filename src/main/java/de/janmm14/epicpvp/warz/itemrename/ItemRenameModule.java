@@ -40,6 +40,10 @@ public class ItemRenameModule extends Module<ItemRenameModule> implements Listen
 	public ItemRenameModule(WarZ plugin) {
 		super( plugin, module -> module );
 	}
+	
+	public void onDisable() {
+		
+	}
 
 	@Override
 	public void reloadConfig() {

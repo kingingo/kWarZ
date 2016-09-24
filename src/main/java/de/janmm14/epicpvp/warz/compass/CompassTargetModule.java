@@ -29,6 +29,10 @@ public class CompassTargetModule extends Module<CompassTargetModule> implements 
 		}
 		return compassTarget;
 	}
+	
+	public void onDisable() {
+		
+	}
 
 	public void setCompassTarget(Player plr, CompassTarget target) {
 		selectedTargets.put( plr.getUniqueId(), target );

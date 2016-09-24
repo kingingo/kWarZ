@@ -41,6 +41,10 @@ public class CobWebModule extends Module<CobWebModule> implements Listener, Runn
 		getConfig().addDefault( PATH_PREFIX + "resetseconds", 30 );
 		webMillis = TimeUnit.SECONDS.toMillis( getConfig().getInt( PATH_PREFIX + "resetseconds" ) );
 	}
+	
+	public void onDisable() {
+		
+	}
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockPlace(BlockPlaceEvent event) {

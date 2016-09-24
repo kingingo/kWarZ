@@ -19,6 +19,10 @@ public class HealItemsModule extends Module<HealItemsModule> {
 	public HealItemsModule(WarZ plugin) {
 		super( plugin, HealUseListener::new );
 	}
+	
+	public void onDisable() {
+		
+	}
 
 	@Override
 	public void reloadConfig() {

@@ -148,6 +148,10 @@ public class MapModule extends Module<MapModule> implements Listener {
 			}
 		} );
 	}
+	
+	public void onDisable() {
+		
+	}
 
 	public byte getPointer(Player owner, Player player) {
 		GildeHandler gilde = UtilServer.getGildeHandler();

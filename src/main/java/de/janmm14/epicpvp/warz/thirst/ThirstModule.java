@@ -23,6 +23,10 @@ public class ThirstModule extends Module<ThirstModule> {
 		//TODO implement
 	}
 
+	public void onDisable() {
+		
+	}
+	
 	@Override
 	public void reloadConfig() {
 		getConfig().addDefault( PATH_PREFIX + "fullThirstBlockDistance", 400.0 );

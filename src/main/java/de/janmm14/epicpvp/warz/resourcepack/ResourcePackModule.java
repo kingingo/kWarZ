@@ -42,6 +42,10 @@ public class ResourcePackModule extends Module<ResourcePackModule> {
 		resourcePackDelay = getConfig().getInt( PATH_PACK_DELAY );
 	}
 
+	public void onDisable() {
+		
+	}
+	
 	/**
 	 * Sends the configured resource pack and the info message to the given player
 	 *

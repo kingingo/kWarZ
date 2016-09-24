@@ -55,6 +55,10 @@ public class ModuleManager {
 		return priority == null ? 0 : priority.value();
 	}
 
+	public void onDisable() {
+		modules.values().forEach( Module::onDisable );
+	}
+	
 	public void reloadAllModuleConfigs() {
 		modules.values().forEach( Module::tryReloadConfig );
 	}

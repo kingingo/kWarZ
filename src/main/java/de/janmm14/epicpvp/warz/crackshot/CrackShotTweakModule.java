@@ -25,6 +25,10 @@ public class CrackShotTweakModule extends Module<CrackShotTweakModule> {
 
 		return headShotOnlyHelmet;
 	}
+	
+	public void onDisable() {
+		
+	}
 
 	@Override
 	public void reloadConfig() {

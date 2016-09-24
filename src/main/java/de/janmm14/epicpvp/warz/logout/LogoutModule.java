@@ -59,6 +59,18 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 		super( plugin, module -> module );
 	}
 
+	public void onDisable() {
+		NPC npc;
+		for ( int i = 0; i < this.npcs.size(); i++ ) {
+			npc = ( NPC ) this.npcs.values().toArray()[ i ];
+			npc.remove();
+		}
+		
+		this.npcs.clear();
+		this.npcs_playerId.clear();
+		this.skinCache.clear();
+	}
+	
 	public boolean containsNpc(Player player) {
 		if ( npcs_playerId.containsKey( UtilPlayer.getPlayerId( player ) ) ) {
 			NPC npc = npcs_playerId.get( UtilPlayer.getPlayerId( player ) );

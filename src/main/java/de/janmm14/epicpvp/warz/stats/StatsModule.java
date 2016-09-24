@@ -54,6 +54,10 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 	public void onJoin(PlayerJoinEvent event) {
 		manager.loadPlayer( event.getPlayer() );
 	}
+	
+	public void onDisable() {
+		
+	}
 
 	@EventHandler
 	public void onScoreboardSet(PlayerSetScoreboardEvent event) {

@@ -46,6 +46,8 @@ public abstract class Module<M extends Module> {
 	}
 
 	public abstract void reloadConfig();
+	
+	public abstract void onDisable();
 
 	final boolean tryReloadConfig() {
 		try {
