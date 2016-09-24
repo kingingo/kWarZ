@@ -144,7 +144,7 @@ public class WarZ extends JavaPlugin {
 		UtilServer.getCommandHandler().register( CommandWarZ.class, new CommandWarZ( this ) );
 
 		UtilServer.getLagListener();
-		StatsManagerRepository.getStatsManager( GameType.WARZ ).setGilde(new GildeHandler(GildeType.ALL));
+		StatsManagerRepository.getStatsManager( GameType.WARZ );
 		new DisguiseManager( this );
 		new ListenerCMD( this );
 		new ChatListener();
