@@ -16,6 +16,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
 import com.shampaggon.crackshot.events.WeaponPreShootEvent;
@@ -71,6 +72,13 @@ public class WarZListener implements Listener {
 		}
 	}
 
+	@EventHandler
+	public void weather(WeatherChangeEvent ev){
+		if(ev.toWeatherState()){
+			ev.getWorld().setStorm(false);
+		}
+	}
+	
 	@EventHandler
 	public void loadWorld(WorldLoadEvent ev) {
 		ev.getWorld().setAutoSave( false );
