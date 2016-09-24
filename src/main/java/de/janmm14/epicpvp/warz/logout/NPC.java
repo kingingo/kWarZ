@@ -7,13 +7,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import de.janmm14.epicpvp.warz.WarZ;
 import dev.wolveringer.skin.Skin;
 import eu.epicpvp.kcore.Disguise.disguises.livings.DisguisePlayer;
 import eu.epicpvp.kcore.Util.UtilEnt;
 import eu.epicpvp.kcore.Util.UtilServer;
-
-import de.janmm14.epicpvp.warz.WarZ;
-
 import lombok.Getter;
 
 public class NPC {

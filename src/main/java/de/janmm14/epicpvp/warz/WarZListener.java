@@ -21,20 +21,19 @@ import org.bukkit.event.world.WorldLoadEvent;
 
 import com.shampaggon.crackshot.events.WeaponPreShootEvent;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+
+import de.janmm14.epicpvp.warz.util.MiscUtil;
 import dev.wolveringer.client.ClientWrapper;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
-import eu.epicpvp.kcore.Permission.Events.PlayerLoadPermissionEvent;
 import eu.epicpvp.kcore.Permission.PermissionType;
+import eu.epicpvp.kcore.Permission.Events.PlayerLoadPermissionEvent;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
-import eu.epicpvp.kcore.Update.Event.UpdateEvent;
 import eu.epicpvp.kcore.Update.UpdateType;
+import eu.epicpvp.kcore.Update.Event.UpdateEvent;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilWorldGuard;
-
-import de.janmm14.epicpvp.warz.util.MiscUtil;
-
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

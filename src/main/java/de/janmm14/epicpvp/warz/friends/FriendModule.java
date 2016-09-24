@@ -1,10 +1,8 @@
 package de.janmm14.epicpvp.warz.friends;
 
-import eu.epicpvp.kcore.Util.UtilServer;
-
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
-
+import eu.epicpvp.kcore.Util.UtilServer;
 import lombok.Getter;
 
 public class FriendModule extends Module<FriendModule> {

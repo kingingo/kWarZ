@@ -21,12 +21,11 @@ import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 import com.google.common.collect.ImmutableList;
-import eu.epicpvp.kcore.Translation.TranslationHandler;
 
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.random.RandomThingGroupHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomThingHolder;
-
+import eu.epicpvp.kcore.Translation.TranslationHandler;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

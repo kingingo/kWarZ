@@ -4,20 +4,21 @@ import java.util.concurrent.TimeUnit;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
-
 import lombok.Getter;
 
 public class CrackShotTweakModule extends Module<CrackShotTweakModule> {
 
 	public static final String PATH_PREFIX = "crackshottweak.";
-	public static final String ARMOR_DAMAGE_PREFIX = PATH_PREFIX + "armor.";
-	public static final String ARMOR_DURABILITY_PREFIX = PATH_PREFIX + "armor.";
+	public static final String ARMOR_DAMAGE_PREFIX = PATH_PREFIX + "armor.damage.";
+	public static final String ARMOR_DURABILITY_PREFIX = PATH_PREFIX + "armor.durability.";
 	@Getter
 	private long glassMillis = TimeUnit.SECONDS.toMillis( 30 );
 	private boolean headShotOnlyHelmet;
 
 	public CrackShotTweakModule(WarZ plugin) {
 		super( plugin, WeaponDamageArmorListener::new, BlockBreakListener::new );
+		
+		
 	}
 
 	public boolean isHeadOnlyHelmetReduction() {

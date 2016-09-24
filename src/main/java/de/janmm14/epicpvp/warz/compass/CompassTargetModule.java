@@ -7,10 +7,9 @@ import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import eu.epicpvp.kcore.Util.UtilDirection;
-
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
+import eu.epicpvp.kcore.Util.UtilDirection;
 
 public class CompassTargetModule extends Module<CompassTargetModule> implements Runnable {
 

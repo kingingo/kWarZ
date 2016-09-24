@@ -6,11 +6,11 @@ import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
 import com.google.common.collect.Lists;
+
 import gnu.trove.TIntCollection;
 import gnu.trove.procedure.TIntProcedure;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
-
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

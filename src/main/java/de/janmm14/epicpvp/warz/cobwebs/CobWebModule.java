@@ -19,11 +19,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.Tuple;
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 public class CobWebModule extends Module<CobWebModule> implements Listener, Runnable {
 

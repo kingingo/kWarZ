@@ -13,7 +13,6 @@ import de.janmm14.epicpvp.warz.util.random.RandomThingGroupHolder;
 import de.janmm14.epicpvp.warz.util.random.RandomThingHolder;
 import de.janmm14.epicpvp.warz.util.random.SimpleRandomThingGroupHolder;
 import de.janmm14.epicpvp.warz.util.random.SimpleRandomThingHolder;
-
 import lombok.NonNull;
 
 public class ConfigUtil {

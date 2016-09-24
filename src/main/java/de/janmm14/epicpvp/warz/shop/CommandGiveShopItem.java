@@ -9,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import com.google.common.base.Joiner;
 
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
-
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

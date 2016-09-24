@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.MiscUtil;
-
 import lombok.Getter;
 
 @Getter

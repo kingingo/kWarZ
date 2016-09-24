@@ -21,12 +21,16 @@ import org.bukkit.inventory.ItemStack;
 import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
+import de.janmm14.epicpvp.warz.Module;
+import de.janmm14.epicpvp.warz.WarZ;
+import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
+import de.janmm14.epicpvp.warz.friends.FriendModule;
+import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
 import dev.wolveringer.dataserver.player.LanguageType;
 import dev.wolveringer.skin.Skin;
-import eu.epicpvp.kcore.Listener.SkinCatcherListener.SkinCatcherListener;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
-import eu.epicpvp.kcore.Update.Event.UpdateEvent;
 import eu.epicpvp.kcore.Update.UpdateType;
+import eu.epicpvp.kcore.Update.Event.UpdateEvent;
 import eu.epicpvp.kcore.UserDataConfig.Events.UserDataConfigLoadEvent;
 import eu.epicpvp.kcore.Util.TimeSpan;
 import eu.epicpvp.kcore.Util.UtilPlayer;
@@ -34,13 +38,6 @@ import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilSkin;
 import eu.epicpvp.kcore.Util.UtilWorldGuard;
 import eu.epicpvp.kcore.kConfig.kConfig;
-
-import de.janmm14.epicpvp.warz.Module;
-import de.janmm14.epicpvp.warz.WarZ;
-import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
-import de.janmm14.epicpvp.warz.friends.FriendModule;
-import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
-
 import lombok.Getter;
 
 public class LogoutModule extends Module<LogoutModule> implements Listener {

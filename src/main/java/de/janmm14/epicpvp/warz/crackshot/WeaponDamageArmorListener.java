@@ -1,5 +1,8 @@
 package de.janmm14.epicpvp.warz.crackshot;
 
+import static de.janmm14.epicpvp.warz.crackshot.CrackShotTweakModule.ARMOR_DAMAGE_PREFIX;
+import static de.janmm14.epicpvp.warz.crackshot.CrackShotTweakModule.ARMOR_DURABILITY_PREFIX;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -9,19 +12,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
 import com.shampaggon.crackshot.events.WeaponPreShootEvent;
 import com.shampaggon.crackshot.events.WeaponPrepareShootEvent;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 import de.janmm14.epicpvp.warz.WarZ;
-
-import org.jetbrains.annotations.Nullable;
-
-import static de.janmm14.epicpvp.warz.crackshot.CrackShotTweakModule.ARMOR_DURABILITY_PREFIX;
-import static de.janmm14.epicpvp.warz.crackshot.CrackShotTweakModule.ARMOR_DAMAGE_PREFIX;
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 public class WeaponDamageArmorListener implements Listener {
 

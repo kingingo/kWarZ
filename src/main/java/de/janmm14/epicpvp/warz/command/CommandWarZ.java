@@ -11,17 +11,15 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import dev.wolveringer.client.debug.Debugger;
-import eu.epicpvp.kcore.Command.CommandHandler.Sender;
-import eu.epicpvp.kcore.Util.UtilNumber;
-
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.WarZListener;
 import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
 import de.janmm14.epicpvp.warz.util.random.RandomUtil;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
 import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
-
+import dev.wolveringer.client.debug.Debugger;
+import eu.epicpvp.kcore.Command.CommandHandler.Sender;
+import eu.epicpvp.kcore.Util.UtilNumber;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

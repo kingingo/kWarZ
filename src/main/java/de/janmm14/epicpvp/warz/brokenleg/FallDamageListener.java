@@ -9,7 +9,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import eu.epicpvp.kcore.Translation.TranslationHandler;
-
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

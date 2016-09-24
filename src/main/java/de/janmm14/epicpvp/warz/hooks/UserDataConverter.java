@@ -7,7 +7,6 @@ import org.bukkit.OfflinePlayer;
 
 import dev.wolveringer.client.LoadedPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
-
 import lombok.Data;
 
 public class UserDataConverter {

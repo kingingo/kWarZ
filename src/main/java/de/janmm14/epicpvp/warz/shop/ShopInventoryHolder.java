@@ -3,10 +3,8 @@ package de.janmm14.epicpvp.warz.shop;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
-import eu.epicpvp.kcore.kConfig.kConfig;
-
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
-
+import eu.epicpvp.kcore.kConfig.kConfig;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

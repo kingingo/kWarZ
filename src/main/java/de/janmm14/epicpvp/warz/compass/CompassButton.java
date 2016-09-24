@@ -2,8 +2,8 @@ package de.janmm14.epicpvp.warz.compass;
 
 import org.bukkit.inventory.ItemStack;
 
-import eu.epicpvp.kcore.Inventory.Inventory.InventoryCopy;
 import eu.epicpvp.kcore.Inventory.InventoryPageBase;
+import eu.epicpvp.kcore.Inventory.Inventory.InventoryCopy;
 import eu.epicpvp.kcore.Inventory.Item.Buttons.ButtonCopy;
 import eu.epicpvp.kcore.Util.UtilInv;
 import eu.epicpvp.kcore.Util.UtilItem;

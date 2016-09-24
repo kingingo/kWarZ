@@ -12,8 +12,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import eu.epicpvp.kcore.Permission.Events.PlayerLoadPermissionEvent;
+import de.janmm14.epicpvp.warz.Module;
+import de.janmm14.epicpvp.warz.WarZ;
 import eu.epicpvp.kcore.Permission.PermissionType;
+import eu.epicpvp.kcore.Permission.Events.PlayerLoadPermissionEvent;
 import eu.epicpvp.kcore.UserDataConfig.Events.UserDataConfigRemoveEvent;
 import eu.epicpvp.kcore.Util.UtilEvent;
 import eu.epicpvp.kcore.Util.UtilEvent.ActionType;
@@ -23,9 +25,6 @@ import net.minecraft.server.v1_8_R3.EntityHuman;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.InventoryEnderChest;
 import net.minecraft.server.v1_8_R3.InventorySubcontainer;
-
-import de.janmm14.epicpvp.warz.Module;
-import de.janmm14.epicpvp.warz.WarZ;
 
 public class EnderchestModule extends Module<EnderchestModule> implements Listener {
 

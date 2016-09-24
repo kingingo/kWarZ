@@ -3,7 +3,6 @@ package de.janmm14.epicpvp.warz.util;
 import java.util.function.IntPredicate;
 
 import org.bukkit.ChatColor;
-
 import org.jetbrains.annotations.NotNull;
 
 import lombok.experimental.UtilityClass;

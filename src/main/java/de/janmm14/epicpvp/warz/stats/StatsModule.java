@@ -22,21 +22,20 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-import dev.wolveringer.dataserver.gamestats.GameType;
-import dev.wolveringer.dataserver.gamestats.StatsKey;
-import eu.epicpvp.kcore.Scoreboard.Events.PlayerSetScoreboardEvent;
-import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsChangedEvent;
-import eu.epicpvp.kcore.StatsManager.StatsManager;
-import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
-import eu.epicpvp.kcore.Translation.TranslationHandler;
-import eu.epicpvp.kcore.Util.UtilPlayer;
-import eu.epicpvp.kcore.Util.UtilServer;
-
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.friends.FriendInfo;
 import de.janmm14.epicpvp.warz.friends.FriendModule;
 import de.janmm14.epicpvp.warz.util.ScoreboardAdapter;
+import dev.wolveringer.dataserver.gamestats.GameType;
+import dev.wolveringer.dataserver.gamestats.StatsKey;
+import eu.epicpvp.kcore.Scoreboard.Events.PlayerSetScoreboardEvent;
+import eu.epicpvp.kcore.StatsManager.StatsManager;
+import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
+import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsChangedEvent;
+import eu.epicpvp.kcore.Translation.TranslationHandler;
+import eu.epicpvp.kcore.Util.UtilPlayer;
+import eu.epicpvp.kcore.Util.UtilServer;
 
 public class StatsModule extends Module<StatsModule> implements Listener { //TODO /stats <name> | scoreboard
 

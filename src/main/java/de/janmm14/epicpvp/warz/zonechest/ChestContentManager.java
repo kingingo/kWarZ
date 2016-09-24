@@ -23,7 +23,6 @@ import com.google.common.cache.RemovalNotification;
 
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.random.RandomUtil;
-
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 

@@ -7,7 +7,6 @@ import org.bukkit.util.Vector;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
-
 import lombok.Getter;
 
 @Module.Priority(1)

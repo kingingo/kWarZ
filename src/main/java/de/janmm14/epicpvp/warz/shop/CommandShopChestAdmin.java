@@ -7,10 +7,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import eu.epicpvp.kcore.kConfig.kConfig;
-
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
-
+import eu.epicpvp.kcore.kConfig.kConfig;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

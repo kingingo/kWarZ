@@ -1,10 +1,16 @@
 package de.janmm14.epicpvp.warz.friends;
 
+import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.toJava;
+import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.toTSet;
+
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
 import javax.annotation.Nullable;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.base.Joiner;
 import com.google.common.cache.CacheBuilder;
@@ -13,18 +19,12 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import eu.epicpvp.kcore.kConfig.kConfig;
-import gnu.trove.set.TIntSet;
 
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
-
-import org.jetbrains.annotations.NotNull;
-
+import eu.epicpvp.kcore.kConfig.kConfig;
+import gnu.trove.set.TIntSet;
 import lombok.Getter;
 import lombok.NonNull;
-
-import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.toJava;
-import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.toTSet;
 
 public class FriendInfoManager {
 

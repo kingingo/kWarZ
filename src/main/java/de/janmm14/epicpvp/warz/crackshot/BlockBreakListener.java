@@ -14,10 +14,10 @@ import org.bukkit.util.BlockVector;
 
 import com.shampaggon.crackshot.events.WeaponHitBlockEvent;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.Tuple;
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 public class BlockBreakListener implements Listener, Runnable {
 
