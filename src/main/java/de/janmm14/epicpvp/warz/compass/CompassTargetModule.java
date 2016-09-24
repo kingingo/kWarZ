@@ -7,9 +7,10 @@ import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import eu.epicpvp.kcore.Util.UtilDirection;
+
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
-import eu.epicpvp.kcore.Util.UtilDirection;
 
 public class CompassTargetModule extends Module<CompassTargetModule> implements Runnable {
 
@@ -24,8 +25,11 @@ public class CompassTargetModule extends Module<CompassTargetModule> implements 
 	public CompassTarget getCompassTarget(Player plr) {
 		CompassTarget compassTarget = selectedTargets.get( plr.getUniqueId() );
 		if ( compassTarget == null ) {
-			setCompassTarget( plr, CompassTarget.ENEMY );
-			return CompassTarget.ENEMY;
+			compassTarget = CompassTarget.values()[getPlugin().getUserDataConfig().getConfig( plr ).getInt( "compassTarget" )];
+			if ( compassTarget == null ) {
+				setCompassTarget( plr, CompassTarget.ENEMY );
+				return CompassTarget.ENEMY;
+			}
 		}
 		return compassTarget;
 	}
@@ -36,6 +40,7 @@ public class CompassTargetModule extends Module<CompassTargetModule> implements 
 
 	public void setCompassTarget(Player plr, CompassTarget target) {
 		selectedTargets.put( plr.getUniqueId(), target );
+		getPlugin().getUserDataConfig().getConfig( plr ).set( "compassTarget", target.ordinal() );
 	}
 
 	@Override
