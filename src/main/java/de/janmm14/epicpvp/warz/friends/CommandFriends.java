@@ -320,9 +320,12 @@ public class CommandFriends implements CommandExecutor {
 				}
 
 				initiatorInfo.getRequestsGot().remove( targetPlayerId );
+				initiatorInfo.getRequestsSent().remove( targetPlayerId );
 				initiatorInfo.getFriendWith().add( targetPlayerId );
 				initiatorInfo.setDirty();
+				
 				targetInfo.getRequestsSent().remove( initiatorInfo.getPlayerId() );
+				targetInfo.getRequestsGot().remove( initiatorInfo.getPlayerId() );
 				targetInfo.getFriendWith().add( initiatorInfo.getPlayerId() );
 				targetInfo.setDirty();
 

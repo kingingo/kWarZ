@@ -158,7 +158,9 @@ public class ChestContentManager implements Runnable {
 				if ( lower > upper ) {
 					upper = lower;
 				}
-				item.setAmount( RandomUtil.getRandomInt( lower, upper ) );
+				int amount = RandomUtil.getRandomInt( lower, upper );
+				if(WarZ.DEBUG)System.out.println("Random Amount amount= ["+amount+"], min= ["+lower+"], max= ["+upper+"], item= ["+item.getAmount()+"]");
+				item.setAmount( amount );
 			}
 			int tries = 0;
 			while ( true ) {
