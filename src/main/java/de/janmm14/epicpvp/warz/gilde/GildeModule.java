@@ -30,7 +30,7 @@ import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.newGilde.GildeHandler;
 import lombok.Getter;
 
-public class GildeModule extends Module<GildeModule> implements Listener {
+public class GildeModule extends Module<GildeModule> /*implements Listener*/ {
 
 	@Getter
 	private BlockVector chest;
@@ -39,11 +39,11 @@ public class GildeModule extends Module<GildeModule> implements Listener {
 	private HashMap<UUID,Inventory> inventories = new HashMap<>();
 	
 	public GildeModule(WarZ plugin) {
-		super( plugin, module -> module );
-		this.handler=new GildeHandler(GildeType.WARZ);
-		StatsManagerRepository.getStatsManager(GameType.WARZ).setGilde(handler);
-		UtilServer.getCommandHandler().register(CommandSetGildeChest.class, new CommandSetGildeChest(this));
-		new GildeChestListener(this);
+		super( plugin/*, module -> module*/ );
+//		this.handler=new GildeHandler(GildeType.WARZ);
+//		StatsManagerRepository.getStatsManager(GameType.WARZ).setGilde(handler);
+//		UtilServer.getCommandHandler().register(CommandSetGildeChest.class, new CommandSetGildeChest(this));
+//		new GildeChestListener(this);
 	}
 
 	public void onDisable() {
