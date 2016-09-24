@@ -26,6 +26,7 @@ import dev.wolveringer.nbt.NBTTagCompound;
 import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
 import eu.epicpvp.kcore.Util.UtilInv;
 import eu.epicpvp.kcore.Util.UtilPlayer;
+import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.newGilde.GildeHandler;
 import lombok.Getter;
 
@@ -41,6 +42,7 @@ public class GildeModule extends Module<GildeModule> implements Listener {
 		super( plugin, module -> module );
 		this.handler=new GildeHandler(GildeType.WARZ);
 		StatsManagerRepository.getStatsManager(GameType.WARZ).setGilde(handler);
+		UtilServer.getCommandHandler().register(CommandSetGildeChest.class, new CommandSetGildeChest(this));
 	}
 
 	public void onDisable() {
