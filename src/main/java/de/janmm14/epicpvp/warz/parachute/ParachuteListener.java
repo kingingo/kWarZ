@@ -46,7 +46,7 @@ public class ParachuteListener implements Listener {
 			chickenBelow.setPassenger( aboveChicken );
 
 			module.getPlugin().getServer().getScheduler().runTaskLater( module.getPlugin(), () -> {
-				if ( plr.isOnline() && plr.getPassenger().getUniqueId().equals( aboveChicken.getUniqueId() ) ) { //check online and if its the same parachute
+				if ( plr.isOnline() && plr.getPassenger()!= null && plr.getPassenger().getUniqueId().equals( aboveChicken.getUniqueId() ) ) { //check online and if its the same parachute
 					stopParachuting( plr );
 				}
 			}, module.getMaxTimeTicks() );

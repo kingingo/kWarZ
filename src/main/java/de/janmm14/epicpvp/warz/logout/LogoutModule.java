@@ -56,6 +56,7 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 	private Map<Integer, NPC> npcs_playerId = new HashMap<>();
 	@Getter
 	private Map<UUID, Skin> skinCache = new HashMap<>();
+	private int time = 25;
 
 	public LogoutModule(WarZ plugin) {
 		super( plugin, module -> module );
@@ -156,7 +157,7 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 			for ( int i = 0; i < npcs.size(); i++ ) {
 				npc = ( NPC ) npcs.values().toArray()[ i ];
 
-				if ( ( System.currentTimeMillis() - npc.getTime() ) > TimeSpan.SECOND * 25 ) {
+				if ( ( System.currentTimeMillis() - npc.getTime() ) > TimeSpan.SECOND * time ) {
 					if ( WarZ.DEBUG )
 						System.err.println( "NPC Time is over " + npc.getPlayername() + " " + ( ( System.currentTimeMillis() - npc.getTime() ) > TimeSpan.SECOND * 25 ) );
 					npc.remove();
@@ -176,6 +177,7 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 
 	@Override
 	public void reloadConfig() {
-
+		getConfig().addDefault("logout.time", 25 );
+		this.time=getConfig().getInt("logout.time");
 	}
 }
