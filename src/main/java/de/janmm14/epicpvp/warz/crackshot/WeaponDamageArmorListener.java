@@ -20,7 +20,8 @@ import de.janmm14.epicpvp.warz.WarZ;
 
 import org.jetbrains.annotations.Nullable;
 
-import static de.janmm14.epicpvp.warz.crackshot.CrackShotTweakModule.ARMOR_PREFIX;
+import static de.janmm14.epicpvp.warz.crackshot.CrackShotTweakModule.ARMOR_DURABILITY_PREFIX;
+import static de.janmm14.epicpvp.warz.crackshot.CrackShotTweakModule.ARMOR_DAMAGE_PREFIX;
 
 public class WeaponDamageArmorListener implements Listener {
 
@@ -48,7 +49,7 @@ public class WeaponDamageArmorListener implements Listener {
 		if ( headShot ) {
 			ItemStack helmet = victim.getEquipment().getHelmet();
 			damagePercentage = damagePercentage - getReductionPercentage( weaponTitle, helmet );
-			helmet = reduceDurability( helmet );
+			helmet = reduceDurability( weaponTitle, helmet );
 			victim.getEquipment().setHelmet( helmet );
 			if ( WarZ.DEBUG ) {
 				Bukkit.broadcastMessage( "Headshot!" );
@@ -58,7 +59,7 @@ public class WeaponDamageArmorListener implements Listener {
 			for ( int i = 0; i < armorContents.length; i++ ) {
 				ItemStack armorItem = armorContents[ i ];
 				damagePercentage = damagePercentage - getReductionPercentage( weaponTitle, armorItem );
-				armorContents[ i ] = reduceDurability( armorItem );
+				armorContents[ i ] = reduceDurability( weaponTitle, armorItem );
 			}
 			victim.getEquipment().setArmorContents( armorContents );
 		}
@@ -87,21 +88,30 @@ public class WeaponDamageArmorListener implements Listener {
 	}
 
 	@Nullable
-	private ItemStack reduceDurability(ItemStack stack) {
+	private ItemStack reduceDurability(String weaponTitle, ItemStack armorItem) {
+		String path = ARMOR_DURABILITY_PREFIX + weaponTitle + "." + armorItem.getType().toString().toUpperCase();
+		int lose_durability = 1;
+		
+		if( module.getConfig().get(path) != null ){
+			lose_durability = module.getConfig().getInt(path);
+		}else{
+			lose_durability = module.getConfig().getInt(ARMOR_DURABILITY_PREFIX + "default." + armorItem.getType().toString().toUpperCase());
+		}
+		
 		if ( WarZ.DEBUG ) {
-			System.out.println( "itemstack = [" + stack.getType().name() + "], max-durability= [" + stack.getType().getMaxDurability() + "], durability= [" + stack.getDurability() + "]" );
+			System.out.println( "itemstack = [" + armorItem.getType().name() + "], max-durability= [" + armorItem.getType().getMaxDurability() + "], durability= [" + armorItem.getDurability() + "], lose-durability= ["+lose_durability+"]" );
 		}
 
-		short durability = ( short ) ( stack.getDurability() + 1 );
-		stack.setDurability( durability );
-		return stack;
+		short durability = ( short ) ( armorItem.getDurability() + lose_durability );
+		armorItem.setDurability( durability );
+		return armorItem;
 	}
 
 	private double getReductionPercentage(String weaponTitle, ItemStack armorItem) {
 		if ( armorItem != null && armorItem.getType() != Material.AIR ) {
 			String armorName = armorItem.getType().toString().toUpperCase();
 
-			String path = ARMOR_PREFIX + weaponTitle + "." + armorName;
+			String path = ARMOR_DAMAGE_PREFIX + weaponTitle + "." + armorName;
 			if ( module.getConfig().get( path ) != null ) {
 				double percentage = module.getConfig().getDouble( path );
 				if ( WarZ.DEBUG ) {
@@ -109,7 +119,7 @@ public class WeaponDamageArmorListener implements Listener {
 				}
 				return percentage;
 			} else {
-				double percentage = module.getConfig().getDouble( ARMOR_PREFIX + "default." + armorName );
+				double percentage = module.getConfig().getDouble( ARMOR_DAMAGE_PREFIX + "default." + armorName );
 				if ( WarZ.DEBUG ) {
 					System.out.println( "weaponTitle = [" + weaponTitle + "], armorName = [" + armorName + "] -> reductionPercentage: " + percentage );
 				}
