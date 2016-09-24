@@ -63,6 +63,7 @@ public class Zone {
 							System.out.println( "ItemStack is null" );
 						continue;
 					}
+					is = is.clone();
 					WarZ.getInstance().getModuleManager().getModule( ItemRenameModule.class ).renameIfNeeded( is );
 					is = crackshotRename( is );
 					result.add( is );
