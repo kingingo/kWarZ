@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -17,6 +18,7 @@ import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
 import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
+import eu.epicpvp.kcore.Command.Admin.CommandVanish;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +40,12 @@ public enum CompassTarget {
 				if ( !plr.getWorld().equals( possTarget.getWorld() ) ) {
 					continue;
 				}
+				if( plr.getGameMode() != GameMode.SURVIVAL ){
+					continue;
+				}
+				if( CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(possTarget) ){
+					continue;
+				}
 				if ( PlayerFriendRelation.areFriends( manager, friendInfo, UtilPlayer.getPlayerId( possTarget ) ) ) {
 					continue;
 				}
@@ -56,6 +64,12 @@ public enum CompassTarget {
 				return null;
 			}
 			if ( !moved.getWorld().equals( plr.getWorld() ) ) {
+				return null;
+			}
+			if( plr.getGameMode() != GameMode.SURVIVAL ){
+				return null;
+			}
+			if( CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(plr) ){
 				return null;
 			}
 			FriendInfoManager manager = module.getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
@@ -81,7 +95,12 @@ public enum CompassTarget {
 				if ( !plr.getWorld().equals( possTarget.getWorld() ) ) {
 					continue;
 				}
-
+				if( possTarget.getGameMode() != GameMode.SURVIVAL ){
+					continue;
+				}
+				if( CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(possTarget) ){
+					continue;
+				}
 				UserDataConverter.Profile possTargetProfile = manager.getModule().getPlugin().getUserDataConverter().getProfile( possTarget.getUniqueId() );
 				if ( !PlayerFriendRelation.areFriends( manager, friendInfo, possTargetProfile.getPlayerId() ) ) {
 					continue;
@@ -101,6 +120,12 @@ public enum CompassTarget {
 				return null;
 			}
 			if ( !moved.getWorld().equals( plr.getWorld() ) ) {
+				return null;
+			}
+			if( plr.getGameMode() != GameMode.SURVIVAL ){
+				return null;
+			}
+			if( CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(plr) ){
 				return null;
 			}
 			FriendInfoManager manager = module.getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();

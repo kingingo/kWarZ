@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -30,6 +31,7 @@ import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
 import de.janmm14.epicpvp.warz.friends.FriendModule;
 import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
+import eu.epicpvp.kcore.Command.Admin.CommandVanish;
 import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
@@ -41,6 +43,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 
 	public MapModule(WarZ plugin) {
 		super( plugin, module -> module );
+		
 		ProtocolLibrary.getProtocolManager().addPacketListener( new PacketAdapter( new PacketAdapter.AdapterParameteters()
 			.plugin( plugin )
 			.serverSide()
@@ -70,12 +73,22 @@ public class MapModule extends Module<MapModule> implements Listener {
 						}
 
 						for ( Player plr : getPlugin().getServer().getOnlinePlayers() ) {
-							if ( plr.getUniqueId() != event.getPlayer().getUniqueId() && UtilWorldGuard.RegionFlag( plr, DefaultFlag.PVP )) {
-								icons.add( new MapIcon( getPointer( event.getPlayer(), plr ),
+							if ( plr.getUniqueId() == event.getPlayer().getUniqueId()) {
+								continue;
+							}
+							if( !UtilWorldGuard.RegionFlag( plr, DefaultFlag.PVP ) ){
+								continue;
+							}
+							if( plr.getGameMode() != GameMode.SURVIVAL ){
+								continue;
+							}
+							if( CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(plr) ){
+								continue;
+							}
+							icons.add( new MapIcon( getPointer( event.getPlayer(), plr ),
 									( byte ) ( plr.getLocation().getBlockX() / 8 ),
 									( byte ) ( plr.getLocation().getBlockZ() / 8 ),
 									( byte ) ( getRotation( plr.getLocation() ) ) ) );
-							}
 						}
 
 						packet.setMapIcons( icons.toArray( new MapIcon[ icons.size() ] ) );
@@ -87,19 +100,35 @@ public class MapModule extends Module<MapModule> implements Listener {
 							( byte ) ( getRotation( event.getPlayer().getLocation() ) ) ) );
 
 						Collection<Entity> nearbyEntities = event.getPlayer().getWorld().getNearbyEntities( event.getPlayer().getLocation(), 200, 200, 200 );
+						Player plr;
 						for ( Entity e : nearbyEntities ) {
-							if ( e instanceof Player && e.getUniqueId() != event.getPlayer().getUniqueId() && UtilWorldGuard.RegionFlag( (Player) e, DefaultFlag.PVP ) ) {
-								icons.add( new MapIcon( getPointer( event.getPlayer(), ( ( Player ) e ) ),
+							if ( !(e instanceof Player) ) {
+								continue;
+							}
+							plr=((Player)e);
+							
+							if ( plr.getUniqueId() == event.getPlayer().getUniqueId()) {
+								continue;
+							}
+							if( !UtilWorldGuard.RegionFlag( plr, DefaultFlag.PVP ) ){
+								continue;
+							}
+							if( plr.getGameMode() != GameMode.SURVIVAL ){
+								continue;
+							}
+							if( CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(plr) ){
+								continue;
+							}
+							icons.add( new MapIcon( getPointer( event.getPlayer(), ( ( Player ) e ) ),
 									( byte ) ( e.getLocation().getBlockX() / 8 ),
 									( byte ) ( e.getLocation().getBlockZ() / 8 ),
 									( byte ) ( getRotation( e.getLocation() ) ) ) );
-							}
 						}
 
 						createCircle( icons, 200, event.getPlayer().getLocation() );
 						packet.setMapIcons( icons.toArray( new MapIcon[ icons.size() ] ) );
 					} else {
-						packet.setMapIcons( new MapIcon[]{ new MapIcon( MapCursor.Type.BLUE_POINTER.getValue(),
+						packet.setMapIcons( new MapIcon[]{ new MapIcon( MapCursor.Type.WHITE_POINTER.getValue(),
 							( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
 							( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
 							( byte ) ( getRotation( event.getPlayer().getLocation() ) ) ) } );

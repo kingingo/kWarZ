@@ -5,8 +5,6 @@ import static de.janmm14.epicpvp.warz.crackshot.CrackShotTweakModule.ARMOR_DURAB
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftItem;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -22,7 +20,6 @@ import com.shampaggon.crackshot.events.WeaponPrepareShootEvent;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
 import de.janmm14.epicpvp.warz.WarZ;
-import eu.epicpvp.kcore.Util.UtilItem;
 import eu.epicpvp.kcore.Util.UtilWorldGuard;
 
 public class WeaponDamageArmorListener implements Listener {
