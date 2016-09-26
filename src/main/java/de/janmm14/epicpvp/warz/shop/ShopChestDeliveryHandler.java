@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -19,17 +18,18 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
-
-import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
-import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
-import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
-import eu.epicpvp.kcore.kConfig.kConfig;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
+
+import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
+import eu.epicpvp.kcore.kConfig.kConfig;
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
+
+import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
+import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
 
 public class ShopChestDeliveryHandler implements Listener {
 
@@ -57,10 +57,9 @@ public class ShopChestDeliveryHandler implements Listener {
 	public boolean deliverItem(UserDataConverter.Profile profile, ItemStack item) {
 		Inventory inv = inventories.get( profile.getPlayerId() );
 		if ( inv != null ) {
-			for(HumanEntity e : new ArrayList<>(inv.getViewers()))e.closeInventory();
-			
 			inv.addItem( item );
-			saveInventory(profile, inv);
+			new ArrayList<>( inv.getViewers() ).forEach( humanEntity -> ( ( Player ) humanEntity ).updateInventory() );
+			saveInventory( profile, inv );
 			return true;
 		}
 		inv = loadInventory( profile );
@@ -71,7 +70,7 @@ public class ShopChestDeliveryHandler implements Listener {
 
 	private Inventory loadInventory(UserDataConverter.Profile profile) {
 		kConfig config = userDataConfig.getConfig( profile.getPlayerId() );
-		ShopInventoryHolder owner = new ShopInventoryHolder(profile, config);
+		ShopInventoryHolder owner = new ShopInventoryHolder( profile, config );
 		Inventory inv = module.getPlugin().getServer().createInventory( owner, 6 * 9, "§6Shop delivery" );
 		owner.setInventory( inv );
 		if ( config.contains( "shop.delivery.chestcontent" ) ) {
@@ -108,7 +107,7 @@ public class ShopChestDeliveryHandler implements Listener {
 		module.getPlugin().getServer().getScheduler().runTaskAsynchronously( module.getPlugin(), () -> {
 			UserDataConverter.Profile profile = module.getPlugin().getUserDataConverter().getProfile( event.getPlayer() );
 			Inventory remove = inventories.remove( profile.getPlayerId() );
-			if (remove != null) {
+			if ( remove != null ) {
 				saveInventory( profile, remove );
 			}
 		} );
@@ -215,12 +214,9 @@ public class ShopChestDeliveryHandler implements Listener {
 	}
 
 	public void openInventory(Player sender, UserDataConverter.Profile target) {
-		Inventory inv = null;
-		if(inventories.containsKey( target.getPlayerId() )){
-			inv = inventories.get( target.getPlayerId() );
-		}else{
-			UserDataConverter.Profile profile = module.getPlugin().getUserDataConverter().getProfile( target.getPlayerId() );
-			inv = loadInventory( profile );
+		Inventory inv = inventories.get( target.getPlayerId() );
+		if ( inv == null ) {
+			inv = loadInventory( target );
 			if ( inv == null || isEmpty( inv ) ) {
 				sender.spigot().sendMessage( NO_ITEMS_TO_DELIVER_MSG );
 				return;
@@ -230,7 +226,7 @@ public class ShopChestDeliveryHandler implements Listener {
 				inv.setContents( contents );
 			}
 		}
-		
+
 		sender.openInventory( inv );
 	}
 }
