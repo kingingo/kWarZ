@@ -121,7 +121,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 										( byte ) ( getRotation( plr.getLocation() ) ) ) );
 								continue;
 							}
-							if (isInPvP)continue;
+							if (!isInPvP)continue;
 							if( !event.getPlayer().hasPermission( PermissionType.WARZ_MAP_OTHER_PLAYER.getPermissionToString() ) ){
 								return;
 							}
@@ -133,7 +133,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 							}
 						}
 						
-						if ( event.getPlayer().hasPermission( PermissionType.WARZ_MAP_OTHER_PLAYER.getPermissionToString() ) ){
+						if ( isInPvP && event.getPlayer().hasPermission( PermissionType.WARZ_MAP_OTHER_PLAYER.getPermissionToString() ) ){
 							createCircle( icons, 200, event.getPlayer().getLocation() );
 						}
 
