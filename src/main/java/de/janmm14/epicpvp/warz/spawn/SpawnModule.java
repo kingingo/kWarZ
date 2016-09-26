@@ -18,6 +18,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutWorldBorder;
+import eu.epicpvp.kcore.UserDataConfig.Events.UserDataConfigLoadEvent;
+import eu.epicpvp.kcore.Util.UtilMath;
+import eu.epicpvp.kcore.Util.UtilPlayer;
+import eu.epicpvp.kcore.Util.UtilWorld;
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
+import eu.epicpvp.kcore.kConfig.kConfig;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
@@ -25,15 +32,7 @@ import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
 import de.janmm14.epicpvp.warz.logout.LogoutModule;
 import de.janmm14.epicpvp.warz.util.ConfigLocationAdapter;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
-import dev.wolveringer.dataserver.gamestats.GameType;
-import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutWorldBorder;
-import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsCreateEvent;
-import eu.epicpvp.kcore.UserDataConfig.Events.UserDataConfigLoadEvent;
-import eu.epicpvp.kcore.Util.UtilMath;
-import eu.epicpvp.kcore.Util.UtilPlayer;
-import eu.epicpvp.kcore.Util.UtilWorld;
-import eu.epicpvp.kcore.Util.UtilWorldGuard;
-import eu.epicpvp.kcore.kConfig.kConfig;
+
 import lombok.Getter;
 
 public class SpawnModule extends Module<SpawnModule> implements Listener {
@@ -61,9 +60,9 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	}
 
 	public void onDisable() {
-		
+
 	}
-	
+
 	public boolean removeNearestMapSpawn(Player player, double minDistance) {
 		boolean changed = false;
 		for ( int i = 0; i < mapSpawns.size(); i++ ) {
@@ -127,28 +126,28 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 			}
 		}
 	}
-	
-	public void setStarterKit(Player plr){
+
+	public void setStarterKit(Player plr) {
 		PlayerInventory inventory = plr.getInventory();
-		if (isEmpty( inventory.getHelmet() )) {
+		if ( isEmpty( inventory.getHelmet() ) ) {
 			inventory.setHelmet( new ItemStack( Material.LEATHER_HELMET ) );
 		} else {
-			inventory.addItem(new ItemStack( Material.LEATHER_HELMET ));
+			inventory.addItem( new ItemStack( Material.LEATHER_HELMET ) );
 		}
-		if (isEmpty( inventory.getChestplate() )) {
+		if ( isEmpty( inventory.getChestplate() ) ) {
 			inventory.setChestplate( new ItemStack( Material.LEATHER_CHESTPLATE ) );
 		} else {
-			inventory.addItem(new ItemStack( Material.LEATHER_CHESTPLATE ));
+			inventory.addItem( new ItemStack( Material.LEATHER_CHESTPLATE ) );
 		}
-		if (isEmpty( inventory.getLeggings() )) {
+		if ( isEmpty( inventory.getLeggings() ) ) {
 			inventory.setLeggings( new ItemStack( Material.LEATHER_LEGGINGS ) );
 		} else {
-			inventory.addItem(new ItemStack( Material.LEATHER_LEGGINGS ));
+			inventory.addItem( new ItemStack( Material.LEATHER_LEGGINGS ) );
 		}
-		if (isEmpty( inventory.getBoots() )) {
+		if ( isEmpty( inventory.getBoots() ) ) {
 			inventory.setBoots( new ItemStack( Material.LEATHER_BOOTS ) );
 		} else {
-			inventory.addItem(new ItemStack( Material.LEATHER_BOOTS ));
+			inventory.addItem( new ItemStack( Material.LEATHER_BOOTS ) );
 		}
 		inventory.addItem( Zone.crackshotRename( new ItemStack( Material.STONE_SPADE ) ) );
 		inventory.addItem( new ItemStack( Material.WOOD_SWORD ) );
@@ -167,54 +166,59 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	private boolean isEmpty(ItemStack is) {
 		return is == null || is.getType() == Material.AIR;
 	}
+
 	@EventHandler
-	public void onJoin(PlayerJoinEvent ev) {
-		if ( UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) && !getModuleManager().getModule( LogoutModule.class ).containsNpc( ev.getPlayer() ) ) {
-			saveLastMapPos( ev.getPlayer(), ev.getPlayer().getLocation() );
-			ev.getPlayer().teleport( spawn );
+	public void onJoin(PlayerJoinEvent event) {
+		if ( UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) && !getModuleManager().getModule( LogoutModule.class ).containsNpc( event.getPlayer() ) ) {
+			saveLastMapPos( event.getPlayer(), event.getPlayer().getLocation() );
+			event.getPlayer().teleport( spawn );
 		}
 	}
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent ev) {
-		if ( UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) ) {
-			saveLastMapPos( ev.getPlayer(), ev.getPlayer().getLocation() );
+	public void onQuit(PlayerQuitEvent event) {
+		if ( UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ) {
+			saveLastMapPos( event.getPlayer(), event.getPlayer().getLocation() );
 		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void teleport(PlayerTeleportEvent ev) {
-		if(!UtilWorldGuard.RegionFlag(ev.getFrom(), DefaultFlag.PVP))saveLastMapPos( ev.getPlayer(), ev.getFrom() );
-		if ( UtilWorldGuard.RegionFlag( ev.getTo(), DefaultFlag.PVP ) ) {
-			sendBorder( ev.getPlayer() );
+	public void teleport(PlayerTeleportEvent event) {
+		Player plr = event.getPlayer();
+		Location to = event.getTo();
+		if ( UtilWorldGuard.RegionFlag( to, DefaultFlag.PVP ) ) {
+			sendBorder( plr );
 		} else {
-			resetBorder( ev.getPlayer() );
+			if ( !UtilWorldGuard.RegionFlag( to, DefaultFlag.PVP ) ) {
+				saveLastMapPos( plr, event.getFrom() );
+			}
+			resetBorder( plr );
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void newPlayer(UserDataConfigLoadEvent ev){
-		if(ev.isNewConfig()){
-			System.out.println("NEW PLAYER "+ev.getPlayer().getName());
-			setStarterKit(ev.getPlayer());
+	public void newPlayer(UserDataConfigLoadEvent event) {
+		if ( event.isNewConfig() ) {
+			System.out.println( "NEW PLAYER " + event.getPlayer().getName() );
+			setStarterKit( event.getPlayer() );
 		}
 	}
-	
+
 	@EventHandler
-	public void respawn(PlayerRespawnEvent ev){
-		setStarterKit(ev.getPlayer());
+	public void respawn(PlayerRespawnEvent event) {
+		setStarterKit( event.getPlayer() );
 	}
 
 	@EventHandler
-	public void onDeath(PlayerDeathEvent ev) {
-		resetLastMapPos( ev.getEntity() );
+	public void onDeath(PlayerDeathEvent event) {
+		resetLastMapPos( event.getEntity() );
 	}
 
 	@EventHandler
-	public void move(PlayerMoveEvent ev) {
-		if ( ev.getPlayer().getEyeLocation().getBlock().getType() == Material.PORTAL ) {
-			if ( !UtilWorldGuard.RegionFlag( ev.getPlayer(), DefaultFlag.PVP ) ) {
-				teleportWarz( ev.getPlayer() );
+	public void move(PlayerMoveEvent event) {
+		if ( event.getPlayer().getEyeLocation().getBlock().getType() == Material.PORTAL ) {
+			if ( !UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ) {
+				teleportWarz( event.getPlayer() );
 			}
 		}
 	}
