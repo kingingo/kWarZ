@@ -199,7 +199,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void newPlayer(UserDataConfigLoadEvent event) {
 		if ( event.isNewConfig() ) {
-			System.out.println( "NEW PLAYER " + event.getPlayer().getName() );
+			if(WarZ.DEBUG)System.out.println( "NEW PLAYER " + event.getPlayer().getName() );
 			setStarterKit( event.getPlayer() );
 		}
 	}
