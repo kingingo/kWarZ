@@ -92,44 +92,15 @@ public class MapModule extends Module<MapModule> implements Listener {
 						}
 
 						packet.setMapIcons( icons.toArray( new MapIcon[ icons.size() ] ) );
-					} else if ( event.getPlayer().hasPermission( PermissionType.WARZ_MAP_OTHER_PLAYER.getPermissionToString() ) ) {
+					} else {
 						List<MapIcon> icons = new ArrayList<>();
 						icons.add( new MapIcon( MapCursor.Type.WHITE_POINTER.getValue(),
 							( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
 							( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
 							( byte ) ( getRotation( event.getPlayer().getLocation() ) ) ) );
 						
-						Collection<Entity> nearbyEntities = event.getPlayer().getWorld().getNearbyEntities( event.getPlayer().getLocation(), 200, 200, 200 );
-						
-//						for ( Player plr : getPlugin().getServer().getOnlinePlayers() ) {
-//							if ( plr.getUniqueId() == event.getPlayer().getUniqueId()) {
-//								continue;
-//							}
-//							if( !UtilWorldGuard.RegionFlag( plr, DefaultFlag.PVP ) ){
-//								continue;
-//							}
-//							if( !event.getPlayer().isOp() && plr.getGameMode() != GameMode.SURVIVAL ){
-//								continue;
-//							}
-//							if( !event.getPlayer().isOp() && CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(plr) ){
-//								continue;
-//							}
-////							if( event.getPlayer().getLocation().distanceSquared(plr.getLocation()) ){
-////								
-////							}
-//							icons.add( new MapIcon( getPointer( event.getPlayer(), plr ),
-//									( byte ) ( plr.getLocation().getBlockX() / 8 ),
-//									( byte ) ( plr.getLocation().getBlockZ() / 8 ),
-//									( byte ) ( getRotation( plr.getLocation() ) ) ) );
-//						}
-						
-						Player plr;
-						for ( Entity e : nearbyEntities ) {
-							if ( !(e instanceof Player) ) {
-								continue;
-							}
-							plr=((Player)e);
-							
+						FriendInfoManager info = getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
+						for ( Player plr : getPlugin().getServer().getOnlinePlayers() ) {
 							if ( plr.getUniqueId() == event.getPlayer().getUniqueId()) {
 								continue;
 							}
@@ -142,19 +113,29 @@ public class MapModule extends Module<MapModule> implements Listener {
 							if( !event.getPlayer().isOp() && CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(plr) ){
 								continue;
 							}
-							icons.add( new MapIcon( getPointer( event.getPlayer(), ( ( Player ) e ) ),
-									( byte ) ( e.getLocation().getBlockX() / 8 ),
-									( byte ) ( e.getLocation().getBlockZ() / 8 ),
-									( byte ) ( getRotation( e.getLocation() ) ) ) );
+							if(PlayerFriendRelation.areFriends( info, info.get( UtilPlayer.getPlayerId( event.getPlayer() ) ), UtilPlayer.getPlayerId( plr ) )){
+								icons.add( new MapIcon( MapCursor.Type.GREEN_POINTER.getValue(),
+										( byte ) ( plr.getLocation().getBlockX() / 8 ),
+										( byte ) ( plr.getLocation().getBlockZ() / 8 ),
+										( byte ) ( getRotation( plr.getLocation() ) ) ) );
+								continue;
+							}
+							if( !event.getPlayer().hasPermission( PermissionType.WARZ_MAP_OTHER_PLAYER.getPermissionToString() ) ){
+								return;
+							}
+							if((plr.getLocation().distanceSquared(event.getPlayer().getLocation()) <= 200)){
+								icons.add( new MapIcon( MapCursor.Type.RED_POINTER.getValue(),
+										( byte ) ( plr.getLocation().getBlockX() / 8 ),
+										( byte ) ( plr.getLocation().getBlockZ() / 8 ),
+										( byte ) ( getRotation( plr.getLocation() ) ) ) );
+							}
+						}
+						
+						if ( event.getPlayer().hasPermission( PermissionType.WARZ_MAP_OTHER_PLAYER.getPermissionToString() ) ){
+							createCircle( icons, 200, event.getPlayer().getLocation() );
 						}
 
-						createCircle( icons, 200, event.getPlayer().getLocation() );
 						packet.setMapIcons( icons.toArray( new MapIcon[ icons.size() ] ) );
-					} else {
-						packet.setMapIcons( new MapIcon[]{ new MapIcon( MapCursor.Type.WHITE_POINTER.getValue(),
-							( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
-							( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
-							( byte ) ( getRotation( event.getPlayer().getLocation() ) ) ) } );
 					}
 				} else {
 					packet.setMapIcons( new MapIcon[]{} );
