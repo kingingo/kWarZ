@@ -16,21 +16,14 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.inventory.ItemStack;
 
 import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-
-import de.janmm14.epicpvp.warz.Module;
-import de.janmm14.epicpvp.warz.WarZ;
-import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
-import de.janmm14.epicpvp.warz.friends.FriendModule;
-import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
 import dev.wolveringer.dataserver.player.LanguageType;
 import dev.wolveringer.skin.Skin;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
-import eu.epicpvp.kcore.Update.UpdateType;
 import eu.epicpvp.kcore.Update.Event.UpdateEvent;
+import eu.epicpvp.kcore.Update.UpdateType;
 import eu.epicpvp.kcore.UserDataConfig.Events.UserDataConfigLoadEvent;
 import eu.epicpvp.kcore.Util.TimeSpan;
 import eu.epicpvp.kcore.Util.UtilPlayer;
@@ -38,15 +31,22 @@ import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilSkin;
 import eu.epicpvp.kcore.Util.UtilWorldGuard;
 import eu.epicpvp.kcore.kConfig.kConfig;
+
+import de.janmm14.epicpvp.warz.Module;
+import de.janmm14.epicpvp.warz.WarZ;
+import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
+import de.janmm14.epicpvp.warz.friends.FriendModule;
+import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
+
 import lombok.Getter;
 
 public class LogoutModule extends Module<LogoutModule> implements Listener {
 
-	static{
-		TranslationHandler.registerFallback(LanguageType.GERMAN, "warz.module.logout.death", "§cDer Spieler §e%s0§c hat dich getötet!");
-		TranslationHandler.registerFallback(LanguageType.ENGLISH, "warz.module.logout.death", "§cThe Player §e%s0§c has killed you!");
+	static {
+		TranslationHandler.registerFallback( LanguageType.GERMAN, "warz.module.logout.death", "§cDer Spieler §e%s0§c hat dich getötet!" );
+		TranslationHandler.registerFallback( LanguageType.ENGLISH, "warz.module.logout.death", "§cThe Player §e%s0§c has killed you!" );
 	}
-	
+
 	@Getter
 	private Map<Integer, NPC> npcs = new HashMap<>();
 	@Getter
@@ -65,12 +65,12 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 			npc = ( NPC ) this.npcs.values().toArray()[ i ];
 			npc.remove();
 		}
-		
+
 		this.npcs.clear();
 		this.npcs_playerId.clear();
 		this.skinCache.clear();
 	}
-	
+
 	public boolean containsNpc(Player player) {
 		if ( npcs_playerId.containsKey( UtilPlayer.getPlayerId( player ) ) ) {
 			NPC npc = npcs_playerId.get( UtilPlayer.getPlayerId( player ) );
@@ -113,7 +113,7 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 
 	@EventHandler
 	public void kill(EntityDeathEvent ev) {
-		if ( this.npcs.containsKey( ev.getEntity().getEntityId() )  && ev.getEntity().getKiller()!=null) {
+		if ( this.npcs.containsKey( ev.getEntity().getEntityId() ) && ev.getEntity().getKiller() != null ) {
 			NPC npc = this.npcs.get( ev.getEntity().getEntityId() );
 			npc.drop();
 
@@ -129,9 +129,9 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 		if ( ev.getConfig().contains( "Death" ) ) {
 			String killer = ev.getConfig().getString( "Death" );
 			if ( !killer.isEmpty() ) {
-				ev.getPlayer().sendMessage(TranslationHandler.getPrefixAndText(ev.getPlayer(), "warz.module.logout.death",killer));
+				ev.getPlayer().sendMessage( TranslationHandler.getPrefixAndText( ev.getPlayer(), "warz.module.logout.death", killer ) );
 				ev.getPlayer().getInventory().clear();
-				ev.getPlayer().getInventory().setArmorContents( new ItemStack[]{} );
+				ev.getPlayer().getInventory().setArmorContents( null );
 				ev.getConfig().set( "Death", null );
 				ev.getConfig().save();
 			}
@@ -186,7 +186,7 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 
 	@Override
 	public void reloadConfig() {
-		getConfig().addDefault("logout.time", 25 );
-		this.time=getConfig().getInt("logout.time");
+		getConfig().addDefault( "logout.time", 25 );
+		this.time = getConfig().getInt( "logout.time" );
 	}
 }
