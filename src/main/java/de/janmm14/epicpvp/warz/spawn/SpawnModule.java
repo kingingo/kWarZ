@@ -119,11 +119,14 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 
 	public void teleportWarz(Player plr) {
 		if ( getUserConfig( plr ).contains( "lastMapPos" ) ) {
-			plr.teleport( getUserConfig( plr ).getLocation( "lastMapPos" ) );
-		} else {
-			if ( !this.mapSpawns.isEmpty() ) {
-				plr.teleport( getRandomMapSpawn() );
+			Location loc = getUserConfig( plr ).getLocation( "lastMapPos" );
+			if ( UtilWorldGuard.RegionFlag( loc, DefaultFlag.PVP ) ) {
+				plr.teleport( loc );
+				return;
 			}
+		}
+		if ( !this.mapSpawns.isEmpty() ) {
+			plr.teleport( getRandomMapSpawn() );
 		}
 	}
 
@@ -200,7 +203,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void newPlayer(UserDataConfigLoadEvent event) {
 		if ( event.isNewConfig() ) {
-			if(WarZ.DEBUG)System.out.println( "NEW PLAYER " + event.getPlayer().getName() );
+			if ( WarZ.DEBUG ) System.out.println( "NEW PLAYER " + event.getPlayer().getName() );
 			setStarterKit( event.getPlayer() );
 		}
 	}
