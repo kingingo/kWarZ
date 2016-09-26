@@ -189,8 +189,9 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 		if ( UtilWorldGuard.RegionFlag( to, DefaultFlag.PVP ) ) {
 			sendBorder( plr );
 		} else {
-			if ( !UtilWorldGuard.RegionFlag( to, DefaultFlag.PVP ) ) {
-				saveLastMapPos( plr, event.getFrom() );
+			Location from = event.getFrom();
+			if ( UtilWorldGuard.RegionFlag( from, DefaultFlag.PVP ) ) {
+				saveLastMapPos( plr, from );
 			}
 			resetBorder( plr );
 		}
