@@ -1,7 +1,6 @@
 package de.janmm14.epicpvp.warz.friends;
 
-import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.stream;
-
+import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -11,7 +10,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,16 +19,21 @@ import org.bukkit.entity.Player;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-
-import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 import dev.wolveringer.dataserver.player.LanguageType;
 import eu.epicpvp.kcore.Command.CommandHandler.Sender;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
+import eu.epicpvp.kcore.kConfig.kConfig;
 import gnu.trove.TIntCollection;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.TIntSet;
+import org.apache.commons.lang.StringUtils;
+
+import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
+
 import lombok.NonNull;
+
+import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.stream;
 
 public class CommandFriends implements CommandExecutor {
 
@@ -104,7 +107,7 @@ public class CommandFriends implements CommandExecutor {
 	}
 
 	@SuppressWarnings("deprecation")
-	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "friend",alias={"freunde","friede","frieden","freund"}, sender = Sender.PLAYER)
+	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "friend", alias = { "freunde", "friede", "frieden", "freund" }, sender = Sender.PLAYER)
 	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 		if ( !( sender instanceof Player ) ) {
 			msg( sender, "§cDu musst ein Spieler sein!" );
@@ -323,7 +326,7 @@ public class CommandFriends implements CommandExecutor {
 				initiatorInfo.getRequestsSent().remove( targetPlayerId );
 				initiatorInfo.getFriendWith().add( targetPlayerId );
 				initiatorInfo.setDirty();
-				
+
 				targetInfo.getRequestsSent().remove( initiatorInfo.getPlayerId() );
 				targetInfo.getRequestsGot().remove( initiatorInfo.getPlayerId() );
 				targetInfo.getFriendWith().add( initiatorInfo.getPlayerId() );
@@ -389,6 +392,29 @@ public class CommandFriends implements CommandExecutor {
 				}
 				return false;
 			}
+			case "clearallrequests":
+				if ( !sender.isOp() ) {
+					msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_UNKNOWN", args[ 0 ] ) );
+					sendHelp( plr );
+					return false;
+				}
+				module.getPlugin().getServer().getScheduler().runTaskAsynchronously( module.getPlugin(), () -> {
+					File[] userdatas = new File( module.getPlugin().getDataFolder(), "userdata" ).listFiles();
+					if ( userdatas == null ) {
+						sender.sendMessage( "Could not list files in dir." );
+						return;
+					}
+					int amount = userdatas.length;
+					sender.sendMessage( "Found " + amount + " userdata configs. Start clearing all friend requests" );
+					for ( File userdata : userdatas ) {
+						kConfig config = new kConfig( userdata );
+						config.set( "shop.delivery.requestsGot", null );
+						config.set( "shop.delivery.requestsSent", null );
+						config.save();
+					}
+					sender.sendMessage( "Done!" );
+				} );
+				return false;
 			default: {
 				msg( plr, TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_UNKNOWN", args[ 0 ] ) );
 				sendHelp( plr );
