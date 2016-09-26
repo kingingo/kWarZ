@@ -62,7 +62,6 @@ public class MapModule extends Module<MapModule> implements Listener {
 				WrapperPlayServerMap packet = new WrapperPlayServerMap( event.getPacket() );
 
 				boolean isInPvP = UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP );
-				if ( isInPvP || event.getPlayer().isOp() ) {
 					if ( event.getPlayer().isOp() ) {
 						List<MapIcon> icons = new ArrayList<>();
 						if (isInPvP) {
@@ -94,10 +93,12 @@ public class MapModule extends Module<MapModule> implements Listener {
 						packet.setMapIcons( icons.toArray( new MapIcon[ icons.size() ] ) );
 					} else {
 						List<MapIcon> icons = new ArrayList<>();
-						icons.add( new MapIcon( MapCursor.Type.WHITE_POINTER.getValue(),
-							( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
-							( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
-							( byte ) ( getRotation( event.getPlayer().getLocation() ) ) ) );
+						if (isInPvP) {
+							icons.add( new MapIcon( MapCursor.Type.WHITE_POINTER.getValue(),
+									( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
+									( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
+									( byte ) ( getRotation( event.getPlayer().getLocation() ) ) ) );
+						}
 						
 						FriendInfoManager info = getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
 						for ( Player plr : getPlugin().getServer().getOnlinePlayers() ) {
@@ -120,10 +121,11 @@ public class MapModule extends Module<MapModule> implements Listener {
 										( byte ) ( getRotation( plr.getLocation() ) ) ) );
 								continue;
 							}
+							if (isInPvP)continue;
 							if( !event.getPlayer().hasPermission( PermissionType.WARZ_MAP_OTHER_PLAYER.getPermissionToString() ) ){
 								return;
 							}
-							if((plr.getLocation().distanceSquared(event.getPlayer().getLocation()) <= 200)){
+							if((plr.getLocation().distance(event.getPlayer().getLocation()) <= 200)){
 								icons.add( new MapIcon( MapCursor.Type.RED_POINTER.getValue(),
 										( byte ) ( plr.getLocation().getBlockX() / 8 ),
 										( byte ) ( plr.getLocation().getBlockZ() / 8 ),
@@ -137,9 +139,6 @@ public class MapModule extends Module<MapModule> implements Listener {
 
 						packet.setMapIcons( icons.toArray( new MapIcon[ icons.size() ] ) );
 					}
-				} else {
-					packet.setMapIcons( new MapIcon[]{} );
-				}
 
 				if ( WarZ.DEBUG ) {
 					System.out.println( "Rewriting map packet for " + event.getPlayer().getName() + " MapId:" + packet.getItemDamage() );
