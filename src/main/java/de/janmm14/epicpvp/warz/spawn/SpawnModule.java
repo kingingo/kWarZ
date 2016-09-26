@@ -28,6 +28,7 @@ import de.janmm14.epicpvp.warz.zonechest.Zone;
 import dev.wolveringer.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutWorldBorder;
 import eu.epicpvp.kcore.StatsManager.Event.PlayerStatsCreateEvent;
+import eu.epicpvp.kcore.UserDataConfig.Events.UserDataConfigLoadEvent;
 import eu.epicpvp.kcore.Util.UtilMath;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilWorld;
@@ -151,7 +152,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 		}
 		inventory.addItem( Zone.crackshotRename( new ItemStack( Material.STONE_SPADE ) ) );
 		inventory.addItem( new ItemStack( Material.WOOD_SWORD ) );
-		inventory.addItem( new ItemStack( Material.MAP, 1, ( short ) 25 ) );
+		inventory.addItem( new ItemStack( Material.EMPTY_MAP ) );
 		inventory.addItem( new ItemStack( 351, 16, ( short ) 13 ) );
 		inventory.addItem( new ItemStack( 351, 16, ( short ) 6 ) );
 		inventory.addItem( new ItemStack( 351, 16, ( short ) 3 ) );
@@ -183,6 +184,7 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void teleport(PlayerTeleportEvent ev) {
+		if(!UtilWorldGuard.RegionFlag(ev.getFrom(), DefaultFlag.PVP))saveLastMapPos( ev.getPlayer(), ev.getFrom() );
 		if ( UtilWorldGuard.RegionFlag( ev.getTo(), DefaultFlag.PVP ) ) {
 			sendBorder( ev.getPlayer() );
 		} else {
@@ -191,12 +193,11 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void newPlayer(PlayerStatsCreateEvent ev){
-		if(ev.getManager().getType()!=GameType.WARZ)return;
-		
-		Player plr = UtilPlayer.searchExact(ev.getPlayerId());
-		
-		if(plr!=null)setStarterKit(plr);
+	public void newPlayer(UserDataConfigLoadEvent ev){
+		if(ev.isNewConfig()){
+			System.out.println("NEW PLAYER "+ev.getPlayer().getName());
+			setStarterKit(ev.getPlayer());
+		}
 	}
 	
 	@EventHandler

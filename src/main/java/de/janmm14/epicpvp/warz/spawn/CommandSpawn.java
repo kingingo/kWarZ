@@ -16,8 +16,10 @@ import de.janmm14.epicpvp.warz.friends.FriendInfo;
 import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
 import de.janmm14.epicpvp.warz.friends.FriendModule;
 import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
+import eu.epicpvp.kcore.TeleportManager.Teleporter;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.Util.UtilPlayer;
+import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilWorldGuard;
 import lombok.RequiredArgsConstructor;
 
@@ -49,8 +51,8 @@ public class CommandSpawn implements CommandExecutor {
 						}
 					}
 				}
-				module.saveLastMapPos( plr, plr.getLocation() );
-				plr.teleport( module.getSpawn() );
+				
+				UtilServer.getTeleportManager().getTeleport().add(new Teleporter(plr, module.getSpawn(), 5, false));
 				sender.sendMessage( TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_SPAWN_TELEPORT" ) );
 			}
 		} else {

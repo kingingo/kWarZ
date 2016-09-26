@@ -79,10 +79,10 @@ public class MapModule extends Module<MapModule> implements Listener {
 							if( !UtilWorldGuard.RegionFlag( plr, DefaultFlag.PVP ) ){
 								continue;
 							}
-							if( plr.getGameMode() != GameMode.SURVIVAL ){
+							if( !event.getPlayer().isOp() && plr.getGameMode() != GameMode.SURVIVAL ){
 								continue;
 							}
-							if( CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(plr) ){
+							if( !event.getPlayer().isOp() && CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(plr) ){
 								continue;
 							}
 							icons.add( new MapIcon( getPointer( event.getPlayer(), plr ),
@@ -98,8 +98,31 @@ public class MapModule extends Module<MapModule> implements Listener {
 							( byte ) ( event.getPlayer().getLocation().getBlockX() / 8 ),
 							( byte ) ( event.getPlayer().getLocation().getBlockZ() / 8 ),
 							( byte ) ( getRotation( event.getPlayer().getLocation() ) ) ) );
-
+						
 						Collection<Entity> nearbyEntities = event.getPlayer().getWorld().getNearbyEntities( event.getPlayer().getLocation(), 200, 200, 200 );
+						
+//						for ( Player plr : getPlugin().getServer().getOnlinePlayers() ) {
+//							if ( plr.getUniqueId() == event.getPlayer().getUniqueId()) {
+//								continue;
+//							}
+//							if( !UtilWorldGuard.RegionFlag( plr, DefaultFlag.PVP ) ){
+//								continue;
+//							}
+//							if( !event.getPlayer().isOp() && plr.getGameMode() != GameMode.SURVIVAL ){
+//								continue;
+//							}
+//							if( !event.getPlayer().isOp() && CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(plr) ){
+//								continue;
+//							}
+////							if( event.getPlayer().getLocation().distanceSquared(plr.getLocation()) ){
+////								
+////							}
+//							icons.add( new MapIcon( getPointer( event.getPlayer(), plr ),
+//									( byte ) ( plr.getLocation().getBlockX() / 8 ),
+//									( byte ) ( plr.getLocation().getBlockZ() / 8 ),
+//									( byte ) ( getRotation( plr.getLocation() ) ) ) );
+//						}
+						
 						Player plr;
 						for ( Entity e : nearbyEntities ) {
 							if ( !(e instanceof Player) ) {
@@ -113,10 +136,10 @@ public class MapModule extends Module<MapModule> implements Listener {
 							if( !UtilWorldGuard.RegionFlag( plr, DefaultFlag.PVP ) ){
 								continue;
 							}
-							if( plr.getGameMode() != GameMode.SURVIVAL ){
+							if( !event.getPlayer().isOp() && plr.getGameMode() != GameMode.SURVIVAL ){
 								continue;
 							}
-							if( CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(plr) ){
+							if( !event.getPlayer().isOp() && CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(plr) ){
 								continue;
 							}
 							icons.add( new MapIcon( getPointer( event.getPlayer(), ( ( Player ) e ) ),

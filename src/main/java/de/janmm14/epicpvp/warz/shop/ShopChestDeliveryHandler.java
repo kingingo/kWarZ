@@ -1,7 +1,10 @@
 package de.janmm14.epicpvp.warz.shop;
 
+import java.util.ArrayList;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -54,7 +57,10 @@ public class ShopChestDeliveryHandler implements Listener {
 	public boolean deliverItem(UserDataConverter.Profile profile, ItemStack item) {
 		Inventory inv = inventories.get( profile.getPlayerId() );
 		if ( inv != null ) {
+			for(HumanEntity e : new ArrayList<>(inv.getViewers()))e.closeInventory();
+			
 			inv.addItem( item );
+			saveInventory(profile, inv);
 			return true;
 		}
 		inv = loadInventory( profile );
@@ -209,16 +215,22 @@ public class ShopChestDeliveryHandler implements Listener {
 	}
 
 	public void openInventory(Player sender, UserDataConverter.Profile target) {
-		UserDataConverter.Profile profile = module.getPlugin().getUserDataConverter().getProfile( target.getPlayerId() );
-		Inventory inv = loadInventory( profile );
-		if ( inv == null || isEmpty( inv ) ) {
-			sender.spigot().sendMessage( NO_ITEMS_TO_DELIVER_MSG );
-			return;
+		Inventory inv = null;
+		if(inventories.containsKey( target.getPlayerId() )){
+			inv = inventories.get( target.getPlayerId() );
+		}else{
+			UserDataConverter.Profile profile = module.getPlugin().getUserDataConverter().getProfile( target.getPlayerId() );
+			inv = loadInventory( profile );
+			if ( inv == null || isEmpty( inv ) ) {
+				sender.spigot().sendMessage( NO_ITEMS_TO_DELIVER_MSG );
+				return;
+			}
+			ItemStack[] contents = inv.getContents();
+			if ( module.getModuleManager().getModule( ItemRenameModule.class ).renameItemStackArray( contents ) ) {
+				inv.setContents( contents );
+			}
 		}
-		ItemStack[] contents = inv.getContents();
-		if ( module.getModuleManager().getModule( ItemRenameModule.class ).renameItemStackArray( contents ) ) {
-			inv.setContents( contents );
-		}
+		
 		sender.openInventory( inv );
 	}
 }
