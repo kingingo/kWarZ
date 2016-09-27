@@ -52,7 +52,7 @@ public class CommandSpawn implements CommandExecutor {
 					}
 				}
 				
-				UtilServer.getTeleportManager().getTeleport().add(new Teleporter(plr, module.getSpawn(), 5, false));
+				UtilServer.getTeleportManager().getTeleport().add(new Teleporter(plr, module.getSpawn(), 5, true));
 				sender.sendMessage( TranslationHandler.getPrefixAndText( plr, "WARZ_CMD_SPAWN_TELEPORT" ) );
 			}
 		} else {
