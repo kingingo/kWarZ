@@ -12,10 +12,14 @@ import eu.epicpvp.kcore.Util.UtilDirection;
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 
+import lombok.Getter;
+
 public class CompassTargetModule extends Module<CompassTargetModule> implements Runnable {
 
 	private final Map<UUID, CompassTarget> selectedTargets = new HashMap<>();
 	private final Map<UUID, UtilDirection> lastDirection = new HashMap<>();
+	@Getter
+	private int enemyRadius;
 
 	public CompassTargetModule(WarZ plugin) {
 		super( plugin, CompassTargetSwitchListener::new );
@@ -33,9 +37,9 @@ public class CompassTargetModule extends Module<CompassTargetModule> implements 
 		}
 		return compassTarget;
 	}
-	
+
+	@Override
 	public void onDisable() {
-		
 	}
 
 	public void setCompassTarget(Player plr, CompassTarget target) {
@@ -45,6 +49,8 @@ public class CompassTargetModule extends Module<CompassTargetModule> implements 
 
 	@Override
 	public void reloadConfig() {
+		getConfig().addDefault( "compassTarget.maxEnemyRadius", 200 );
+		enemyRadius = getConfig().getInt( "compassTarget.maxEnemyRadius" );
 	}
 
 	public void remove(Player plr) {
