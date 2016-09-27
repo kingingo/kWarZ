@@ -33,7 +33,7 @@ public enum CompassTarget {
 		Location getTarget(@NonNull CompassTargetModule module, @NonNull Player plr) {
 			FriendInfoManager manager = module.getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
 			FriendInfo friendInfo = manager.get( plr.getUniqueId() );
-			double distanceSquared = module.getEnemyRadius();
+			double distanceSquared = module.getEnemyRadius() * module.getEnemyRadius();
 			Player nearestEnemy = null;
 			for ( Player possTarget : Bukkit.getOnlinePlayers() ) {
 				if ( possTarget.getUniqueId().equals( plr.getUniqueId() ) ) {
