@@ -51,6 +51,8 @@ import eu.epicpvp.kcore.Permission.PermissionManager;
 import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
 import eu.epicpvp.kcore.TeleportManager.TeleportCheck;
 import eu.epicpvp.kcore.TeleportManager.TeleportManager;
+import eu.epicpvp.kcore.Update.Updater;
+import eu.epicpvp.kcore.UpdateAsync.UpdaterAsync;
 import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
@@ -149,6 +151,8 @@ public class WarZ extends JavaPlugin {
 		new AntiCrashListener( UtilServer.getClient(), UtilServer.getMysql() );
 		new EnderChestListener( getUserDataConfig() );
 		new TeleportManager( new CommandHandler( this ), UtilServer.getPermissionManager(), TeleportCheck.NEAR );
+		new Updater(this);
+		new UpdaterAsync(this);
 		
 		//lets try to support reloades to some extend
 		for ( Player plr : Bukkit.getOnlinePlayers() ) {
