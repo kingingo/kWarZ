@@ -74,7 +74,7 @@ public class WarZListener implements Listener {
 	@EventHandler
 	public void weather(WeatherChangeEvent ev){
 		if(ev.toWeatherState()){
-			ev.getWorld().setStorm(false);
+			ev.setCancelled(true);
 		}
 	}
 	
