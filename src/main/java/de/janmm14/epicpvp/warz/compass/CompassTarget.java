@@ -1,7 +1,6 @@
 package de.janmm14.epicpvp.warz.compass;
 
 import java.util.Collection;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
@@ -9,7 +8,9 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
+
+import eu.epicpvp.kcore.Command.Admin.CommandVanish;
+import eu.epicpvp.kcore.Util.UtilPlayer;
 
 import de.janmm14.epicpvp.warz.friends.FriendInfo;
 import de.janmm14.epicpvp.warz.friends.FriendInfoManager;
@@ -18,8 +19,9 @@ import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
 import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
-import eu.epicpvp.kcore.Command.Admin.CommandVanish;
-import eu.epicpvp.kcore.Util.UtilPlayer;
+
+import org.jetbrains.annotations.NotNull;
+
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -40,10 +42,10 @@ public enum CompassTarget {
 				if ( !plr.getWorld().equals( possTarget.getWorld() ) ) {
 					continue;
 				}
-				if( plr.getGameMode() != GameMode.SURVIVAL ){
+				if ( possTarget.getGameMode() != GameMode.SURVIVAL ) {
 					continue;
 				}
-				if( CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(possTarget) ){
+				if ( CommandVanish.getInvisible() != null && CommandVanish.getInvisible().contains( possTarget ) ) {
 					continue;
 				}
 				if ( PlayerFriendRelation.areFriends( manager, friendInfo, UtilPlayer.getPlayerId( possTarget ) ) ) {
@@ -66,10 +68,10 @@ public enum CompassTarget {
 			if ( !moved.getWorld().equals( plr.getWorld() ) ) {
 				return null;
 			}
-			if( plr.getGameMode() != GameMode.SURVIVAL ){
+			if ( plr.getGameMode() != GameMode.SURVIVAL ) {
 				return null;
 			}
-			if( CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(plr) ){
+			if ( CommandVanish.getInvisible() != null && CommandVanish.getInvisible().contains( plr ) ) {
 				return null;
 			}
 			FriendInfoManager manager = module.getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
@@ -95,10 +97,10 @@ public enum CompassTarget {
 				if ( !plr.getWorld().equals( possTarget.getWorld() ) ) {
 					continue;
 				}
-				if( possTarget.getGameMode() != GameMode.SURVIVAL ){
+				if ( possTarget.getGameMode() != GameMode.SURVIVAL ) {
 					continue;
 				}
-				if( CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(possTarget) ){
+				if ( CommandVanish.getInvisible() != null && CommandVanish.getInvisible().contains( possTarget ) ) {
 					continue;
 				}
 				UserDataConverter.Profile possTargetProfile = manager.getModule().getPlugin().getUserDataConverter().getProfile( possTarget.getUniqueId() );
@@ -122,10 +124,10 @@ public enum CompassTarget {
 			if ( !moved.getWorld().equals( plr.getWorld() ) ) {
 				return null;
 			}
-			if( plr.getGameMode() != GameMode.SURVIVAL ){
+			if ( plr.getGameMode() != GameMode.SURVIVAL ) {
 				return null;
 			}
-			if( CommandVanish.getInvisible()!=null && CommandVanish.getInvisible().contains(plr) ){
+			if ( CommandVanish.getInvisible() != null && CommandVanish.getInvisible().contains( plr ) ) {
 				return null;
 			}
 			FriendInfoManager manager = module.getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
