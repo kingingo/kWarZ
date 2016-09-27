@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -215,6 +216,11 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 
 	@EventHandler
 	public void onDeath(PlayerDeathEvent event) {
+		Entity vehicle = event.getEntity().getVehicle();
+		if(vehicle!=null){
+			event.getEntity().leaveVehicle();
+			vehicle.remove();
+		}
 		resetLastMapPos( event.getEntity() );
 	}
 
