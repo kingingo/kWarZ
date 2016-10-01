@@ -76,7 +76,7 @@ public class EnderchestModule extends Module<EnderchestModule> implements Listen
 				config.setItemStackArray( "Enderchest", items );
 			}
 			items = config.getItemStackArray( "Enderchest" );
-			int use_amount = 0;
+			int use_amount = 9;
 
 			if ( ev.getPlayer().isOp() || ev.getPlayer().hasPermission( PermissionType.ALL_PERMISSION.getPermissionToString() ) ) {
 				use_amount = 54;
