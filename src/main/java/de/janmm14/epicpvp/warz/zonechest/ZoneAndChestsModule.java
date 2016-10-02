@@ -82,7 +82,7 @@ public class ZoneAndChestsModule extends Module<ZoneAndChestsModule> {
 		getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname2.item", getExampleItemStackWithEverything() );
 		getConfig().addDefault( PATH_ZONES + ".ignoredExampleZone.itemgroups.itemCategory1_NameIgnored.items.unusedname2.probability", .3 );
 
-		getConfig().set( PATH_ZONES + ".refill", 5 * 60 );
+		getConfig().addDefault( PATH_ZONES + ".refill", 5 * 60 );
 		this.chestContentManager.setREFILL_SECONDS(getConfig().getInt(PATH_ZONES + ".refill" ));
 		
 		ConfigurationSection section = getConfig().getConfigurationSection( PATH_ZONES );
