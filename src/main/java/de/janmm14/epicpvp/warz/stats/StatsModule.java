@@ -78,7 +78,7 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 		adapter.setEntryKeyWithValue( 4, "§2§fLoading..." );
 		plr.setScoreboard( scoreboard );
 
-		manager.getAsync( plr, StatsKey.ANIMAL_KILLS, (killsObj, exception) -> {
+		manager.getAsync( plr, StatsKey.KILLS, (killsObj, exception) -> {
 			adapter.setEntryKeyWithValue( 8, "§0§f" + killsObj );
 
 			manager.getAsync( plr, StatsKey.DEATHS, (deathsObj, exception1) -> {
@@ -113,7 +113,7 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 		}
 		int newVal = event.getManager().getInt( event.getPlayerId(), event.getStats() );
 		switch ( event.getStats() ) {
-			case ANIMAL_KILLS:
+			case KILLS:
 				adapter.setEntryKeyWithValue( 8, "§0§f" + newVal );
 				break;
 			case DEATHS:
@@ -122,7 +122,7 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 			default:
 				return;
 		}
-		int kills = event.getManager().getInt( event.getPlayerId(), StatsKey.ANIMAL_KILLS );
+		int kills = event.getManager().getInt( event.getPlayerId(), StatsKey.KILLS );
 		int deaths = event.getManager().getInt( event.getPlayerId(), StatsKey.DEATHS );
 		double klr_d = ( ( double ) kills ) / ( ( ( double ) deaths + 1 ) );
 		int klr_100 = ( int ) ( klr_d * 100 );
@@ -164,7 +164,7 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 
 			victim.sendMessage( TranslationHandler.getPrefixAndText( victim, "GUNGAME_KILLED_BY", killer.getName() ) );
 			killer.sendMessage( TranslationHandler.getPrefixAndText( killer, "GUNGAME_KILL", victim.getName() ) );
-			increaseStatistic( killer, StatsKey.ANIMAL_KILLS );
+			increaseStatistic( killer, StatsKey.KILLS );
 		} );
 	}
 
