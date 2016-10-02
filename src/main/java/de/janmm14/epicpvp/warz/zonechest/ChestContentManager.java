@@ -25,11 +25,13 @@ import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.util.random.RandomUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @RequiredArgsConstructor
 public class ChestContentManager implements Runnable {
-
-	private static final int REFILL_SECONDS = 5 * 60;
+	
+	@Setter
+	private int REFILL_SECONDS = 5 * 60;
 
 	private final ZoneAndChestsModule module;
 	private final Cache<BlockVector, Inventory> createdInventories = CacheBuilder.newBuilder()
