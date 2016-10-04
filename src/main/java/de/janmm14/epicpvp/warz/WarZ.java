@@ -15,8 +15,8 @@ import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 import dev.wolveringer.bukkit.permissions.GroupTyp;
 import dev.wolveringer.client.connection.ClientType;
-import dev.wolveringer.client.debug.Debugger;
-import dev.wolveringer.dataserver.gamestats.GameType;
+import eu.epicpvp.datenclient.client.debug.Debugger;
+import eu.epicpvp.datenserver.definitions.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.AACHack.AACHack;
 import eu.epicpvp.kcore.ChunkGenerator.CleanroomChunkGenerator;
 import eu.epicpvp.kcore.Command.CommandHandler;
@@ -154,7 +154,7 @@ public class WarZ extends JavaPlugin {
 		new TeleportManager( new CommandHandler( this ), UtilServer.getPermissionManager(), TeleportCheck.NEAR );
 		new Updater(this);
 		new UpdaterAsync(this);
-		
+
 		//lets try to support reloades to some extend
 		for ( Player plr : Bukkit.getOnlinePlayers() ) {
 			StatsManagerRepository.getStatsManager( GameType.WARZ ).join( new PlayerJoinEvent( plr, "" ) );

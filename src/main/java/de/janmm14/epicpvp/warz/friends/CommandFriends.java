@@ -19,7 +19,7 @@ import org.bukkit.entity.Player;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import dev.wolveringer.dataserver.player.LanguageType;
+import eu.epicpvp.datenserver.definitions.dataserver.player.LanguageType;
 import eu.epicpvp.kcore.Command.CommandHandler.Sender;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.kConfig.kConfig;

@@ -23,8 +23,8 @@ import com.shampaggon.crackshot.events.WeaponPreShootEvent;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
 import de.janmm14.epicpvp.warz.util.MiscUtil;
-import dev.wolveringer.client.ClientWrapper;
-import dev.wolveringer.dataserver.gamestats.GameType;
+import eu.epicpvp.datenclient.client.ClientWrapper;
+import eu.epicpvp.datenserver.definitions.dataserver.gamestats.GameType;
 import eu.epicpvp.kcore.Events.ServerStatusUpdateEvent;
 import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Permission.Events.PlayerLoadPermissionEvent;
@@ -78,7 +78,7 @@ public class WarZListener implements Listener {
 			ev.getWorld().setStorm(false);
 		}
 	}
-	
+
 	@EventHandler
 	public void loadWorld(WorldLoadEvent ev) {
 		ev.getWorld().setAutoSave( false );

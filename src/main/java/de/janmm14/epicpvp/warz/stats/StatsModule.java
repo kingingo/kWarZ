@@ -27,8 +27,8 @@ import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.friends.FriendInfo;
 import de.janmm14.epicpvp.warz.friends.FriendModule;
 import de.janmm14.epicpvp.warz.util.ScoreboardAdapter;
-import dev.wolveringer.dataserver.gamestats.GameType;
-import dev.wolveringer.dataserver.gamestats.StatsKey;
+import eu.epicpvp.datenserver.definitions.dataserver.gamestats.GameType;
+import eu.epicpvp.datenserver.definitions.dataserver.gamestats.StatsKey;
 import eu.epicpvp.kcore.Scoreboard.Events.PlayerSetScoreboardEvent;
 import eu.epicpvp.kcore.StatsManager.StatsManager;
 import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
@@ -54,9 +54,9 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 	public void onJoin(PlayerJoinEvent event) {
 		manager.loadPlayer( event.getPlayer() );
 	}
-	
+
 	public void onDisable() {
-		
+
 	}
 
 	@EventHandler

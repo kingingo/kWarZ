@@ -19,7 +19,7 @@ import org.bukkit.event.world.WorldLoadEvent;
 
 import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import dev.wolveringer.dataserver.player.LanguageType;
+import eu.epicpvp.datenserver.definitions.dataserver.player.LanguageType;
 import dev.wolveringer.skin.Skin;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
 import eu.epicpvp.kcore.Update.Event.UpdateEvent;

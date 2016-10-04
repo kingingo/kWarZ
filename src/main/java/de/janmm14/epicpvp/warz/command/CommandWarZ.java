@@ -17,7 +17,7 @@ import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
 import de.janmm14.epicpvp.warz.util.random.RandomUtil;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
 import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
-import dev.wolveringer.client.debug.Debugger;
+import eu.epicpvp.datenclient.client.debug.Debugger;
 import eu.epicpvp.kcore.Command.CommandHandler.Sender;
 import eu.epicpvp.kcore.Util.UtilNumber;
 import lombok.RequiredArgsConstructor;
