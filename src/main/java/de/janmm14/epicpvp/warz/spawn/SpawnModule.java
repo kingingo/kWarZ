@@ -19,13 +19,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutWorldBorder;
-import eu.epicpvp.kcore.UserDataConfig.Events.UserDataConfigLoadEvent;
-import eu.epicpvp.kcore.Util.UtilMath;
-import eu.epicpvp.kcore.Util.UtilPlayer;
-import eu.epicpvp.kcore.Util.UtilWorld;
-import eu.epicpvp.kcore.Util.UtilWorldGuard;
-import eu.epicpvp.kcore.kConfig.kConfig;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
@@ -33,7 +26,13 @@ import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
 import de.janmm14.epicpvp.warz.logout.LogoutModule;
 import de.janmm14.epicpvp.warz.util.ConfigLocationAdapter;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
-
+import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutWorldBorder;
+import eu.epicpvp.kcore.UserDataConfig.Events.UserDataConfigLoadEvent;
+import eu.epicpvp.kcore.Util.UtilMath;
+import eu.epicpvp.kcore.Util.UtilPlayer;
+import eu.epicpvp.kcore.Util.UtilWorld;
+import eu.epicpvp.kcore.Util.UtilWorldGuard;
+import eu.epicpvp.kcore.kConfig.kConfig;
 import lombok.Getter;
 
 public class SpawnModule extends Module<SpawnModule> implements Listener {

@@ -1,14 +1,12 @@
 package de.janmm14.epicpvp.warz.map;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

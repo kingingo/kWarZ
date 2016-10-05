@@ -18,18 +18,17 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
 
+import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
+import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
 import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
 import eu.epicpvp.kcore.kConfig.kConfig;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
-
-import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
-import de.janmm14.epicpvp.warz.itemrename.ItemRenameModule;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
 
 public class ShopChestDeliveryHandler implements Listener {
 

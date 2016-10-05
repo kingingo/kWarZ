@@ -19,11 +19,11 @@ import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import eu.epicpvp.datenclient.gilde.GildSection;
 import eu.epicpvp.datenclient.gilde.Gilde;
-import dev.wolveringer.gilde.GildeType;
-import dev.wolveringer.nbt.NBTTagCompound;
+import eu.epicpvp.datenserver.definitions.gilde.GildeType;
 import eu.epicpvp.kcore.Util.UtilInv;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.newGilde.GildeHandler;
+import eu.epicpvp.nbt.NBTTagCompound;
 import lombok.Getter;
 
 public class GildeModule extends Module<GildeModule> /*implements Listener*/ {
