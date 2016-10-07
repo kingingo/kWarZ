@@ -189,6 +189,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>eu.epicpvp.datenserver</groupId>
+            <artifactId>definitions</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.10</version>
@@ -215,6 +221,7 @@
             <groupId>eu.epicpvp</groupId>
             <artifactId>aac</artifactId>
             <version>1.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

@@ -1,10 +1,12 @@
 package de.janmm14.epicpvp.warz.friends;
 
-import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.stream;
-
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -12,18 +14,16 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-
-import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 import eu.epicpvp.datenserver.definitions.dataserver.player.LanguageType;
 import eu.epicpvp.kcore.Command.CommandHandler.Sender;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
@@ -32,9 +32,16 @@ import gnu.trove.TIntCollection;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.TIntSet;
+import org.apache.commons.lang.StringUtils;
+
+import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
+
 import lombok.NonNull;
 
-public class CommandFriends implements CommandExecutor {
+import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.stream;
+import static de.janmm14.epicpvp.warz.util.MiscUtil.not;
+
+public class CommandFriends implements TabExecutor {
 
 	private static final int FRIEND_LIST_PAGE_SIZE = 10;
 	private static final Pattern MINUS_PATTERN = Pattern.compile( "-", Pattern.LITERAL );
@@ -105,6 +112,7 @@ public class CommandFriends implements CommandExecutor {
 		return true;
 	}
 
+	@Override
 	@SuppressWarnings("deprecation")
 	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "friend", alias = { "freunde", "friede", "frieden", "freund" }, sender = Sender.PLAYER)
 	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
@@ -218,8 +226,11 @@ public class CommandFriends implements CommandExecutor {
 						public void run() {
 							int time = 31;
 							while ( true ) {
+								FriendInfo initiator = manager.get( initiatorUuid );
+								FriendInfo targetInfo = manager.get( targetPlayerId );
 								time--;
 								if ( time <= 0 ) {
+
 									targetInfo.getFriendWith().remove( initiator.getPlayerId() );
 									targetInfo.setDirty();
 									initiator.getFriendWith().remove( targetPlayerId );
@@ -239,6 +250,10 @@ public class CommandFriends implements CommandExecutor {
 									Player targetPlr = targetInfo.getPlayer();
 									if ( targetPlr != null ) {
 										msg( targetPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", plrName, time ) );
+									}
+									Player initiatorPlr = initiator.getPlayer();
+									if ( initiatorPlr != null ) {
+										msg( initiatorPlr, module.getPrefix() + TranslationHandler.getPrefixAndText( targetPlr, "WARZ_CMD_FRIEND_DISSOLVE_IN_FRIENDSHIP", targetInfo.getPlayerId(), time ) );
 									}
 								}
 								try {
@@ -422,95 +437,95 @@ public class CommandFriends implements CommandExecutor {
 		}
 	}
 
-//	@Override
-//	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-//		if (true)
-//			return null;
-//		if ( !( sender instanceof Player ) ) {
-//			return ImmutableList.of();
-//		}
-//		Player plr = ( Player ) sender;
-//		if ( args.length == 0 ) { //should not happen; api behaviour not documented enough to remove
-//			return ImmutableList.of();
-//		}
-//		UserDataConverter.Profile profile = userDataConverter.getProfile( plr );
-//		int playerId = profile.getPlayerId();
-//		switch ( args[ 0 ].toLowerCase().trim() ) {
-//			case "": {
-//				return subCommandKeys;
-//			}
-//			case "accept":
-//			case "annehmnen": {
-//				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getRequestsGot );
-//			}
-//			case "status": {
-//				return getTabCompleteMatchesAndGetFriendInfo( playerId, args, 1, friendInfo -> {
-//					return IntStream.concat(
-//						IntStream.concat(
-//							Bukkit.getOnlinePlayers().stream().mapToInt( p -> userDataConverter.getProfile( p ).getPlayerId() ),
-//							stream( friendInfo.getFriendWith() ) ),
-//						IntStream.concat(
-//							stream( friendInfo.getRequestsGot() ),
-//							stream( friendInfo.getRequestsSent() ) ) );
-//				} );
-//			}
-//			case "beenden":
-//			case "entfernen":
-//			case "remove": {
-//				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getFriendWith );
-//			}
-//			case "stop": {
-//				return getTabCompleteMatchesAndGetFriendInfo( playerId, args, 1, friendInfo -> {
-//					return IntStream.concat(
-//						stream( friendInfo.getFriendWith() ),
-//						stream( friendInfo.getRequestsSent() ) );
-//				} );
-//			}
-//			case "ablehnen":
-//			case "deny": {
-//				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getRequestsGot );
-//			}
-//			case "zurückrufen":
-//			case "revoke": {
-//				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getRequestsSent );
-//			}
-//			case "request":
-//			case "anfragen": {
-//				return getTabCompleteMatchesAndGetFriendInfo( playerId, args, 1, friendInfo -> {
-//					return Bukkit.getOnlinePlayers().stream()
-//						.mapToInt( p -> userDataConverter.getProfile( p ).getPlayerId() )
-//						.filter( not( friendInfo.getFriendWith()::contains ) );
-//				} );
-//			}
-//			default: {
-//				if ( args.length == 1 ) {
-//					String startedSubCmd = args[ 0 ].toLowerCase();
-//
-//					//look for base subcommand matches; if there is no match for a base subcommand, checking its aliases
-//					Map<String, Collection<String>> entries = subCommands.asMap();
-//					List<String> result = new ArrayList<>();
-//
-//					for ( Map.Entry<String, Collection<String>> entry : entries.entrySet() ) {
-//						if ( entry.getKey().startsWith( startedSubCmd ) ) { // base subcommand match first
-//							result.add( entry.getKey() );
-//						} else {
-//							//find first matching alias
-//							Optional<String> first = entry.getValue().stream()
-//								.filter( subCmdAlias -> subCmdAlias.startsWith( startedSubCmd ) )
-//								.findFirst();
-//							if ( first.isPresent() ) {
-//								result.add( first.get() );
-//							}
-//						}
-//					}
-//					if ( result.isEmpty() ) { // if nothing matches, just return all base subcommands
-//						return subCommandKeys;
-//					}
-//				}
-//				return ImmutableList.of();
-//			}
-//		}
-//	}
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+		if (true)
+			return null;
+		if ( !( sender instanceof Player ) ) {
+			return ImmutableList.of();
+		}
+		Player plr = ( Player ) sender;
+		if ( args.length == 0 ) { //should not happen; api behaviour not documented enough to remove
+			return ImmutableList.of();
+		}
+		UserDataConverter.Profile profile = userDataConverter.getProfile( plr );
+		int playerId = profile.getPlayerId();
+		switch ( args[ 0 ].toLowerCase().trim() ) {
+			case "": {
+				return subCommandKeys;
+			}
+			case "accept":
+			case "annehmnen": {
+				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getRequestsGot );
+			}
+			case "status": {
+				return getTabCompleteMatchesAndGetFriendInfo( playerId, args, 1, friendInfo -> {
+					return IntStream.concat(
+						IntStream.concat(
+							Bukkit.getOnlinePlayers().stream().mapToInt( p -> userDataConverter.getProfile( p ).getPlayerId() ),
+							stream( friendInfo.getFriendWith() ) ),
+						IntStream.concat(
+							stream( friendInfo.getRequestsGot() ),
+							stream( friendInfo.getRequestsSent() ) ) );
+				} );
+			}
+			case "beenden":
+			case "entfernen":
+			case "remove": {
+				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getFriendWith );
+			}
+			case "stop": {
+				return getTabCompleteMatchesAndGetFriendInfo( playerId, args, 1, friendInfo -> {
+					return IntStream.concat(
+						stream( friendInfo.getFriendWith() ),
+						stream( friendInfo.getRequestsSent() ) );
+				} );
+			}
+			case "ablehnen":
+			case "deny": {
+				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getRequestsGot );
+			}
+			case "zurückrufen":
+			case "revoke": {
+				return getTabCompleteMatchesAndGetFriendInfoSet( playerId, args, 1, FriendInfo::getRequestsSent );
+			}
+			case "request":
+			case "anfragen": {
+				return getTabCompleteMatchesAndGetFriendInfo( playerId, args, 1, friendInfo -> {
+					return Bukkit.getOnlinePlayers().stream()
+						.mapToInt( p -> userDataConverter.getProfile( p ).getPlayerId() )
+						.filter( not( friendInfo.getFriendWith()::contains ) );
+				} );
+			}
+			default: {
+				if ( args.length == 1 ) {
+					String startedSubCmd = args[ 0 ].toLowerCase();
+
+					//look for base subcommand matches; if there is no match for a base subcommand, checking its aliases
+					Map<String, Collection<String>> entries = subCommands.asMap();
+					List<String> result = new ArrayList<>();
+
+					for ( Map.Entry<String, Collection<String>> entry : entries.entrySet() ) {
+						if ( entry.getKey().startsWith( startedSubCmd ) ) { // base subcommand match first
+							result.add( entry.getKey() );
+						} else {
+							//find first matching alias
+							Optional<String> first = entry.getValue().stream()
+								.filter( subCmdAlias -> subCmdAlias.startsWith( startedSubCmd ) )
+								.findFirst();
+							if ( first.isPresent() ) {
+								result.add( first.get() );
+							}
+						}
+					}
+					if ( result.isEmpty() ) { // if nothing matches, just return all base subcommands
+						return subCommandKeys;
+					}
+				}
+				return ImmutableList.of();
+			}
+		}
+	}
 
 	private List<String> getTabCompleteMatchesAndGetFriendInfo(int uuid, String[] args, int namePos, Function<FriendInfo, IntStream> playerIdProvider) {
 		FriendInfo friendInfo = manager.get( uuid );
