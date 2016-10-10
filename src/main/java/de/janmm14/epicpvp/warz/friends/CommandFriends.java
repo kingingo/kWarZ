@@ -1,5 +1,8 @@
 package de.janmm14.epicpvp.warz.friends;
 
+import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.stream;
+import static de.janmm14.epicpvp.warz.util.MiscUtil.not;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -24,6 +28,8 @@ import org.bukkit.entity.Player;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+
+import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 import eu.epicpvp.datenserver.definitions.dataserver.player.LanguageType;
 import eu.epicpvp.kcore.Command.CommandHandler.Sender;
 import eu.epicpvp.kcore.Translation.TranslationHandler;
@@ -32,14 +38,7 @@ import gnu.trove.TIntCollection;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.TIntSet;
-import org.apache.commons.lang.StringUtils;
-
-import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
-
 import lombok.NonNull;
-
-import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.stream;
-import static de.janmm14.epicpvp.warz.util.MiscUtil.not;
 
 public class CommandFriends implements TabExecutor {
 

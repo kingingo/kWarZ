@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -150,10 +151,15 @@ public class LogoutModule extends Module<LogoutModule> implements Listener {
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		if ( UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP ) ) {
-			new NPC( this, event.getPlayer() );
+			LogoutPlayerQuitEvent ev = new LogoutPlayerQuitEvent(event.getPlayer());
+			Bukkit.getPluginManager().callEvent(ev);
+			
+			if(!ev.isCancelled()){
+				new NPC( this, event.getPlayer() );
 
-			if ( WarZ.DEBUG )
-				System.err.println( "Player logout out " + event.getPlayer().getName() );
+				if ( WarZ.DEBUG )
+					System.err.println( "Player logout out " + event.getPlayer().getName() );
+			}
 		}
 		skinCache.remove( event.getPlayer().getUniqueId() );
 	}

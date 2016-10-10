@@ -2,6 +2,7 @@ package de.janmm14.epicpvp.warz.spawn;
 
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -116,17 +117,34 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	public kConfig getUserConfig(Player plr) {
 		return getPlugin().getUserDataConfig().getConfig( plr );
 	}
+	
+	public void teleport(Player plr, Location loc){
+		if(!plr.teleport(loc)){
+			if(plr.getPassenger()!=null){
+				Entity e = plr.getPassenger();
+				plr.eject();
+				plr.teleport(loc);		
+				Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
+					@Override
+					public void run() {
+						e.teleport(plr);
+						plr.setPassenger(e);
+					}
+				}, 10L);
+			}
+		}
+	}
 
 	public void teleportWarz(Player plr) {
 		if ( getUserConfig( plr ).contains( "lastMapPos" ) ) {
 			Location loc = getUserConfig( plr ).getLocation( "lastMapPos" );
 			if ( UtilWorldGuard.RegionFlag( loc, DefaultFlag.PVP ) ) {
-				plr.teleport( loc );
+				teleport( plr , loc );
 				return;
 			}
 		}
 		if ( !this.mapSpawns.isEmpty() ) {
-			plr.teleport( getRandomMapSpawn() );
+			teleport( plr , getRandomMapSpawn() );
 		}
 	}
 
