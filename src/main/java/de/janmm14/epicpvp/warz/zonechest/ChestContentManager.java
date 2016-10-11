@@ -122,7 +122,7 @@ public class ChestContentManager implements Runnable {
 				module.getPlugin().getLogger().warning( "Null element in chest at " + blockVector + ", contents: " + Arrays.asList( inv.getContents() ) );
 				continue;
 			}
-			if ( item.getType() == Material.INK_SACK || item.getType() == Material.WEB ) {
+			if ( item.getType() == Material.INK_SACK || item.getType() == Material.WEB || item.getType() == Material.COAL ) {
 				String s = String.valueOf( item.getAmount() );
 				int lower, upper;
 				switch ( s.length() ) {
