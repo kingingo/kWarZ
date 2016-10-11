@@ -114,47 +114,47 @@ public class CommandWarZ implements CommandExecutor {
 					List<ItemStack> chest = zone.getRandomChoosenChestItems();
 					loopnew:
 					for ( ItemStack newItem : chest ) {
-						for ( ItemStack item : items ) {
-							if ( item.getType() == Material.INK_SACK || item.getType() == Material.WEB || item.getType() == Material.COAL ) {
-								String s = String.valueOf( item.getAmount() );
-								int lower, upper;
-								switch ( s.length() ) {
-									case 1: {
-										lower = item.getAmount();
-										upper = lower;
-										break;
-									}
-									case 2: {
-										char[] chars = s.toCharArray();
-										lower = Integer.valueOf( String.valueOf( chars[ 0 ] ) );
-										upper = Integer.valueOf( String.valueOf( chars[ 1 ] ) );
-										break;
-									}
-									case 3: {
-										char[] chars = s.toCharArray();
-										lower = Integer.valueOf( String.valueOf( chars[ 0 ] ) );
-										upper = Integer.valueOf( String.valueOf( chars[ 1 ] ) + chars[ 2 ] );
-										break;
-									}
-									case 4: {
-										char[] chars = s.toCharArray();
-										lower = Integer.valueOf( String.valueOf( chars[ 0 ] ) + chars[ 1 ] );
-										upper = Integer.valueOf( String.valueOf( chars[ 2 ] ) + chars[ 3 ] );
-										break;
-									}
-									default: {
-										lower = 1;
-										upper = 1;
-									}
-								}
-								if ( lower < 0 ) {
-									lower = 1;
-								}
-								if ( lower > upper ) {
+						if ( newItem.getType() == Material.INK_SACK || newItem.getType() == Material.WEB || newItem.getType() == Material.COAL ) {
+							String s = String.valueOf( newItem.getAmount() );
+							int lower, upper;
+							switch ( s.length() ) {
+								case 1: {
+									lower = newItem.getAmount();
 									upper = lower;
+									break;
 								}
-								item.setAmount( RandomUtil.getRandomInt( lower, upper ) );
+								case 2: {
+									char[] chars = s.toCharArray();
+									lower = Integer.valueOf( String.valueOf( chars[ 0 ] ) );
+									upper = Integer.valueOf( String.valueOf( chars[ 1 ] ) );
+									break;
+								}
+								case 3: {
+									char[] chars = s.toCharArray();
+									lower = Integer.valueOf( String.valueOf( chars[ 0 ] ) );
+									upper = Integer.valueOf( String.valueOf( chars[ 1 ] ) + chars[ 2 ] );
+									break;
+								}
+								case 4: {
+									char[] chars = s.toCharArray();
+									lower = Integer.valueOf( String.valueOf( chars[ 0 ] ) + chars[ 1 ] );
+									upper = Integer.valueOf( String.valueOf( chars[ 2 ] ) + chars[ 3 ] );
+									break;
+								}
+								default: {
+									lower = 1;
+									upper = 1;
+								}
 							}
+							if ( lower < 0 ) {
+								lower = 1;
+							}
+							if ( lower > upper ) {
+								upper = lower;
+							}
+							newItem.setAmount( RandomUtil.getRandomInt( lower, upper ) );
+						}
+						for ( ItemStack item : items ) {
 							if ( item.isSimilar( newItem ) ) {
 								newItem.setAmount( item.getAmount() + newItem.getAmount() );
 								continue loopnew;
