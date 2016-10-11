@@ -94,7 +94,7 @@ public class Zone {
 			.map( key -> ConfigUtil.readItemStackRandomGroup( itemSection.getConfigurationSection( key ) ) )
 //			.sorted( (o1, o2) -> Double.compare( o2.getProbability(), o1.getProbability() ) ) //sort reverse probability - highest first
 			.collect( Collectors.toList() );
-
+		
 		return new Zone( worldguardName, zoneName, itemGroups, section.getInt( "itemgroup_minamount" ), section.getInt( "itemgroup_maxamount" ) );
 	}
 

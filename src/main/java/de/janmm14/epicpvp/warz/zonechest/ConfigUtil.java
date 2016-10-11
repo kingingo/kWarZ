@@ -25,6 +25,15 @@ public class ConfigUtil {
 			.sorted( (o1, o2) -> -Double.compare( o1.getProbability(), o2.getProbability() ) ) //sort reverse probability - highest first
 			.collect( Collectors.toList() );
 
+		double probability = 0;
+		for(RandomThingHolder<ItemStack> item : items){
+			probability += item.getProbability();
+		}
+		
+		if(probability<0.99||probability>1.01){
+			System.err.println("[ERROR:] path=["+section.getCurrentPath()+"], probability=["+probability+"]");
+		}
+		
 		return new SimpleRandomThingGroupHolder<>( items, section.getInt( "minamount" ), section.getInt( "maxamount" ), section.getDouble( "probability" ) );
 	}
 
