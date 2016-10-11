@@ -1,5 +1,6 @@
 package de.janmm14.epicpvp.warz.map;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,7 +152,13 @@ public class MapModule extends Module<MapModule> implements Listener {
 	}
 	
 	public void onDisable() {
-		
+		File[] maps = new File("world/data").listFiles();
+		for(File file : maps){
+			if(file.getName().startsWith("map_")&&!file.getName().equalsIgnoreCase("map_0.dat")){
+				file.delete();
+			}
+			if(file.getName().equalsIgnoreCase("idcounts.dat"))file.delete();
+		}
 	}
 
 	public byte getPointer(Player owner, Player player) {
