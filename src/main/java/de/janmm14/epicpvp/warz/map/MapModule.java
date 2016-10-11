@@ -1,6 +1,8 @@
 package de.janmm14.epicpvp.warz.map;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +34,7 @@ import de.janmm14.epicpvp.warz.friends.FriendModule;
 import de.janmm14.epicpvp.warz.friends.PlayerFriendRelation;
 import eu.epicpvp.kcore.Command.Admin.CommandVanish;
 import eu.epicpvp.kcore.Permission.PermissionType;
+import eu.epicpvp.kcore.Util.UtilFile;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilWorldGuard;
@@ -154,10 +157,18 @@ public class MapModule extends Module<MapModule> implements Listener {
 	public void onDisable() {
 		File[] maps = new File("world/data").listFiles();
 		for(File file : maps){
-			if(file.getName().startsWith("map_")&&!file.getName().equalsIgnoreCase("map_0.dat")){
+			if(file.getName().startsWith("map_")&&!file.getName().equalsIgnoreCase("map_25.dat")){
 				file.delete();
 			}
-			if(file.getName().equalsIgnoreCase("idcounts.dat"))file.delete();
+		}
+		
+		try {
+			if(new File(getPlugin().getDataFolder()+"/idcounts.dat").exists())
+				UtilFile.copyFile(new File(getPlugin().getDataFolder()+"/idcounts.dat"), new File("world/data/idcounts.dat"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -237,7 +248,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 		view.setCenterZ( 0 );
 		view.setScale( MapView.Scale.FARTHEST );
 
-		MapView t = Bukkit.getMap( ( short ) 0 );
+		MapView t = Bukkit.getMap( ( short ) 25 );
 		for ( MapRenderer render : t.getRenderers() ) view.addRenderer( render );
 
 		if ( WarZ.DEBUG ) {

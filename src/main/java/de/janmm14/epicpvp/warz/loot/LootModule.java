@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -43,6 +44,12 @@ public class LootModule extends Module<LootModule>{
 		UtilServer.getCommandHandler().register(CommandLoot.class, new CommandLoot(this));
 		getPlugin().getServer().getScheduler().runTaskTimerAsynchronously( getPlugin(), new LootRunner( this ), 1 * 20, 1 * 20 );
 		new LootListener(this);
+		
+		for(ArmorStand as : Bukkit.getWorld("world").getEntitiesByClass(ArmorStand.class)){
+			if(as.getCustomName()!=null && as.getCustomName().equalsIgnoreCase("§cLootTime")){
+				as.remove();
+			}
+		}
 	}
 	
 	public void stopLootTime(Player plr){
