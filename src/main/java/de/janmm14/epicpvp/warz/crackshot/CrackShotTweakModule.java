@@ -2,14 +2,19 @@ package de.janmm14.epicpvp.warz.crackshot;
 
 import java.util.concurrent.TimeUnit;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import eu.epicpvp.kcore.Util.UtilItem;
 import lombok.Getter;
 
-public class CrackShotTweakModule extends Module<CrackShotTweakModule> {
+public class CrackShotTweakModule extends Module<CrackShotTweakModule> implements Listener{
 
 	public static final String PATH_PREFIX = "crackshottweak.";
 	public static final String ARMOR_DAMAGE_PREFIX = PATH_PREFIX + "armor.damage.";
@@ -19,8 +24,22 @@ public class CrackShotTweakModule extends Module<CrackShotTweakModule> {
 	private boolean headShotOnlyHelmet;
 
 	public CrackShotTweakModule(WarZ plugin) {
-		super( plugin, WeaponDamageArmorListener::new, BlockBreakListener::new );
+		super( plugin, WeaponDamageArmorListener::new, BlockBreakListener::new, module -> module );
 		UtilItem.modifyMaxStack(Material.COAL, 16);
+	}
+	
+	@EventHandler
+	public void click(InventoryClickEvent ev){
+		if(ev.getCurrentItem()!=null&&ev.getCurrentItem().getType()==Material.COAL
+				||ev.getCursor()!=null&&ev.getCursor().getType()==Material.COAL){
+			Bukkit.getScheduler().runTaskLater(getPlugin(), new Runnable() {
+				
+				@Override
+				public void run() {
+					((Player)ev.getWhoClicked()).updateInventory();
+				}
+			}, 1L);
+		}
 	}
 
 	public boolean isHeadOnlyHelmetReduction() {
