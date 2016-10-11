@@ -113,7 +113,7 @@ public class CommandWarZ implements CommandExecutor {
 					loopnew:
 					for ( ItemStack newItem : chest ) {
 						for ( ItemStack item : items ) {
-							if ( item.getType() == Material.INK_SACK || item.getType() == Material.WEB ) {
+							if ( item.getType() == Material.INK_SACK || item.getType() == Material.WEB || item.getType() == Material.COAL ) {
 								String s = String.valueOf( item.getAmount() );
 								int lower, upper;
 								switch ( s.length() ) {
