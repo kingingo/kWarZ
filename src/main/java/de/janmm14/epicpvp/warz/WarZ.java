@@ -1,6 +1,7 @@
 package de.janmm14.epicpvp.warz;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
@@ -8,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.janmm14.epicpvp.warz.command.CommandWarZ;
@@ -54,6 +56,7 @@ import eu.epicpvp.kcore.TeleportManager.TeleportManager;
 import eu.epicpvp.kcore.Update.Updater;
 import eu.epicpvp.kcore.UpdateAsync.UpdaterAsync;
 import eu.epicpvp.kcore.UserDataConfig.UserDataConfig;
+import eu.epicpvp.kcore.Util.UtilItem;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.Util.UtilTime;
@@ -86,9 +89,6 @@ public class WarZ extends JavaPlugin {
 		if ( DEBUG ) {
 			getLogger().info( "Debug mode activated!" );
 		}
-
-//		registerTabExecutor( "warz", new CommandWarZ( this ) );
-
 		setupKStuff();
 
 		getServer().getPluginManager().registerEvents( new WarZListener( this ), this );

@@ -2,8 +2,11 @@ package de.janmm14.epicpvp.warz.crackshot;
 
 import java.util.concurrent.TimeUnit;
 
+import org.bukkit.Material;
+
 import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
+import eu.epicpvp.kcore.Util.UtilItem;
 import lombok.Getter;
 
 public class CrackShotTweakModule extends Module<CrackShotTweakModule> {
@@ -17,8 +20,7 @@ public class CrackShotTweakModule extends Module<CrackShotTweakModule> {
 
 	public CrackShotTweakModule(WarZ plugin) {
 		super( plugin, WeaponDamageArmorListener::new, BlockBreakListener::new );
-		
-		
+		UtilItem.modifyMaxStack(Material.COAL, 16);
 	}
 
 	public boolean isHeadOnlyHelmetReduction() {
