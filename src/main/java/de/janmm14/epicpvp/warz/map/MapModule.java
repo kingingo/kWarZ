@@ -222,21 +222,6 @@ public class MapModule extends Module<MapModule> implements Listener {
 		ev.getPlayer().updateInventory();
 	}
 
-//	@EventHandler
-//	public void onInteract(PlayerInteractEvent event) {
-//		Player plr = event.getPlayer();
-//		ItemStack item = plr.getItemInHand();
-//		if ( item != null && item.getType() == Material.EMPTY_MAP ) {
-//			ItemStack map = new ItemStack( Material.MAP );
-//			map.setDurability( ( short ) 25 ); //map id
-//			plr.setItemInHand( map );
-//			event.setCancelled( true );
-//			if ( WarZ.DEBUG ) {
-//				System.out.println( "[DEBUG] PlayerInteractEvent: swap empty map with map 25" );
-//			}
-//		}
-//	}
-
 	@EventHandler
 	public void onMapInitialize(MapInitializeEvent ev) {
 		MapView view = ev.getMap();
@@ -245,7 +230,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 		view.setCenterZ( 0 );
 		view.setScale( MapView.Scale.FARTHEST );
 
-		MapView t = Bukkit.getMap( ( short ) 25 );
+		MapView t = Bukkit.getMap( ( short ) 0 );
 		for ( MapRenderer render : t.getRenderers() ) view.addRenderer( render );
 
 		if ( WarZ.DEBUG ) {
