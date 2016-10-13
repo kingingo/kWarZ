@@ -1,8 +1,5 @@
 package de.janmm14.epicpvp.warz.friends;
 
-import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.stream;
-import static de.janmm14.epicpvp.warz.util.MiscUtil.not;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,18 +14,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
-import org.bukkit.entity.Player;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 import eu.epicpvp.datenserver.definitions.dataserver.player.LanguageType;
 import eu.epicpvp.kcore.Command.CommandHandler.Sender;
@@ -39,6 +27,16 @@ import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.TIntSet;
 import lombok.NonNull;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
+
+import static de.janmm14.epicpvp.warz.util.GnuTroveJavaAdapter.stream;
+import static de.janmm14.epicpvp.warz.util.MiscUtil.not;
 
 public class CommandFriends implements TabExecutor {
 
@@ -589,7 +587,7 @@ public class CommandFriends implements TabExecutor {
 		String toSend = "";
 		int max = rowStart + perPage;
 		TIntList uuidsList = new TIntArrayList( uuids );
-		for ( int i = 0; i < max && uuidsList.size() > i; i++ ) {
+		for ( int i = rowStart; i < max && uuidsList.size() > i; i++ ) {
 			toSend += " > " + getPlayerStringColoredByOnlineState( uuidsList.get( i ) ) + "\n";
 		}
 		if ( toSend.isEmpty() ) {
