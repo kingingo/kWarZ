@@ -14,6 +14,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import com.shampaggon.crackshot.events.WeaponDamageEntityEvent;
+import com.shampaggon.crackshot.events.WeaponExplodeEvent;
+
+import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.logout.LogoutPlayerQuitEvent;
 import eu.epicpvp.kcore.Listener.kListener;
 import eu.epicpvp.kcore.Util.UtilString;
@@ -52,6 +56,13 @@ public class LootListener extends kListener{
 			if(module.getLoottimer().containsKey( ((Player)ev.getDamager()) )){
 				ev.setCancelled(true);
 			}
+		}
+	}
+	
+	@EventHandler
+	public void damage(WeaponDamageEntityEvent ev){
+		if(module.getLoottimer().containsKey( ev.getPlayer() )){
+			ev.setCancelled(true);
 		}
 	}
 	

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -17,6 +18,10 @@ import de.janmm14.epicpvp.warz.Module;
 import de.janmm14.epicpvp.warz.WarZ;
 import de.janmm14.epicpvp.warz.spawn.SpawnModule;
 import eu.epicpvp.datenserver.definitions.arrays.CachedArrayList;
+import eu.epicpvp.kcore.Hologram.nametags.NameTagPacketSpawner;
+import eu.epicpvp.kcore.PacketAPI.Packets.WrapperArmorStandDataWatcher;
+import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutAttachEntity;
+import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutSpawnEntityLiving;
 import eu.epicpvp.kcore.Util.TimeSpan;
 import eu.epicpvp.kcore.Util.Title;
 import eu.epicpvp.kcore.Util.UtilNumber;
@@ -58,9 +63,9 @@ public class LootModule extends Module<LootModule>{
 				plr.teleport( getModuleManager().getModule( SpawnModule.class ).getSpawn() );
 			}
 			loottimer.remove(plr);
-			Entity passenger = plr.getPassenger();
-			plr.eject();
-			passenger.remove();
+//			Entity passenger = plr.getPassenger();
+//			plr.eject();
+//			passenger.remove();
 			Title title = new Title("", "§cDie Loot Zeit ist abgelaufen!");
 			title.send(plr);
 		}
@@ -73,12 +78,25 @@ public class LootModule extends Module<LootModule>{
 			setLootList(plr, list);
 			loottimer.put(plr, System.currentTimeMillis()+LOOT_TIME_MILI);
 			
-			ArmorStand passenger = (ArmorStand) plr.getWorld().spawnEntity(plr.getLocation(), EntityType.ARMOR_STAND);
-			passenger.setVisible(false);
-			passenger.setCustomNameVisible(true);
-			passenger.setCustomName("§cLootTime");
-			passenger.setSmall(true);
-			plr.setPassenger(passenger);
+//			WrapperPacketPlayOutSpawnEntityLiving armorStand = new WrapperPacketPlayOutSpawnEntityLiving(Integer.MAX_VALUE, EntityType.ARMOR_STAND, plr.getLocation());
+//			armorStand.setY(plr.getLocation().getY());
+//			
+//			WrapperArmorStandDataWatcher watcher = new WrapperArmorStandDataWatcher(plr.getLocation().getWorld());
+//			watcher.setCustomName("§cLoot time");
+//			watcher.setCustomNameVisible(true);
+//			watcher.setVisible(false);
+//			watcher.setBasePlate(false);
+//			watcher.setSmall(true);
+//			armorStand.setDataWatcher(watcher);
+//			
+//			WrapperPacketPlayOutAttachEntity attach = new WrapperPacketPlayOutAttachEntity();
+//			attach.setEntityID(armorStand.getEntityID());
+//			attach.setVehicleID(plr.getEntityId());
+//			attach.setLeached(false);
+//
+//			UtilPlayer.sendPacket(plr, armorStand);
+//			UtilPlayer.sendPacket(plr, attach);
+			
 			Title title = new Title("", "§aDie Loot Zeit wurde gestartet...");
 			title.send(plr);
 		}

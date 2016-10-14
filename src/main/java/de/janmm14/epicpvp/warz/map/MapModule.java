@@ -64,7 +64,7 @@ public class MapModule extends Module<MapModule> implements Listener {
 				WrapperPlayServerMap packet = new WrapperPlayServerMap( event.getPacket() );
 
 				boolean isInPvP = UtilWorldGuard.RegionFlag( event.getPlayer(), DefaultFlag.PVP );
-					if ( event.getPlayer().isOp() ) {
+					if ( event.getPlayer().isOp() || event.getPlayer().hasPermission(PermissionType.WARZ_MAP_ALL.getPermissionToString()) ) {
 						List<MapIcon> icons = new ArrayList<>();
 						if (isInPvP) {
 							icons.add( new MapIcon( MapCursor.Type.WHITE_POINTER.getValue(),
