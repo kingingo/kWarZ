@@ -16,14 +16,14 @@ public class ShopBuyInventoryHandler {
 	private final InventoryCopy inventory = new InventoryCopy( 6 * 9, "§6WarZ Shop" );
 
 	public ShopBuyInventoryHandler() {
-		setupInventorz();
+		setupInventory();
 	}
 
 	public void openInventory(Player player) {
 		inventory.open( player, UtilInv.getBase() );
 	}
 
-	private void setupInventorz() {
+	private void setupInventory() {
 //		inventory.fillBorder( Material.STAINED_GLASS_PANE, 7 );
 
 		addItem( 5 - 1, 0, Material.NETHER_STAR, "§cWar§lZ§7 - §aShop" );
