@@ -82,7 +82,7 @@ public class ClanModule extends Module<ClanModule> implements Listener {
 				if(handler.getSection(plr).getPlayers().size() >= 4){
 					plr.openInventory( inventories.get( gilde.getUuid() ) );
 				}else{
-					plr.sendMessage("§cEs müssen min. 4 Spieler im Clan sein, um diese funktion benutzten zukönnen.");
+					plr.sendMessage("§cEs müssen min. 4 Spieler im Clan sein, um diese Funktion benutzten zukönnen.");
 				}
 			}
 		}else{
