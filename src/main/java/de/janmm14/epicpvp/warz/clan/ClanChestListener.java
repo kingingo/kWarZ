@@ -45,10 +45,6 @@ public class ClanChestListener extends kListener {
 			return;
 		}
 
-		if ( !module.getHandler().hasGilde( plr ) ) {
-			return;
-		}
-
 		Block block = event.getClickedBlock();
 		if ( event.hasBlock() && ( block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST ) ) {
 			if ( chestLoc.equals( block.getLocation().toVector().toBlockVector() ) ) {

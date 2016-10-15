@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
+import eu.epicpvp.datenclient.client.LoadedPlayer;
 import eu.epicpvp.datenclient.gilde.GildSection;
 import eu.epicpvp.datenclient.gilde.Gilde;
 import eu.epicpvp.datenserver.definitions.dataserver.gamestats.GameType;
@@ -24,6 +25,7 @@ import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
 import eu.epicpvp.kcore.Util.UtilInv;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import eu.epicpvp.kcore.Util.UtilServer;
+import eu.epicpvp.kcore.deliverychest.ItemModifier;
 import eu.epicpvp.kcore.newGilde.GildeHandler;
 import eu.epicpvp.nbt.NBTTagCompound;
 
@@ -78,6 +80,8 @@ public class ClanModule extends Module<ClanModule> implements Listener {
 
 			if ( inventories.containsKey( gilde.getUuid() ) )
 				plr.openInventory( inventories.get( gilde.getUuid() ) );
+		}else{
+			plr.sendMessage("§cDu hast keinen Clan.");
 		}
 	}
 
