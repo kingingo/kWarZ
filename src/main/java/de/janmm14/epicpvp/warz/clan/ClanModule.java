@@ -78,8 +78,13 @@ public class ClanModule extends Module<ClanModule> implements Listener {
 				loadInventory( playerId );
 			}
 
-			if ( inventories.containsKey( gilde.getUuid() ) )
-				plr.openInventory( inventories.get( gilde.getUuid() ) );
+			if ( inventories.containsKey( gilde.getUuid() )){
+				if(handler.getSection(plr).getPlayers().size() >= 4){
+					plr.openInventory( inventories.get( gilde.getUuid() ) );
+				}else{
+					plr.sendMessage("§cEs müssen min. 4 Spieler im Clan sein, um diese funktion benutzten zukönnen.");
+				}
+			}
 		}else{
 			plr.sendMessage("§cDu hast keinen Clan.");
 		}
