@@ -63,12 +63,12 @@ public class StatsModule extends Module<StatsModule> implements Listener { //TOD
 	public void onScoreboardSet(PlayerSetScoreboardEvent event) {
 		Player plr = event.getPlayer();
 		Scoreboard scoreboard = plr.getScoreboard();
-		Objective sidebar = scoreboard.registerNewObjective( "clashmc_warz", "dummy" );
+		Objective sidebar = scoreboard.registerNewObjective( "EpicPvP_warz", "dummy" );
 		ScoreboardAdapter adapter = new ScoreboardAdapter( sidebar );
 		scoreboardAdapters.put( plr.getUniqueId(), adapter );
 
 		sidebar.setDisplaySlot( DisplaySlot.SIDEBAR );
-		sidebar.setDisplayName( "§b§lWarZ§7 - §6§lClashMC.eu" );
+		sidebar.setDisplayName( "§6§lWarZ§7 - §6§lEpicPvP.eu" );
 
 		sidebar.getScore( "§7Kills" ).setScore( 9 );
 		adapter.setEntryKeyWithValue( 8, "§0§fLoading..." );

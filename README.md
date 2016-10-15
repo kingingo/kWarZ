@@ -1,6 +1,6 @@
 WarZ
 ====
-Plugin für EpicPvP / ClashMC von Janmm14
+Plugin für EpicPvP / EpicPvP von Janmm14
 
 > epic war
 >
