@@ -1,4 +1,4 @@
-package de.janmm14.epicpvp.warz.gilde;
+package de.janmm14.epicpvp.warz.clan;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -9,12 +9,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @RequiredArgsConstructor
-public class GildenChestHolder implements InventoryHolder {
+public class ClanChestHolder implements InventoryHolder {
 
 	@Getter
 	@Setter
 	private Inventory inventory;
 	@Getter
 	@NonNull
-	private GildeModule module;
+	private ClanModule module;
 }

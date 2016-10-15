@@ -1,4 +1,4 @@
-package de.janmm14.epicpvp.warz.gilde;
+package de.janmm14.epicpvp.warz.clan;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,12 +15,12 @@ import eu.epicpvp.kcore.Listener.kListener;
 import eu.epicpvp.kcore.Permission.Events.PlayerLoadPermissionEvent;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 
-public class GildeChestListener extends kListener {
+public class ClanChestListener extends kListener {
 
-	private GildeModule module;
+	private ClanModule module;
 
-	public GildeChestListener(GildeModule module) {
-		super(module.getPlugin(),"GildeChestListener");
+	public ClanChestListener(ClanModule module) {
+		super(module.getPlugin(),"ClanChestListener");
 		this.module = module;
 	}
 

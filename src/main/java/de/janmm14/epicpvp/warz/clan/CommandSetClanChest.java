@@ -1,4 +1,4 @@
-package de.janmm14.epicpvp.warz.gilde;
+package de.janmm14.epicpvp.warz.clan;
 
 import java.util.List;
 import java.util.Set;
@@ -14,15 +14,15 @@ import eu.epicpvp.kcore.Command.CommandHandler.Sender;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CommandSetGildeChest implements CommandExecutor {
+public class CommandSetClanChest implements CommandExecutor {
 	
-	private GildeModule module;
+	private ClanModule module;
 	
-	public CommandSetGildeChest(GildeModule module){
+	public CommandSetClanChest(ClanModule module){
 		this.module=module;
 	}
 
-	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "setgildechest", sender = Sender.PLAYER)
+	@eu.epicpvp.kcore.Command.CommandHandler.Command(command = "setclanchest", sender = Sender.PLAYER)
 	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 		if ( !sender.isOp() ) {
 			return true;
@@ -36,7 +36,7 @@ public class CommandSetGildeChest implements CommandExecutor {
 			}
 			if ( block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST ) {
 				module.setChest( block.getLocation().toVector().toBlockVector() );
-				sender.sendMessage( "§aDie Gildenkiste ist nun bei " + module.getChest() );
+				sender.sendMessage( "§aDie Clankiste ist nun bei " + module.getChest() );
 				return true;
 			}
 		}

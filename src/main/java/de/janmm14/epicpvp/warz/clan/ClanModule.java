@@ -1,4 +1,4 @@
-package de.janmm14.epicpvp.warz.gilde;
+package de.janmm14.epicpvp.warz.clan;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import de.janmm14.epicpvp.warz.WarZ;
 
 import lombok.Getter;
 
-public class GildeModule extends Module<GildeModule> implements Listener {
+public class ClanModule extends Module<ClanModule> implements Listener {
 
 	@Getter
 	private BlockVector chest;
@@ -40,12 +40,12 @@ public class GildeModule extends Module<GildeModule> implements Listener {
 	private GildeHandler handler;
 	private HashMap<UUID, Inventory> inventories = new HashMap<>();
 
-	public GildeModule(WarZ plugin) {
+	public ClanModule(WarZ plugin) {
 		super( plugin, module -> module );
 		this.handler=new GildeHandler(GildeType.WARZ);
-		new GildeChestListener(this);
+		new ClanChestListener(this);
 		StatsManagerRepository.getStatsManager(GameType.WARZ).setGilde(handler);
-		UtilServer.getCommandHandler().register(CommandSetGildeChest.class, new CommandSetGildeChest(this));
+		UtilServer.getCommandHandler().register(CommandSetClanChest.class, new CommandSetClanChest(this));
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class GildeModule extends Module<GildeModule> implements Listener {
 			if ( section != null ) {
 				if ( !inventories.containsKey( section.getHandle().getUuid() ) ) {
 					NBTTagCompound data = handler.getData( playerId );
-					Inventory inventory = Bukkit.createInventory( new GildenChestHolder( this ), 9 * 3, "Gilde Chest:" );
+					Inventory inventory = Bukkit.createInventory( new ClanChestHolder( this ), 9 * 3, "Gilde Chest:" );
 					String base64 = data.getString( "inventory" );
 
 					if ( base64 != null && !base64.isEmpty() ) {
