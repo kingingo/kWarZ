@@ -11,14 +11,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.util.BlockVector;
 
+import eu.epicpvp.kcore.Listener.kListener;
 import eu.epicpvp.kcore.Permission.Events.PlayerLoadPermissionEvent;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 
-public class GildeChestListener implements Listener {
+public class GildeChestListener extends kListener {
 
 	private GildeModule module;
 
 	public GildeChestListener(GildeModule module) {
+		super(module.getPlugin(),"GildeChestListener");
 		this.module = module;
 	}
 

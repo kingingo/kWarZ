@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
@@ -17,9 +18,12 @@ import org.bukkit.util.Vector;
 
 import eu.epicpvp.datenclient.gilde.GildSection;
 import eu.epicpvp.datenclient.gilde.Gilde;
+import eu.epicpvp.datenserver.definitions.dataserver.gamestats.GameType;
 import eu.epicpvp.datenserver.definitions.gilde.GildeType;
+import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
 import eu.epicpvp.kcore.Util.UtilInv;
 import eu.epicpvp.kcore.Util.UtilPlayer;
+import eu.epicpvp.kcore.Util.UtilServer;
 import eu.epicpvp.kcore.newGilde.GildeHandler;
 import eu.epicpvp.nbt.NBTTagCompound;
 
@@ -28,7 +32,7 @@ import de.janmm14.epicpvp.warz.WarZ;
 
 import lombok.Getter;
 
-public class GildeModule extends Module<GildeModule> /*implements Listener*/ {
+public class GildeModule extends Module<GildeModule> implements Listener {
 
 	@Getter
 	private BlockVector chest;
@@ -37,10 +41,11 @@ public class GildeModule extends Module<GildeModule> /*implements Listener*/ {
 	private HashMap<UUID, Inventory> inventories = new HashMap<>();
 
 	public GildeModule(WarZ plugin) {
-		super( plugin/*, module -> module, module -> GildeChestListener::new*/ );
-//		this.handler=new GildeHandler(GildeType.WARZ);
-//		StatsManagerRepository.getStatsManager(GameType.WARZ).setGilde(handler);
-//		UtilServer.getCommandHandler().register(CommandSetGildeChest.class, new CommandSetGildeChest(this));
+		super( plugin, module -> module );
+		this.handler=new GildeHandler(GildeType.WARZ);
+		new GildeChestListener(this);
+		StatsManagerRepository.getStatsManager(GameType.WARZ).setGilde(handler);
+		UtilServer.getCommandHandler().register(CommandSetGildeChest.class, new CommandSetGildeChest(this));
 	}
 
 	@Override
