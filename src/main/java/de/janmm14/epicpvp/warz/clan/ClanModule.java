@@ -53,11 +53,11 @@ public class ClanModule extends Module<ClanModule> implements Listener {
 
 	@Override
 	public void onDisable() {
-		for ( Map.Entry<UUID, Inventory> entry : inventories.entrySet() ) {
-			Gilde gilde = handler.getGildeManager().getGilde( entry.getKey() );
+		for ( UUID uuid : inventories.keySet() ) {
+			Gilde gilde = handler.getGildeManager().getGilde( uuid );
 			GildSection section = gilde.getSelection( GildeType.WARZ );
 
-			section.getCostumData().setString( "inventory", UtilInv.itemStackArrayToBase64( entry.getValue().getContents() ) );
+			section.getCostumData().setString( "inventory", UtilInv.itemStackArrayToBase64( inventories.get(uuid).getContents() ) );
 			section.saveCostumData();
 		}
 		this.inventories.clear();

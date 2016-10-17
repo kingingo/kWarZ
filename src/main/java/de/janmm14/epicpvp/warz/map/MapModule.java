@@ -3,6 +3,9 @@ package de.janmm14.epicpvp.warz.map;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -152,6 +155,20 @@ public class MapModule extends Module<MapModule> implements Listener {
 				//has to be here due to a protocollib error
 			}
 		} );
+		
+		Runtime.getRuntime().addShutdownHook( new Thread() {
+			  @Override public void run() {
+				try {
+					if(new File(getPlugin().getDataFolder()+"/idcounts.dat").exists()){
+						Files.copy(new File(getPlugin().getDataFolder()+"/idcounts.dat").toPath(), new File("world/data/idcounts.dat").toPath(), StandardCopyOption.REPLACE_EXISTING);
+					}
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}	  
+			  }
+		} );
 	}
 	
 	public void onDisable() {
@@ -160,15 +177,6 @@ public class MapModule extends Module<MapModule> implements Listener {
 			if(file.getName().startsWith("map_")&&!file.getName().equalsIgnoreCase("map_25.dat")){
 				file.delete();
 			}
-		}
-		
-		try {
-			if(new File(getPlugin().getDataFolder()+"/idcounts.dat").exists())
-				UtilFile.copyFile(new File(getPlugin().getDataFolder()+"/idcounts.dat"), new File("world/data/idcounts.dat"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
