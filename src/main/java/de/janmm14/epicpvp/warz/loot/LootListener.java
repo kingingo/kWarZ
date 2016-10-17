@@ -52,7 +52,8 @@ public class LootListener extends kListener{
 			if(module.getLoottimer().containsKey( ((Player)ev.getEntity()) )){
 				ev.setCancelled(true);
 			}
-		}else if(ev.getDamager() instanceof Player){
+		}
+		if(ev.getDamager() instanceof Player){
 			if(module.getLoottimer().containsKey( ((Player)ev.getDamager()) )){
 				ev.setCancelled(true);
 			}

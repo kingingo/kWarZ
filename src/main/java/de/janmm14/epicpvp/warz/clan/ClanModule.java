@@ -46,6 +46,7 @@ public class ClanModule extends Module<ClanModule> implements Listener {
 		super( plugin, module -> module );
 		this.handler=new GildeHandler(GildeType.WARZ);
 		new ClanChestListener(this);
+		new ClanDamageListener(this);
 		StatsManagerRepository.getStatsManager(GameType.WARZ).setGilde(handler);
 		UtilServer.getCommandHandler().register(CommandSetClanChest.class, new CommandSetClanChest(this));
 	}
