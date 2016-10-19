@@ -28,9 +28,10 @@ public class ZombieModule extends Module<ZombieModule> {
 		super( plugin, ZombieBehaviourListener::new, ZombieSpawnListener::new, ZombieAttackListener::new );
 		getConfig().addDefault( PATH_REDSTONE_TORCH_RANGE, 15 );
 	}
-	
+
+	@Override
 	public void onDisable() {
-		
+
 	}
 
 	public void setupZombie(Zombie zombie) {
@@ -38,6 +39,7 @@ public class ZombieModule extends Module<ZombieModule> {
 		zombie.setBaby( false );
 		zombie.setHealth( 10 );
 		zombie.setVillager( false );
+		zombie.setCanPickupItems( false );
 		if ( RandomUtil.getRandomInt( 1, 15 ) == 1 ) {
 			zombie.addPotionEffect( new PotionEffect( PotionEffectType.SPEED, RandomUtil.getRandomInt( 20 * 20, 60 * 20 ), 1, true ) );
 		}
