@@ -17,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import de.janmm14.epicpvp.warz.command.CommandWarZ;
 import de.janmm14.epicpvp.warz.hooks.LanguageConverter;
 import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
+import eu.epicpvp.datenclient.client.Callback;
 import eu.epicpvp.datenclient.client.debug.Debugger;
 import eu.epicpvp.datenserver.definitions.connection.ClientType;
 import eu.epicpvp.datenserver.definitions.dataserver.gamestats.GameType;
@@ -54,6 +55,7 @@ import eu.epicpvp.kcore.Listener.AntiCrashListener.AntiCrashListener;
 import eu.epicpvp.kcore.Listener.Chat.ChatListener;
 import eu.epicpvp.kcore.Listener.Command.ListenerCMD;
 import eu.epicpvp.kcore.Listener.EnderChest.EnderChestListener;
+import eu.epicpvp.kcore.Listener.VoteListener.VoteListener;
 import eu.epicpvp.kcore.Permission.PermissionManager;
 import eu.epicpvp.kcore.StatsManager.StatsManagerRepository;
 import eu.epicpvp.kcore.TeleportManager.TeleportCheck;
@@ -164,6 +166,14 @@ public class WarZ extends JavaPlugin {
 		new Updater(this);
 		new UpdaterAsync(this);
 
+		new VoteListener(this, true, new Callback<String>() {
+			
+			@Override
+			public void call(String obj, Throwable exception) {
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cr givekey "+obj+" vote 1");
+			}
+		});
+		
 		//lets try to support reloades to some extend
 		for ( Player plr : Bukkit.getOnlinePlayers() ) {
 			StatsManagerRepository.getStatsManager( GameType.WARZ ).join( new PlayerJoinEvent( plr, "" ) );
