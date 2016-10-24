@@ -19,6 +19,7 @@ import de.janmm14.epicpvp.warz.hooks.UserDataConverter;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
 import de.janmm14.epicpvp.warz.zonechest.ZoneAndChestsModule;
 import eu.epicpvp.kcore.Command.Admin.CommandVanish;
+import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.Util.UtilPlayer;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,12 @@ public enum CompassTarget {
 		Location getTarget(@NonNull CompassTargetModule module, @NonNull Player plr) {
 			FriendInfoManager manager = module.getModuleManager().getModule( FriendModule.class ).getFriendInfoManager();
 			FriendInfo friendInfo = manager.get( plr.getUniqueId() );
-			double distanceSquared = module.getEnemyRadius() * module.getEnemyRadius();
+			double distanceSquared;
+			if(plr.hasPermission(PermissionType.WARZ_KIT_EPIC.getPermissionToString()))
+				 distanceSquared = (module.getEnemyRadius()*2) * (module.getEnemyRadius()*2);
+			else
+				 distanceSquared = module.getEnemyRadius() * module.getEnemyRadius();
+			
 			Player nearestEnemy = null;
 			for ( Player possTarget : Bukkit.getOnlinePlayers() ) {
 				if ( possTarget.getUniqueId().equals( plr.getUniqueId() ) ) {
