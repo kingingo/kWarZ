@@ -28,6 +28,7 @@ import de.janmm14.epicpvp.warz.logout.LogoutModule;
 import de.janmm14.epicpvp.warz.util.ConfigLocationAdapter;
 import de.janmm14.epicpvp.warz.zonechest.Zone;
 import eu.epicpvp.kcore.PacketAPI.Packets.WrapperPacketPlayOutWorldBorder;
+import eu.epicpvp.kcore.Permission.PermissionType;
 import eu.epicpvp.kcore.UserDataConfig.Events.UserDataConfigLoadEvent;
 import eu.epicpvp.kcore.Util.UtilMath;
 import eu.epicpvp.kcore.Util.UtilPlayer;
@@ -151,31 +152,72 @@ public class SpawnModule extends Module<SpawnModule> implements Listener {
 	public void setStarterKit(Player plr) {
 		PlayerInventory inventory = plr.getInventory();
 		if ( isEmpty( inventory.getHelmet() ) ) {
-			inventory.setHelmet( new ItemStack( Material.LEATHER_HELMET ) );
+			if(plr.hasPermission(PermissionType.WARZ_KIT_EPIC.getPermissionToString()))
+				inventory.setHelmet( new ItemStack( Material.IRON_HELMET ) );
+			else
+				inventory.setHelmet( new ItemStack( Material.LEATHER_HELMET ) );
 		} else {
-			inventory.addItem( new ItemStack( Material.LEATHER_HELMET ) );
+			if(plr.hasPermission(PermissionType.WARZ_KIT_EPIC.getPermissionToString()))
+				inventory.addItem( new ItemStack( Material.IRON_HELMET ) );
+			else
+				inventory.addItem( new ItemStack( Material.LEATHER_HELMET ) );
 		}
 		if ( isEmpty( inventory.getChestplate() ) ) {
-			inventory.setChestplate( new ItemStack( Material.LEATHER_CHESTPLATE ) );
+			if(plr.hasPermission(PermissionType.WARZ_KIT_EPIC.getPermissionToString()))
+				inventory.setChestplate( new ItemStack( Material.IRON_CHESTPLATE ) );
+			else
+				inventory.setChestplate( new ItemStack( Material.LEATHER_CHESTPLATE ) );
 		} else {
-			inventory.addItem( new ItemStack( Material.LEATHER_CHESTPLATE ) );
+			if(plr.hasPermission(PermissionType.WARZ_KIT_EPIC.getPermissionToString()))
+				inventory.addItem( new ItemStack( Material.IRON_CHESTPLATE ) );
+			else
+				inventory.addItem( new ItemStack( Material.LEATHER_CHESTPLATE ) );
 		}
+		
 		if ( isEmpty( inventory.getLeggings() ) ) {
-			inventory.setLeggings( new ItemStack( Material.LEATHER_LEGGINGS ) );
+			if(plr.hasPermission(PermissionType.WARZ_KIT_EPIC.getPermissionToString()))
+				inventory.setLeggings( new ItemStack( Material.IRON_LEGGINGS ) );
+			else
+				inventory.setLeggings( new ItemStack( Material.LEATHER_LEGGINGS ) );
 		} else {
-			inventory.addItem( new ItemStack( Material.LEATHER_LEGGINGS ) );
+			if(plr.hasPermission(PermissionType.WARZ_KIT_EPIC.getPermissionToString()))
+				inventory.addItem( new ItemStack( Material.IRON_LEGGINGS ) );
+			else
+				inventory.addItem( new ItemStack( Material.LEATHER_LEGGINGS ) );
 		}
+		
 		if ( isEmpty( inventory.getBoots() ) ) {
-			inventory.setBoots( new ItemStack( Material.LEATHER_BOOTS ) );
+			if(plr.hasPermission(PermissionType.WARZ_KIT_EPIC.getPermissionToString()))
+				inventory.setBoots( new ItemStack( Material.IRON_BOOTS ) );
+			else
+				inventory.setBoots( new ItemStack( Material.LEATHER_BOOTS ) );
 		} else {
-			inventory.addItem( new ItemStack( Material.LEATHER_BOOTS ) );
+			if(plr.hasPermission(PermissionType.WARZ_KIT_EPIC.getPermissionToString()))
+				inventory.addItem( new ItemStack( Material.IRON_BOOTS ) );
+			else
+				inventory.addItem( new ItemStack( Material.LEATHER_BOOTS ) );
 		}
-		inventory.addItem( Zone.crackshotRename( new ItemStack( Material.STONE_SPADE ) ) );
-		inventory.addItem( new ItemStack( Material.WOOD_SWORD ) );
+		
+		if(plr.hasPermission(PermissionType.WARZ_KIT_EPIC.getPermissionToString())){
+			inventory.addItem( Zone.crackshotRename( new ItemStack( 256 ) ) );
+			inventory.addItem( Zone.crackshotRename( new ItemStack( 274 ) ) );
+			inventory.addItem( Zone.crackshotRename( new ItemStack( 351,16,(byte)8 ) ) );
+			inventory.addItem( Zone.crackshotRename( new ItemStack( 351, 16,(byte)3 ) ) );
+			inventory.addItem( new ItemStack( Material.IRON_SWORD ) );
+			inventory.addItem( new ItemStack( Material.WEB,6 ) );
+			inventory.addItem( new ItemStack( Material.BONE,6 ) );
+			inventory.addItem( new ItemStack( Material.FISHING_ROD ) );
+			inventory.addItem( new ItemStack( 351, 16, ( short ) 13 ) );
+			inventory.addItem( new ItemStack( 351, 16, ( short ) 6 ) );
+			inventory.addItem( new ItemStack( 351, 16, ( short ) 3 ) );
+		}else{
+			inventory.addItem( Zone.crackshotRename( new ItemStack( Material.STONE_SPADE ) ) );
+			inventory.addItem( new ItemStack( Material.WOOD_SWORD ) );
+			inventory.addItem( new ItemStack( 351, 16, ( short ) 13 ) );
+			inventory.addItem( new ItemStack( 351, 16, ( short ) 6 ) );
+			inventory.addItem( new ItemStack( 351, 16, ( short ) 3 ) );
+		}
 		inventory.addItem( new ItemStack( Material.EMPTY_MAP ) );
-		inventory.addItem( new ItemStack( 351, 16, ( short ) 13 ) );
-		inventory.addItem( new ItemStack( 351, 16, ( short ) 6 ) );
-		inventory.addItem( new ItemStack( 351, 16, ( short ) 3 ) );
 		plr.setExp( 1 );
 		plr.setFoodLevel( 20 );
 		plr.setSaturation( Float.MAX_VALUE );

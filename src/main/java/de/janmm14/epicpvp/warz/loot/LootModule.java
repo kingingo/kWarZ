@@ -63,9 +63,6 @@ public class LootModule extends Module<LootModule>{
 				plr.teleport( getModuleManager().getModule( SpawnModule.class ).getSpawn() );
 			}
 			loottimer.remove(plr);
-//			Entity passenger = plr.getPassenger();
-//			plr.eject();
-//			passenger.remove();
 			Title title = new Title("", "§cDie Loot Zeit ist abgelaufen!");
 			title.send(plr);
 		}
@@ -77,25 +74,6 @@ public class LootModule extends Module<LootModule>{
 			list.add(System.currentTimeMillis());
 			setLootList(plr, list);
 			loottimer.put(plr, System.currentTimeMillis()+LOOT_TIME_MILI);
-			
-//			WrapperPacketPlayOutSpawnEntityLiving armorStand = new WrapperPacketPlayOutSpawnEntityLiving(Integer.MAX_VALUE, EntityType.ARMOR_STAND, plr.getLocation());
-//			armorStand.setY(plr.getLocation().getY());
-//			
-//			WrapperArmorStandDataWatcher watcher = new WrapperArmorStandDataWatcher(plr.getLocation().getWorld());
-//			watcher.setCustomName("§cLoot time");
-//			watcher.setCustomNameVisible(true);
-//			watcher.setVisible(false);
-//			watcher.setBasePlate(false);
-//			watcher.setSmall(true);
-//			armorStand.setDataWatcher(watcher);
-//			
-//			WrapperPacketPlayOutAttachEntity attach = new WrapperPacketPlayOutAttachEntity();
-//			attach.setEntityID(armorStand.getEntityID());
-//			attach.setVehicleID(plr.getEntityId());
-//			attach.setLeached(false);
-//
-//			UtilPlayer.sendPacket(plr, armorStand);
-//			UtilPlayer.sendPacket(plr, attach);
 			
 			Title title = new Title("", "§aDie Loot Zeit wurde gestartet...");
 			title.send(plr);
